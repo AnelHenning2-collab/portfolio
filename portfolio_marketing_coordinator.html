@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anel Henning — Marketing Content Coordinator Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #fff7ed; color: #1e293b; }
+
+  nav { background: #1e1b4b; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #fb923c; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #ddd6fe; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #fb923c; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 60%, #c2410c 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(251,146,60,0.2); border: 1px solid rgba(251,146,60,0.5); color: #fdba74; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.05rem; color: #ede9fe; max-width: 680px; margin: 0 auto 1.5rem; line-height: 1.7; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+  .tag { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #fff7ed; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 500; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .section-title { font-size: 1.4rem; font-weight: 800; color: #1e1b4b; margin-bottom: 0.35rem; }
+  .section-sub  { font-size: 0.9rem; color: #64748b; margin-bottom: 1.75rem; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: white; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #c2410c; }
+  .kpi-val  { font-size: 2rem; font-weight: 800; color: #1e1b4b; line-height: 1.1; }
+  .kpi-lbl  { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: #64748b; margin-top: 0.3rem; font-weight: 600; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+  .card h3 { color: #1e1b4b; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .card .subtitle { color: #64748b; font-size: 0.85rem; margin-bottom: 1.25rem; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+  @media (max-width: 760px) { .skills-grid { grid-template-columns: 1fr 1fr; } }
+  .skill-pill { background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c; padding: 0.6rem 0.9rem; border-radius: 8px; font-size: 0.83rem; font-weight: 600; }
+
+  .timeline-item { border-left: 3px solid #c2410c; padding-left: 1.1rem; margin-bottom: 1.6rem; position: relative; }
+  .timeline-item::before { content: ''; position: absolute; left: -7px; top: 4px; width: 11px; height: 11px; border-radius: 50%; background: #c2410c; }
+  .timeline-role { font-weight: 700; color: #1e1b4b; font-size: 0.98rem; }
+  .timeline-org { font-size: 0.85rem; color: #c2410c; font-weight: 600; margin-top: 2px; }
+  .timeline-date { font-size: 0.78rem; color: #94a3b8; margin-top: 2px; margin-bottom: 0.5rem; }
+  .timeline-item ul { padding-left: 1.1rem; color: #475569; font-size: 0.87rem; line-height: 1.7; }
+
+  .proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 900px) { .proof-grid { grid-template-columns: 1fr; } }
+  .proof-card { border-radius: 10px; overflow: hidden; text-decoration: none; display: block; color: white; transition: transform 0.15s ease; }
+  .proof-card:hover { transform: translateY(-3px); }
+  .proof-visual { padding: 1.5rem; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; }
+  .proof-visual .tag2 { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+  .proof-visual .title { font-size: 1.1rem; font-weight: 700; margin: 0.5rem 0; }
+  .proof-visual .desc { font-size: 0.8rem; opacity: 0.85; line-height: 1.5; }
+  .proof-1 .proof-visual { background: linear-gradient(135deg, #0f2557 0%, #2563eb 100%); }
+  .proof-2 .proof-visual { background: linear-gradient(135deg, #1E2E21 0%, #2A3D2E 100%); }
+  .proof-3 .proof-visual { background: linear-gradient(135deg, #0D1B2A 0%, #1a3050 100%); }
+  .proof-footer { background: rgba(0,0,0,0.15); padding: 0.7rem 1.5rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+  .proof-footer::after { content: '→'; }
+
+  .doc-sample { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .doc-sample-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: #c2410c; font-weight: 700; margin-bottom: 0.6rem; }
+  .doc-sample h4 { font-size: 1.02rem; color: #1e1b4b; margin-bottom: 0.7rem; }
+  .doc-sample p, .doc-sample li { font-size: 0.86rem; color: #334155; line-height: 1.75; }
+  .doc-sample table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.82rem; }
+  .doc-sample th { background: #1e1b4b; color: #fdba74; padding: 0.55rem 0.8rem; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .doc-sample td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #e2e8f0; color: #334155; }
+
+  .grid-2 { display: grid; gap: 1.5rem; }
+  @media (min-width: 760px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+  .cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 760px) { .cert-grid { grid-template-columns: 1fr; } }
+  .cert-item { border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem 1.1rem; }
+  .cert-item .name { font-weight: 700; color: #1e1b4b; font-size: 0.9rem; }
+  .cert-item .meta { font-size: 0.78rem; color: #64748b; margin-top: 2px; }
+
+  footer { background: #1e1b4b; color: #ddd6fe; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #fb923c; }
+  footer a { color: #fdba74; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· Marketing Content Coordinator</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_index.html">Design Portfolio</a>
+    <a class="nav-link" href="portfolio_compliance_coordinator.html">Compliance Coordinator</a>
+    <a class="nav-link" href="portfolio_technical_writer.html">Technical Writer</a>
+    <a class="nav-link active" href="portfolio_marketing_coordinator.html">Marketing Coordinator</a>
+    <a class="nav-link" href="portfolio_it_auditor.html">IT Auditor</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Tampa, FL · Available Immediately · Contract or Direct Hire</div>
+  <h1>Marketing Content Coordinator</h1>
+  <p>Seventeen years as a writer and brand communications professional producing marketing content, editorial copy, and brand documentation for real Tampa clients — plus six years adding cybersecurity and compliance knowledge. I understand both creative communications and regulated content environments.</p>
+  <div class="hero-tags">
+    <span class="tag">Brand &amp; Editorial Copy</span>
+    <span class="tag">Google Digital Marketing Certificate (in progress)</span>
+    <span class="tag">Healthcare &amp; Financial Marketing Awareness</span>
+    <span class="tag">Adobe Creative Suite</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val">17 yrs</div><div class="kpi-lbl">Writing &amp; Brand Communications</div></div>
+    <div class="kpi"><div class="kpi-val">10 yrs</div><div class="kpi-lbl">Freelance Client Marketing Work</div></div>
+    <div class="kpi"><div class="kpi-val">30+</div><div class="kpi-lbl">Portfolio Pieces Across This Site</div></div>
+    <div class="kpi"><div class="kpi-val">2</div><div class="kpi-lbl">Regulated Industries Studied — Healthcare &amp; Finance</div></div>
+  </div>
+
+  <section>
+    <div class="section-title">Core Marketing Skills</div>
+    <div class="section-sub">What I bring to a marketing content seat on day one</div>
+    <div class="card">
+      <div class="skills-grid">
+        <div class="skill-pill">Marketing content writing</div>
+        <div class="skill-pill">Brand standards documentation</div>
+        <div class="skill-pill">Editorial &amp; advertising copy</div>
+        <div class="skill-pill">Content calendars &amp; templates</div>
+        <div class="skill-pill">Healthcare &amp; financial marketing</div>
+        <div class="skill-pill">Regulatory content awareness</div>
+        <div class="skill-pill">Microsoft Office Suite</div>
+        <div class="skill-pill">Adobe Creative Suite</div>
+        <div class="skill-pill">Plain-language communication</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Experience</div>
+    <div class="card">
+      <div class="timeline-item">
+        <div class="timeline-role">Independent Consultant — Business Development</div>
+        <div class="timeline-org">Logical Coders · Tampa, FL</div>
+        <div class="timeline-date">Aug 2023 – Present</div>
+        <ul>
+          <li>Conduct market research and competitive analysis to identify trends in cybersecurity services and what content organizations in this space need</li>
+          <li>Write business development materials, service descriptions, and research summaries as part of running my consulting practice</li>
+          <li>Study how regulated industries — healthcare and financial services — communicate compliance topics clearly to non-technical audiences</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-role">Freelance Designer &amp; Writer</div>
+        <div class="timeline-org">fullCircle Creative · Creative Loafing · and others — Tampa, FL</div>
+        <div class="timeline-date">July 2010 – 2020</div>
+        <p style="font-size:0.85rem; color:#475569; margin-bottom:0.5rem;">Ten years of freelance design and writing work for Tampa clients in real estate, food service, media, and creative industries.</p>
+        <ul>
+          <li>Produced advertisement campaigns, branding kits, and marketing materials for clients in real estate, food service, and creative industries</li>
+          <li>Developed structured publication designs, brand standards guides, and production guidelines for client marketing teams</li>
+          <li>Delivered print and digital content on deadline including promotional copy, editorial pieces, and brand communications materials</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Marketing Work — Proof, Not Just Claims</div>
+    <div class="section-sub">Full campaign and analytics portfolios live elsewhere on this site — click through for the complete work</div>
+    <div class="proof-grid">
+      <a href="weiss-subscription-portfolio.html" class="proof-card proof-1">
+        <div class="proof-visual">
+          <div class="tag2">Subscription Analytics</div>
+          <div class="title">Subscription Growth &amp; Retention Portfolio</div>
+          <div class="desc">CAC, LTV, churn, MRR, and funnel analysis built for a subscription-based publisher.</div>
+        </div>
+        <div class="proof-footer"><span>View Portfolio</span></div>
+      </a>
+      <a href="portfolio_bravada.html" class="proof-card proof-2">
+        <div class="proof-visual">
+          <div class="tag2">Brand &amp; Packaging</div>
+          <div class="title">Bravada International — Brand Campaigns</div>
+          <div class="desc">Luxury brand systems, packaging, and identity work built to agency creative standards.</div>
+        </div>
+        <div class="proof-footer"><span>View Portfolio</span></div>
+      </a>
+      <a href="portfolio_index.html" class="proof-card proof-3">
+        <div class="proof-visual">
+          <div class="tag2">Ad Campaigns</div>
+          <div class="title">Five-Agency Tampa Ad Campaign Portfolio</div>
+          <div class="desc">25 pieces, 80+ ad formats — display, social, print, OOH, broadcast, and email.</div>
+        </div>
+        <div class="proof-footer"><span>View Portfolio</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Writing Samples</div>
+    <div class="section-sub">Marketing content built for regulated, non-technical audiences</div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 01 — Editorial Content</div>
+      <h4>Blog Post Opening — "What Small Businesses Actually Need to Know About HIPAA"</h4>
+      <p><em>"You don't need a law degree to protect patient data — you need a plan. Most small healthcare practices we talk to think HIPAA compliance means a binder nobody reads. It doesn't. It means knowing who can see what, writing that down, and reviewing it on a schedule. That's it. Here's where to start this week."</em></p>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 02 — Content Calendar Structure</div>
+      <h4>Monthly Content Calendar Template — Compliance-Adjacent B2B Brand</h4>
+      <table>
+        <thead><tr><th>Week</th><th>Content Type</th><th>Topic</th><th>Audience</th></tr></thead>
+        <tbody>
+          <tr><td>Week 1</td><td>Blog Post</td><td>Framework explainer, plain language</td><td>Non-technical decision makers</td></tr>
+          <tr><td>Week 2</td><td>Email Nurture</td><td>Case study / social proof</td><td>Warm leads</td></tr>
+          <tr><td>Week 3</td><td>LinkedIn Series</td><td>Myth vs. fact — compliance topic</td><td>Industry peers</td></tr>
+          <tr><td>Week 4</td><td>Newsletter</td><td>Roundup + upcoming deadline reminders</td><td>Full list</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="grid-2">
+    <section class="card">
+      <h3>Education</h3>
+      <p class="subtitle">2020 – 2026</p>
+      <div class="cert-item" style="margin-bottom:0.8rem;"><div class="name">MS, Cybersecurity Management</div><div class="meta">Purdue Global University · Online · 2024–2026 (graduating Nov)</div></div>
+      <div class="cert-item" style="margin-bottom:0.8rem;"><div class="name">BS, Computer Science</div><div class="meta">Rasmussen College · Tampa, FL · 2020–2023</div></div>
+      <div class="cert-item"><div class="name">BFA, Graphic Design</div><div class="meta">Maryland Institute College of Art (MICA) · 1999–2003</div></div>
+    </section>
+    <section class="card">
+      <h3>Certifications &amp; Memberships</h3>
+      <div class="cert-grid">
+        <div class="cert-item"><div class="name">Google Digital Marketing &amp; E-commerce</div><div class="meta">In Progress — 2026</div></div>
+        <div class="cert-item"><div class="name">HIPAA Business Associate Certification</div><div class="meta">2026</div></div>
+        <div class="cert-item"><div class="name">ISACA — West Florida Chapter</div><div class="meta">Member, 2026</div></div>
+        <div class="cert-item"><div class="name">ISC2 — Tampa Bay Chapter</div><div class="meta">Member, 2026</div></div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  <strong>Anél Henning</strong> — Tampa, FL · 813.743.1661 · logicalcoders@outlook.com
+  <div style="margin-top:0.5rem;">
+    <a href="https://www.behance.net/anellehenning">Behance Portfolio</a> ·
+    <a href="portfolio_compliance_coordinator.html">Compliance Coordinator</a> ·
+    <a href="portfolio_technical_writer.html">Technical Writer</a> ·
+    <a href="portfolio_it_auditor.html">IT Auditor</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anel Henning — Technical Writer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f0fdfa; color: #1e293b; }
+
+  nav { background: #0f3d3e; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #2dd4bf; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #ccfbf1; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #2dd4bf; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #0f3d3e 0%, #115e59 60%, #0d9488 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(45,212,191,0.2); border: 1px solid rgba(45,212,191,0.5); color: #99f6e4; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.05rem; color: #ccfbf1; max-width: 680px; margin: 0 auto 1.5rem; line-height: 1.7; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+  .tag { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #f0fdfa; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 500; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .section-title { font-size: 1.4rem; font-weight: 800; color: #0f3d3e; margin-bottom: 0.35rem; }
+  .section-sub  { font-size: 0.9rem; color: #64748b; margin-bottom: 1.75rem; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: white; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #0d9488; }
+  .kpi-val  { font-size: 2rem; font-weight: 800; color: #0f3d3e; line-height: 1.1; }
+  .kpi-lbl  { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: #64748b; margin-top: 0.3rem; font-weight: 600; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+  .card h3 { color: #0f3d3e; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .card .subtitle { color: #64748b; font-size: 0.85rem; margin-bottom: 1.25rem; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+  @media (max-width: 760px) { .skills-grid { grid-template-columns: 1fr 1fr; } }
+  .skill-pill { background: #f0fdfa; border: 1px solid #99f6e4; color: #0f766e; padding: 0.6rem 0.9rem; border-radius: 8px; font-size: 0.83rem; font-weight: 600; }
+
+  .timeline-item { border-left: 3px solid #0d9488; padding-left: 1.1rem; margin-bottom: 1.6rem; position: relative; }
+  .timeline-item::before { content: ''; position: absolute; left: -7px; top: 4px; width: 11px; height: 11px; border-radius: 50%; background: #0d9488; }
+  .timeline-role { font-weight: 700; color: #0f3d3e; font-size: 0.98rem; }
+  .timeline-org { font-size: 0.85rem; color: #0d9488; font-weight: 600; margin-top: 2px; }
+  .timeline-date { font-size: 0.78rem; color: #94a3b8; margin-top: 2px; margin-bottom: 0.5rem; }
+  .timeline-item ul { padding-left: 1.1rem; color: #475569; font-size: 0.87rem; line-height: 1.7; }
+
+  .doc-sample { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .doc-sample-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: #0d9488; font-weight: 700; margin-bottom: 0.6rem; }
+  .doc-sample h4 { font-size: 1.02rem; color: #0f3d3e; margin-bottom: 0.7rem; }
+  .doc-sample p, .doc-sample li { font-size: 0.86rem; color: #334155; line-height: 1.75; }
+  .doc-sample ol { padding-left: 1.2rem; }
+
+  .before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem; }
+  @media (max-width: 700px) { .before-after { grid-template-columns: 1fr; } }
+  .ba-box { padding: 1rem; border-radius: 8px; font-size: 0.83rem; line-height: 1.65; }
+  .ba-before { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
+  .ba-after { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+  .ba-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; margin-bottom: 0.4rem; }
+
+  .grid-2 { display: grid; gap: 1.5rem; }
+  @media (min-width: 760px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+  .cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 760px) { .cert-grid { grid-template-columns: 1fr; } }
+  .cert-item { border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem 1.1rem; }
+  .cert-item .name { font-weight: 700; color: #0f3d3e; font-size: 0.9rem; }
+  .cert-item .meta { font-size: 0.78rem; color: #64748b; margin-top: 2px; }
+
+  footer { background: #0f3d3e; color: #99f6e4; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #2dd4bf; }
+  footer a { color: #99f6e4; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· Technical Writer</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_index.html">Design Portfolio</a>
+    <a class="nav-link" href="portfolio_compliance_coordinator.html">Compliance Coordinator</a>
+    <a class="nav-link active" href="portfolio_technical_writer.html">Technical Writer</a>
+    <a class="nav-link" href="portfolio_marketing_coordinator.html">Marketing Coordinator</a>
+    <a class="nav-link" href="portfolio_it_auditor.html">IT Auditor</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Tampa, FL · Available Immediately · Contract or Direct Hire</div>
+  <h1>Technical Writer</h1>
+  <p>Seventeen years producing clear, organized written materials for real clients. Since 2020 I've been in school part-time studying Computer Science and Cybersecurity Management — that's where my technical writing developed. I write clearly, I organize files carefully, and I take accuracy seriously.</p>
+  <div class="hero-tags">
+    <span class="tag">Plain-Language Writing</span>
+    <span class="tag">SOP &amp; User Guide Structure</span>
+    <span class="tag">HIPAA Certified</span>
+    <span class="tag">MS Cybersecurity Management (2026)</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val">17 yrs</div><div class="kpi-lbl">Professional Writing</div></div>
+    <div class="kpi"><div class="kpi-val">10 yrs</div><div class="kpi-lbl">Freelance Production Writing</div></div>
+    <div class="kpi"><div class="kpi-val">4</div><div class="kpi-lbl">Degrees — BFA, BS, MS in progress</div></div>
+    <div class="kpi"><div class="kpi-val">2+</div><div class="kpi-lbl">Certifications</div></div>
+  </div>
+
+  <section>
+    <div class="section-title">Core Writing Skills</div>
+    <div class="section-sub">What I bring to a technical writing seat on day one</div>
+    <div class="card">
+      <div class="skills-grid">
+        <div class="skill-pill">Technical writing &amp; editing</div>
+        <div class="skill-pill">SOP &amp; user guide writing</div>
+        <div class="skill-pill">Plain-language writing</div>
+        <div class="skill-pill">Document structure &amp; formatting</div>
+        <div class="skill-pill">Version control &amp; file organization</div>
+        <div class="skill-pill">Microsoft Word &amp; Excel</div>
+        <div class="skill-pill">Adobe InDesign &amp; Acrobat</div>
+        <div class="skill-pill">Cybersecurity knowledge</div>
+        <div class="skill-pill">Brand &amp; content standards</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Experience</div>
+    <div class="card">
+      <div class="timeline-item">
+        <div class="timeline-role">Independent Consultant — Business Development</div>
+        <div class="timeline-org">Logical Coders · Tampa, FL</div>
+        <div class="timeline-date">Aug 2023 – Present</div>
+        <p style="font-size:0.85rem; color:#475569; margin-bottom:0.5rem;">Started this practice to build cybersecurity documentation services while finishing my graduate degree.</p>
+        <ul>
+          <li>Research cybersecurity tools, frameworks, and technical processes and practice translating them into clear written documentation as part of my graduate studies</li>
+          <li>Write technical reports, process documentation, and analysis papers as required coursework for my MS in Cybersecurity Management at Purdue Global</li>
+          <li>Study how user guides, SOPs, and reference documents are structured and apply those principles in my written coursework and independent research</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-role">Freelance Designer &amp; Writer</div>
+        <div class="timeline-org">fullCircle Creative · Creative Loafing · and others — Tampa, FL</div>
+        <div class="timeline-date">July 2010 – 2020</div>
+        <p style="font-size:0.85rem; color:#475569; margin-bottom:0.5rem;">Ten years of freelance design and writing work for Tampa clients in real estate, food service, media, and creative industries.</p>
+        <ul>
+          <li>Developed structured publication designs, brand standards guides, and production guidelines</li>
+          <li>Maintained organized production files with consistent structure and clean formatting across simultaneous client projects</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Writing Samples</div>
+    <div class="section-sub">Original practice documentation — SOP, editing pass, and structured reference writing</div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 01 — Standard Operating Procedure</div>
+      <h4>SOP: Quarterly Access Review (Excerpt)</h4>
+      <ol>
+        <li><strong>Purpose.</strong> Confirm that user access to systems containing sensitive data matches each person's current role.</li>
+        <li><strong>Scope.</strong> Applies to all systems storing PHI, financial records, or customer data.</li>
+        <li><strong>Procedure.</strong> Export the current user access list from each in-scope system. Compare against the HR roster of active employees and current job roles. Flag any account belonging to a terminated employee, or any access level that exceeds what the role requires.</li>
+        <li><strong>Documentation.</strong> Record findings in the Access Review Report — one line per account, with reviewer name, date, and remediation status.</li>
+        <li><strong>Escalation.</strong> Flagged accounts are disabled within 24 hours and reported to the system owner.</li>
+      </ol>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 02 — Editing Pass</div>
+      <h4>Before / After — Turning a Dense Technical Paragraph into Plain Language</h4>
+      <div class="before-after">
+        <div class="ba-box ba-before">
+          <div class="ba-label">Before</div>
+          "Entities subject to the Security Rule must implement administrative, physical, and technical safeguards commensurate with the risk analysis findings in order to ensure the confidentiality, integrity, and availability of electronically protected health information consistent with 45 CFR §164.306."
+        </div>
+        <div class="ba-box ba-after">
+          <div class="ba-label">After</div>
+          "If you handle patient data electronically, you need to put safeguards in place — policies, physical security, and technical controls — sized to the actual risks you find in your risk assessment. The goal: keep patient data private, accurate, and accessible when it's needed."
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 03 — Reference Document Structure</div>
+      <h4>Consultation Guide — 30-Minute Compliance Gap Review</h4>
+      <p>A structured intake guide used to run a short discovery conversation with a small-business client and surface their biggest compliance gaps in a single sitting: current data inventory, existing policies (if any), vendor/contractor access, past incidents, and immediate next steps — organized as a repeatable checklist rather than free-form notes.</p>
+    </div>
+  </section>
+
+  <div class="grid-2">
+    <section class="card">
+      <h3>Education</h3>
+      <p class="subtitle">2020 – 2026</p>
+      <div class="cert-item" style="margin-bottom:0.8rem;"><div class="name">MS, Cybersecurity Management</div><div class="meta">Purdue Global University · Online · 2024–2026 (graduating Nov)</div></div>
+      <div class="cert-item" style="margin-bottom:0.8rem;"><div class="name">BS, Computer Science</div><div class="meta">Rasmussen College · Tampa, FL · 2020–2023</div></div>
+      <div class="cert-item"><div class="name">BFA, Graphic Design</div><div class="meta">Maryland Institute College of Art (MICA) · 1999–2003</div></div>
+    </section>
+    <section class="card">
+      <h3>Certifications &amp; Memberships</h3>
+      <div class="cert-grid">
+        <div class="cert-item"><div class="name">HIPAA Business Associate Certification</div><div class="meta">2026</div></div>
+        <div class="cert-item"><div class="name">ISC2 Certified in Cybersecurity (CC)</div><div class="meta">Candidate — exam completed June 2026</div></div>
+        <div class="cert-item"><div class="name">ISACA — West Florida Chapter</div><div class="meta">Member, 2026</div></div>
+        <div class="cert-item"><div class="name">ISC2 — Tampa Bay Chapter</div><div class="meta">Member, 2026</div></div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  <strong>Anél Henning</strong> — Tampa, FL · 813.743.1661 · logicalcoders@outlook.com
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_index.html">Design Portfolio</a> ·
+    <a href="portfolio_compliance_coordinator.html">Compliance Coordinator</a> ·
+    <a href="portfolio_marketing_coordinator.html">Marketing Coordinator</a> ·
+    <a href="portfolio_it_auditor.html">IT Auditor</a>
+  </div>
+</footer>
+
+</body>
+</html>

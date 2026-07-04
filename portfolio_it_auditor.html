@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anel Henning — Entry-Level IT Auditor Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
+
+  nav { background: #111827; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #818cf8; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #cbd5e1; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #818cf8; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #111827 0%, #1e293b 60%, #4338ca 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(129,140,248,0.2); border: 1px solid rgba(129,140,248,0.5); color: #c7d2fe; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.05rem; color: #cbd5e1; max-width: 700px; margin: 0 auto 1.5rem; line-height: 1.7; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+  .tag { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #e2e8f0; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 500; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .section-title { font-size: 1.4rem; font-weight: 800; color: #111827; margin-bottom: 0.35rem; }
+  .section-sub  { font-size: 0.9rem; color: #64748b; margin-bottom: 1.75rem; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: white; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #4338ca; }
+  .kpi-val  { font-size: 2rem; font-weight: 800; color: #111827; line-height: 1.1; }
+  .kpi-lbl  { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: #64748b; margin-top: 0.3rem; font-weight: 600; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+  .card h3 { color: #111827; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .card .subtitle { color: #64748b; font-size: 0.85rem; margin-bottom: 1.25rem; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+  @media (max-width: 760px) { .skills-grid { grid-template-columns: 1fr 1fr; } }
+  .skill-pill { background: #eef2ff; border: 1px solid #c7d2fe; color: #3730a3; padding: 0.6rem 0.9rem; border-radius: 8px; font-size: 0.83rem; font-weight: 600; }
+
+  .timeline-item { border-left: 3px solid #4338ca; padding-left: 1.1rem; margin-bottom: 1.6rem; position: relative; }
+  .timeline-item::before { content: ''; position: absolute; left: -7px; top: 4px; width: 11px; height: 11px; border-radius: 50%; background: #4338ca; }
+  .timeline-role { font-weight: 700; color: #111827; font-size: 0.98rem; }
+  .timeline-org { font-size: 0.85rem; color: #4338ca; font-weight: 600; margin-top: 2px; }
+  .timeline-date { font-size: 0.78rem; color: #94a3b8; margin-top: 2px; margin-bottom: 0.5rem; }
+  .timeline-item ul { padding-left: 1.1rem; color: #475569; font-size: 0.87rem; line-height: 1.7; }
+
+  .doc-sample { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .doc-sample-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: #4338ca; font-weight: 700; margin-bottom: 0.6rem; }
+  .doc-sample h4 { font-size: 1.02rem; color: #111827; margin-bottom: 0.7rem; }
+  .doc-sample p, .doc-sample li { font-size: 0.86rem; color: #334155; line-height: 1.75; }
+  .doc-sample table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.82rem; }
+  .doc-sample th { background: #111827; color: #c7d2fe; padding: 0.55rem 0.8rem; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .doc-sample td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #e2e8f0; color: #334155; }
+  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
+  .badge.green { background: #dcfce7; color: #166534; }
+  .badge.amber { background: #fef3c7; color: #92400e; }
+  .badge.red { background: #fee2e2; color: #991b1b; }
+  .badge.blue { background: #e0e7ff; color: #3730a3; }
+
+  .grid-2 { display: grid; gap: 1.5rem; }
+  @media (min-width: 760px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+  .cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 760px) { .cert-grid { grid-template-columns: 1fr; } }
+  .cert-item { border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.9rem 1.1rem; }
+  .cert-item .name { font-weight: 700; color: #111827; font-size: 0.9rem; }
+  .cert-item .meta { font-size: 0.78rem; color: #64748b; margin-top: 2px; }
+
+  .target-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+  @media (max-width: 760px) { .target-grid { grid-template-columns: 1fr; } }
+  .target-item { border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.8rem 1rem; font-size: 0.83rem; }
+  .target-item .name { font-weight: 700; color: #111827; }
+  .target-item .why { color: #64748b; font-size: 0.78rem; margin-top: 2px; }
+
+  footer { background: #111827; color: #94a3b8; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #818cf8; }
+  footer a { color: #c7d2fe; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· IT Auditor</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_index.html">Design Portfolio</a>
+    <a class="nav-link" href="portfolio_compliance_coordinator.html">Compliance Coordinator</a>
+    <a class="nav-link" href="portfolio_technical_writer.html">Technical Writer</a>
+    <a class="nav-link" href="portfolio_marketing_coordinator.html">Marketing Coordinator</a>
+    <a class="nav-link active" href="portfolio_it_auditor.html">IT Auditor</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Tampa, FL · Open to Remote · Available Immediately</div>
+  <h1>IT Auditor <span style="font-weight:400; opacity:0.8;">| GRC &amp; Compliance Documentation</span></h1>
+  <p>Compliance and GRC documentation professional pursuing an entry-level IT Auditor role. Over five years producing audit evidence packages, risk registers, and control documentation aligned to HIPAA, NIST CSF, and ISO 27001 — backed by an MS in Cybersecurity Management and HIPAA Business Associate Certification.</p>
+  <div class="hero-tags">
+    <span class="tag">HIPAA Business Associate Certified</span>
+    <span class="tag">ISC2 CC Candidate — Exam Completed June 2026</span>
+    <span class="tag">ISACA West Florida Chapter Member</span>
+    <span class="tag">MS Cybersecurity Management (2026)</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val">5+ yrs</div><div class="kpi-lbl">Audit Evidence &amp; Control Documentation</div></div>
+    <div class="kpi"><div class="kpi-val">3</div><div class="kpi-lbl">Frameworks — HIPAA / NIST CSF / ISO 27001</div></div>
+    <div class="kpi"><div class="kpi-val">2</div><div class="kpi-lbl">Professional Memberships — ISACA &amp; ISC2</div></div>
+    <div class="kpi"><div class="kpi-val">1</div><div class="kpi-lbl">SOC 2 Foundational Exposure</div></div>
+  </div>
+
+  <section>
+    <div class="section-title">Core Competencies</div>
+    <div class="section-sub">Direct alignment to entry-level IT Auditor / IT compliance auditor job requirements</div>
+    <div class="card">
+      <div class="skills-grid">
+        <div class="skill-pill">IT General Controls (ITGC) awareness</div>
+        <div class="skill-pill">Audit evidence package preparation</div>
+        <div class="skill-pill">Risk register &amp; gap-analysis development</div>
+        <div class="skill-pill">Control narrative &amp; policy writing</div>
+        <div class="skill-pill">HIPAA / NIST CSF / ISO 27001</div>
+        <div class="skill-pill">SOC 2 (foundational exposure)</div>
+        <div class="skill-pill">Compliance documentation &amp; version control</div>
+        <div class="skill-pill">SOP &amp; audit workpaper writing</div>
+        <div class="skill-pill">Document library management</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Experience</div>
+    <div class="card">
+      <div class="timeline-item">
+        <div class="timeline-role">Business Development &amp; GRC Documentation</div>
+        <div class="timeline-org">Logical Coders · Tampa, FL</div>
+        <div class="timeline-date">Aug 2023 – Current</div>
+        <ul>
+          <li>Authored cybersecurity governance documentation — policies, procedures, and control narratives — supporting internal review and regulatory alignment</li>
+          <li>Assembled audit evidence packages mapped to HIPAA and NIST CSF control requirements</li>
+          <li>Built risk register templates and compliance gap-analysis frameworks used to identify and track control deficiencies</li>
+          <li>Maintained document version control and library organization across compliance deliverables</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-role">Freelance Design</div>
+        <div class="timeline-org">fullCircle Creative · Creative Loafing · and others — Tampa, FL</div>
+        <div class="timeline-date">Jul 2010 – 2020</div>
+        <ul>
+          <li>Produced structured publication designs, brand standards guides, and production guidelines for real estate, food service, and creative-industry clients</li>
+          <li>Managed recurring production deadlines and multi-stakeholder review cycles</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-role">Ad-Layout Clerk &amp; Deli Clerk</div>
+        <div class="timeline-org">Publix Supermarkets, LLC</div>
+        <div class="timeline-date">May 2015 – 2026</div>
+        <ul>
+          <li>Produced ad layouts for a weekly insert at Publix Supermarket headquarters</li>
+          <li>Trained new team members and assisted management during store renovations</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Audit Artifact Samples</div>
+    <div class="section-sub">Original practice artifacts built while studying control frameworks and audit documentation structure — not client work product</div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 01 — Risk Register</div>
+      <h4>Risk Register Excerpt — Small Business NIST CSF Baseline</h4>
+      <table>
+        <thead><tr><th>Risk</th><th>Control Mapped</th><th>Likelihood</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Terminated employee retains system access</td><td>Access Control Policy — quarterly review</td><td>Medium</td><td><span class="badge amber">Open</span></td></tr>
+          <tr><td>No documented incident response plan</td><td>Incident Response Procedure (drafted)</td><td>High</td><td><span class="badge green">Remediated</span></td></tr>
+          <tr><td>Vendor with PHI access lacks signed BAA</td><td>Vendor Management Policy</td><td>High</td><td><span class="badge red">Open</span></td></tr>
+          <tr><td>No log review cadence for critical systems</td><td>Security Monitoring Policy (in review)</td><td>Medium</td><td><span class="badge blue">In Progress</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 02 — Audit Evidence Package Index</div>
+      <h4>Evidence Package Index — HIPAA Security Rule Control Set</h4>
+      <ul>
+        <li><strong>Control:</strong> Access Control (§164.312(a)) → <strong>Evidence:</strong> Access Review Report, most recent quarter, reviewer sign-off attached</li>
+        <li><strong>Control:</strong> Workforce Security (§164.308(a)(3)) → <strong>Evidence:</strong> Termination checklist, access revocation timestamp log</li>
+        <li><strong>Control:</strong> Security Awareness Training (§164.308(a)(5)) → <strong>Evidence:</strong> Training completion roster, policy acknowledgment forms</li>
+        <li><strong>Control:</strong> Contingency Plan (§164.308(a)(7)) → <strong>Evidence:</strong> Backup test log, most recent recovery drill summary</li>
+      </ul>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 03 — Control Narrative</div>
+      <h4>Control Narrative Excerpt — User Access Provisioning</h4>
+      <p>"New user accounts are requested by the hiring manager via the standard access request form and require written approval from the system owner before provisioning. Access is granted at the minimum level required for the employee's role (least privilege). IT confirms provisioning within one business day and logs the request, approval, and grant date in the access log. This control addresses the risk of unauthorized or excessive access being granted at onboarding."</p>
+    </div>
+  </section>
+
+  <div class="grid-2">
+    <section class="card">
+      <h3>Education</h3>
+      <div class="cert-item" style="margin-bottom:0.8rem;"><div class="name">MS, Cybersecurity Management</div><div class="meta">Purdue Global University · 2024–2026 (graduating Nov) — enterprise security, risk assessment, compliance, secure workflows, documentation</div></div>
+      <div class="cert-item" style="margin-bottom:0.8rem;"><div class="name">BS, Computer Science</div><div class="meta">Rasmussen College · 2020–2023 — Java, MySQL, network security, secure application development, technical documentation</div></div>
+      <div class="cert-item"><div class="name">BS, Graphic Design</div><div class="meta">Maryland Institute College of Art (MICA) · 1999–2003 — information design, communication clarity</div></div>
+    </section>
+    <section class="card">
+      <h3>Certifications &amp; Memberships</h3>
+      <div class="cert-grid">
+        <div class="cert-item"><div class="name">HIPAA Business Associate Certification</div><div class="meta">2026</div></div>
+        <div class="cert-item"><div class="name">ISC2 Certified in Cybersecurity (CC)</div><div class="meta">Candidate — exam completed June 2026</div></div>
+        <div class="cert-item"><div class="name">ISACA — West Florida Chapter</div><div class="meta">Member, 2026</div></div>
+        <div class="cert-item"><div class="name">ISC2 — Tampa Bay Chapter</div><div class="meta">Member, 2026</div></div>
+      </div>
+    </section>
+  </div>
+
+  <section>
+    <div class="section-title">Target Employers — Tampa Bay</div>
+    <div class="section-sub">Framework-driven audit and compliance firms closest to this experience</div>
+    <div class="card">
+      <div class="target-grid">
+        <div class="target-item"><div class="name">A-LIGN</div><div class="why">SOC 2, ISO 27001, HITRUST — Tampa HQ</div></div>
+        <div class="target-item"><div class="name">Schellman</div><div class="why">SOC 2, ISO 27001, PCI, FedRAMP — Tampa HQ</div></div>
+        <div class="target-item"><div class="name">Florida Auditor General</div><div class="why">Structured, checklist-driven government IT audit</div></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <strong>Anél Henning</strong> — Tampa, FL (Open to Remote) · 813.743.1661 · logicalcoders@outlook.com
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_index.html">Design Portfolio</a> ·
+    <a href="portfolio_compliance_coordinator.html">Compliance Coordinator</a> ·
+    <a href="portfolio_technical_writer.html">Technical Writer</a> ·
+    <a href="portfolio_marketing_coordinator.html">Marketing Coordinator</a>
+  </div>
+</footer>
+
+</body>
+</html>

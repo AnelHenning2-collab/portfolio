@@ -92,9 +92,31 @@
   .footer-bar .links { display: flex; gap: 24px; }
   .footer-bar .links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; letter-spacing: 1px; }
   .footer-bar .links a:hover { color: #C9A84C; }
+
+  .role-nav { background: #111827; padding: 14px 60px; display: flex; gap: 4px; flex-wrap: wrap; }
+  .role-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 12px; letter-spacing: 1px; padding: 8px 14px; border-radius: 3px; }
+  .role-nav a:hover { color: white; background: rgba(255,255,255,0.08); }
+
+  .track-section { padding: 70px 60px; background: #0D1B2A; border-top: 1px solid rgba(255,255,255,0.08); }
+  .track-section h3 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 400; margin-bottom: 8px; }
+  .track-section .track-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 32px; max-width: 600px; line-height: 1.7; }
+  .track-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .track-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 22px; text-decoration: none; color: white; transition: transform 0.2s ease; }
+  .track-card:hover { transform: translateY(-3px); border-color: #C9A84C; }
+  .track-card .num { font-size: 11px; color: #C9A84C; letter-spacing: 2px; margin-bottom: 10px; }
+  .track-card .name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .track-card .desc { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.6; }
 </style>
 </head>
 <body>
+
+<div class="role-nav">
+  <a href="portfolio_index.html">Design Portfolio</a>
+  <a href="portfolio_compliance_coordinator.html">Compliance Coordinator</a>
+  <a href="portfolio_technical_writer.html">Technical Writer</a>
+  <a href="portfolio_marketing_coordinator.html">Marketing Coordinator</a>
+  <a href="portfolio_it_auditor.html">IT Auditor</a>
+</div>
 
 <div class="hero">
   <div class="hero-tag">Tampa, FL · Graphic Designer · Ad Campaign Specialist</div>
@@ -245,6 +267,33 @@
         <li>InDesign Template Systems</li>
       </ul>
     </div>
+  </div>
+</div>
+
+<div class="track-section">
+  <h3>Career Track Portfolios</h3>
+  <p class="track-sub">Alongside design and ad campaign work, I'm building GRC documentation, technical writing, and compliance-audit skills through part-time graduate study. These portfolios show that work.</p>
+  <div class="track-grid">
+    <a href="portfolio_compliance_coordinator.html" class="track-card">
+      <div class="num">01</div>
+      <div class="name">Compliance Documentation Coordinator</div>
+      <div class="desc">HIPAA, NIST CSF, and ISO 27001 policy writing, risk registers, and audit checklists.</div>
+    </a>
+    <a href="portfolio_technical_writer.html" class="track-card">
+      <div class="num">02</div>
+      <div class="name">Technical Writer</div>
+      <div class="desc">SOPs, plain-language editing, and structured reference documentation.</div>
+    </a>
+    <a href="portfolio_marketing_coordinator.html" class="track-card">
+      <div class="num">03</div>
+      <div class="name">Marketing Content Coordinator</div>
+      <div class="desc">Brand and editorial copy, content calendars, and regulated-industry marketing.</div>
+    </a>
+    <a href="portfolio_it_auditor.html" class="track-card">
+      <div class="num">04</div>
+      <div class="name">Entry-Level IT Auditor</div>
+      <div class="desc">ITGC awareness, audit evidence packages, risk registers, and control narratives.</div>
+    </a>
   </div>
 </div>
 
