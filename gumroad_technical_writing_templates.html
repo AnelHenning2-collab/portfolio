@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP & Documentation Template Pack — Logical Coders</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f0fdfa; color: #1e293b; }
+
+  nav { background: #0f3d3e; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #2dd4bf; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #ccfbf1; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #2dd4bf; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #0f3d3e 0%, #115e59 60%, #0d9488 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(45,212,191,0.2); border: 1px solid rgba(45,212,191,0.5); color: #99f6e4; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.3rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.05rem; color: #ccfbf1; max-width: 680px; margin: 0 auto 1.5rem; line-height: 1.7; }
+  .price-row { display: flex; align-items: baseline; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .price { font-size: 2.2rem; font-weight: 800; color: white; }
+  .price-note { font-size: 0.85rem; color: #99f6e4; }
+  .buy-btn { display: inline-block; background: #f59e0b; color: #1e293b; font-weight: 700; font-size: 1rem; padding: 0.9rem 2.2rem; border-radius: 999px; text-decoration: none; box-shadow: 0 4px 14px rgba(245,158,11,0.4); transition: transform 0.15s; }
+  .buy-btn:hover { transform: translateY(-2px); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .section-title { font-size: 1.4rem; font-weight: 800; color: #0f3d3e; margin-bottom: 0.35rem; }
+  .section-sub  { font-size: 0.9rem; color: #64748b; margin-bottom: 1.75rem; }
+
+  .kit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  @media (max-width: 900px) { .kit-grid { grid-template-columns: 1fr; } }
+  .kit-item { background: white; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #0d9488; }
+  .kit-num { font-size: 1.6rem; font-weight: 800; color: #0d9488; }
+  .kit-name { font-size: 0.85rem; font-weight: 700; color: #0f3d3e; margin-top: 0.3rem; }
+
+  .doc-sample { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .doc-sample-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: #0d9488; font-weight: 700; margin-bottom: 0.6rem; }
+  .doc-sample h4 { font-size: 1.02rem; color: #0f3d3e; margin-bottom: 0.7rem; }
+  .doc-sample p, .doc-sample li { font-size: 0.86rem; color: #334155; line-height: 1.75; }
+  .doc-sample ol { padding-left: 1.2rem; }
+
+  .before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem; }
+  @media (max-width: 700px) { .before-after { grid-template-columns: 1fr; } }
+  .ba-box { padding: 1rem; border-radius: 8px; font-size: 0.83rem; line-height: 1.65; }
+  .ba-before { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
+  .ba-after { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+  .ba-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; margin-bottom: 0.4rem; }
+
+  .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 760px) { .who-grid { grid-template-columns: 1fr; } }
+  .who-item { background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 10px; padding: 1.1rem; font-size: 0.86rem; color: #115e59; font-weight: 600; }
+
+  .cta-block { background: white; border-radius: 14px; padding: 2rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-top: 1rem; }
+  .cta-block p { color: #475569; font-size: 0.9rem; margin-bottom: 1.25rem; }
+
+  footer { background: #0f3d3e; color: #99f6e4; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #2dd4bf; }
+  footer a { color: #99f6e4; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Logical Coders <span>· Writing Templates</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_index.html">Portfolio</a>
+    <a class="nav-link" href="gumroad_compliance_starter_kit.html">Compliance Kit</a>
+    <a class="nav-link active" href="gumroad_technical_writing_templates.html">Writing Templates</a>
+    <a class="nav-link" href="gumroad_instructional_design_samples.html">Training Modules</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Digital Download · Editable Word Files</div>
+  <h1>SOP &amp; Documentation Template Pack</h1>
+  <p>Three reusable writing templates for turning dense policy or process knowledge into documentation your team will actually read and follow — built by a technical writer with real GRC documentation experience.</p>
+  <div class="price-row">
+    <span class="price">$29</span>
+    <span class="price-note">one-time · instant download</span>
+  </div>
+  <a class="buy-btn" href="#" target="_blank">Buy on Gumroad →</a>
+</div>
+
+<main>
+
+  <div class="kit-grid">
+    <div class="kit-item"><div class="kit-num">01</div><div class="kit-name">SOP Template &amp; Writing Guide</div></div>
+    <div class="kit-item"><div class="kit-num">02</div><div class="kit-name">Plain-Language Editing Checklist</div></div>
+    <div class="kit-item"><div class="kit-num">03</div><div class="kit-name">Consultation / Discovery Guide Template</div></div>
+  </div>
+
+  <section>
+    <div class="section-title">This pack is built for</div>
+    <div class="section-sub">If any of this sounds like your week, this template pack saves you the blank-page problem</div>
+    <div class="who-grid">
+      <div class="who-item">Small business owners who need to write their first SOPs and don't know where to start</div>
+      <div class="who-item">GRC, compliance, or IT professionals who need a repeatable structure for writing policy documentation</div>
+      <div class="who-item">Consultants who run client discovery calls and want a structured intake format instead of loose notes</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">What's inside — real samples</div>
+    <div class="section-sub">Excerpts from the actual templates, so you know exactly what you're buying</div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Template 01 — Standard Operating Procedure</div>
+      <h4>SOP Template: Quarterly Access Review (Excerpt)</h4>
+      <ol>
+        <li><strong>Purpose.</strong> Confirm that user access to systems containing sensitive data matches each person's current role.</li>
+        <li><strong>Scope.</strong> Applies to all systems storing PHI, financial records, or customer data.</li>
+        <li><strong>Procedure.</strong> Export the current user access list from each in-scope system. Compare against the HR roster of active employees and current job roles. Flag any account belonging to a terminated employee, or any access level that exceeds what the role requires.</li>
+        <li><strong>Documentation.</strong> Record findings in the Access Review Report — one line per account, with reviewer name, date, and remediation status.</li>
+        <li><strong>Escalation.</strong> Flagged accounts are disabled within 24 hours and reported to the system owner.</li>
+      </ol>
+      <p style="margin-top:0.6rem;"><em>The template gives you this exact five-part structure (Purpose, Scope, Procedure, Documentation, Escalation) blank and ready to fill in for any process you need to document.</em></p>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Template 02 — Plain-Language Editing Checklist</div>
+      <h4>Turning a Dense Technical Paragraph into Plain Language</h4>
+      <div class="before-after">
+        <div class="ba-box ba-before">
+          <div class="ba-label">Before</div>
+          "Entities subject to the Security Rule must implement administrative, physical, and technical safeguards commensurate with the risk analysis findings in order to ensure the confidentiality, integrity, and availability of electronically protected health information consistent with 45 CFR §164.306."
+        </div>
+        <div class="ba-box ba-after">
+          <div class="ba-label">After</div>
+          "If you handle patient data electronically, you need to put safeguards in place — policies, physical security, and technical controls — sized to the actual risks you find in your risk assessment. The goal: keep patient data private, accurate, and accessible when it's needed."
+        </div>
+      </div>
+      <p style="margin-top:0.75rem;"><em>The checklist walks you through the same before/after process step by step, so you can apply it to your own dense policy language.</em></p>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Template 03 — Discovery Guide Structure</div>
+      <h4>Consultation Guide — 30-Minute Compliance Gap Review</h4>
+      <p>A structured intake template for running a short discovery conversation with a client or stakeholder and surfacing their biggest gaps in a single sitting: current state inventory, existing documentation (if any), stakeholder/vendor access, past issues, and immediate next steps — organized as a repeatable checklist rather than free-form notes.</p>
+    </div>
+  </section>
+
+  <div class="cta-block">
+    <h3 style="color:#0f3d3e; margin-bottom:0.5rem;">Written by a technical writer with 17 years of experience</h3>
+    <p>Background in professional writing plus a Master's in Cybersecurity Management in progress — these templates come from real practice writing SOPs, policies, and audit documentation, not generic business templates.</p>
+    <a class="buy-btn" href="#" target="_blank">Buy on Gumroad — $29 →</a>
+  </div>
+
+</main>
+
+<footer>
+  <strong>Logical Coders</strong> — South Tampa, FL · 813.743.1661 · logicalcoders@outlook.com
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_index.html">Portfolio</a> ·
+    <a href="gumroad_compliance_starter_kit.html">Compliance Kit</a> ·
+    <a href="gumroad_instructional_design_samples.html">Training Modules</a>
+  </div>
+</footer>
+
+</body>
+</html>

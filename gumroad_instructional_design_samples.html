@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance Training Module Toolkit — Logical Coders</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #fdf4ff; color: #1e293b; }
+
+  nav { background: #3b0764; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #d8b4fe; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #e9d5ff; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #d8b4fe; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #3b0764 0%, #581c87 60%, #7e22ce 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(216,180,254,0.2); border: 1px solid rgba(216,180,254,0.5); color: #e9d5ff; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.3rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.05rem; color: #e9d5ff; max-width: 680px; margin: 0 auto 1.5rem; line-height: 1.7; }
+  .price-row { display: flex; align-items: baseline; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .price { font-size: 2.2rem; font-weight: 800; color: white; }
+  .price-note { font-size: 0.85rem; color: #e9d5ff; }
+  .buy-btn { display: inline-block; background: #f59e0b; color: #1e293b; font-weight: 700; font-size: 1rem; padding: 0.9rem 2.2rem; border-radius: 999px; text-decoration: none; box-shadow: 0 4px 14px rgba(245,158,11,0.4); transition: transform 0.15s; margin: 0 0.4rem; }
+  .buy-btn:hover { transform: translateY(-2px); }
+  .demo-btn { display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3); color: white; font-weight: 600; font-size: 0.95rem; padding: 0.85rem 1.8rem; border-radius: 999px; text-decoration: none; margin: 0 0.4rem; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .section-title { font-size: 1.4rem; font-weight: 800; color: #3b0764; margin-bottom: 0.35rem; }
+  .section-sub  { font-size: 0.9rem; color: #64748b; margin-bottom: 1.75rem; }
+
+  .kit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  @media (max-width: 900px) { .kit-grid { grid-template-columns: 1fr; } }
+  .kit-item { background: white; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #a855f7; }
+  .kit-num { font-size: 1.6rem; font-weight: 800; color: #a855f7; }
+  .kit-name { font-size: 0.85rem; font-weight: 700; color: #3b0764; margin-top: 0.3rem; }
+
+  .doc-sample { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .doc-sample-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: #a855f7; font-weight: 700; margin-bottom: 0.6rem; }
+  .doc-sample h4 { font-size: 1.02rem; color: #3b0764; margin-bottom: 0.7rem; }
+  .doc-sample p, .doc-sample li { font-size: 0.86rem; color: #334155; line-height: 1.75; }
+  .doc-sample ol { padding-left: 1.2rem; }
+  .demo-link { display: inline-block; margin-top: 0.75rem; font-size: 0.83rem; font-weight: 700; color: #7e22ce; text-decoration: none; }
+
+  .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 760px) { .who-grid { grid-template-columns: 1fr; } }
+  .who-item { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 10px; padding: 1.1rem; font-size: 0.86rem; color: #581c87; font-weight: 600; }
+
+  .cta-block { background: white; border-radius: 14px; padding: 2rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-top: 1rem; }
+  .cta-block p { color: #475569; font-size: 0.9rem; margin-bottom: 1.25rem; }
+
+  footer { background: #3b0764; color: #d8b4fe; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #d8b4fe; }
+  footer a { color: #e9d5ff; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Logical Coders <span>· Training Modules</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_index.html">Portfolio</a>
+    <a class="nav-link" href="gumroad_compliance_starter_kit.html">Compliance Kit</a>
+    <a class="nav-link" href="gumroad_technical_writing_templates.html">Writing Templates</a>
+    <a class="nav-link active" href="gumroad_instructional_design_samples.html">Training Modules</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Digital Download · Storyboard + Slide Templates</div>
+  <h1>Compliance Training Module Toolkit</h1>
+  <p>A build-your-own-training-module kit for turning dense compliance policy into short, scenario-based staff training — the same structure used to build the live HIPAA and NIST CSF modules below, minus the build time.</p>
+  <div class="price-row">
+    <span class="price">$39</span>
+    <span class="price-note">one-time · instant download</span>
+  </div>
+  <div>
+    <a class="buy-btn" href="#" target="_blank">Buy on Gumroad →</a>
+    <a class="demo-btn" href="https://anelhenning2-collab.github.io/id-portfolio/01-hipaa-security-awareness/module.html" target="_blank">See Live Demo Module</a>
+  </div>
+</div>
+
+<main>
+
+  <div class="kit-grid">
+    <div class="kit-item"><div class="kit-num">01</div><div class="kit-name">Needs Assessment Template</div></div>
+    <div class="kit-item"><div class="kit-num">02</div><div class="kit-name">Screen-by-Screen Storyboard Template</div></div>
+    <div class="kit-item"><div class="kit-num">03</div><div class="kit-name">Scored Knowledge Check Template</div></div>
+  </div>
+
+  <section>
+    <div class="section-title">This toolkit is built for</div>
+    <div class="section-sub">If you've been handed "make our staff do the annual HIPAA training," this is your starting point</div>
+    <div class="who-grid">
+      <div class="who-item">Office managers or compliance leads who need to deliver required annual security awareness training</div>
+      <div class="who-item">Instructional designers who want a compliance-specific storyboard structure instead of starting from a blank page</div>
+      <div class="who-item">Small businesses rolling out a new policy (NIST CSF, incident response, access reviews) and needing staff buy-in, not just a memo</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">What's inside — built the same way as these live modules</div>
+    <div class="section-sub">Two free, fully-built demo modules show you exactly what this structure produces</div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Live Demo 01</div>
+      <h4>HIPAA Security Awareness Training for Small Practice Staff</h4>
+      <p><strong>Built for:</strong> non-technical front-desk, billing, and clinical support staff at a small dental or medical practice. Scenario-based rather than policy-recitation — opens with a relatable "what would you do if..." situation before any formal definitions.</p>
+      <ul style="margin-top:0.6rem;">
+        <li>Five short screens, completable in one break (~10 minutes)</li>
+        <li>Scored knowledge check with feedback explaining why each answer is right or wrong</li>
+        <li>Meets the HIPAA Security Rule's annual training requirement (45 CFR §164.308(a)(5))</li>
+      </ul>
+      <a class="demo-link" href="https://anelhenning2-collab.github.io/id-portfolio/01-hipaa-security-awareness/module.html" target="_blank">View live module →</a>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Live Demo 02</div>
+      <h4>NIST Cybersecurity Framework Basics for Non-IT Staff</h4>
+      <p><strong>Built for:</strong> managers and department heads who need working literacy in the five NIST CSF functions without technical mastery. Uses scenario-matching instead of definition memorization, so learners build a mental model they can actually use.</p>
+      <ul style="margin-top:0.6rem;">
+        <li>Consistent icon + one-line definition per function, repeated for retention</li>
+        <li>Deliberately non-technical — no jargon, no specific controls</li>
+        <li>~8-minute self-paced module</li>
+      </ul>
+      <a class="demo-link" href="https://anelhenning2-collab.github.io/id-portfolio/03-nist-csf-basics/module.html" target="_blank">View live module →</a>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">What the toolkit gives you</div>
+      <h4>The reusable structure behind both modules</h4>
+      <ol>
+        <li><strong>Needs Assessment template</strong> — business context, the specific knowledge gap, why it matters, and real constraints (time, audience, jargon tolerance)</li>
+        <li><strong>Storyboard template</strong> — screen-by-screen structure: scenario → plain-language concept → knowledge check → feedback</li>
+        <li><strong>Evaluation plan template</strong> — Kirkpatrick Level 1–4 tracking (reaction, learning, behavior, results) so you can prove the training actually worked</li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="cta-block">
+    <h3 style="color:#3b0764; margin-bottom:0.5rem;">Need a fully custom module instead?</h3>
+    <p>If you'd rather have a finished, ready-to-deploy training module built for your specific policy or audience, I take on custom builds — contact me directly to scope it.</p>
+    <a class="buy-btn" href="mailto:logicalcoders@outlook.com">Email logicalcoders@outlook.com</a>
+  </div>
+
+</main>
+
+<footer>
+  <strong>Logical Coders</strong> — South Tampa, FL · 813.743.1661 · logicalcoders@outlook.com
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_index.html">Portfolio</a> ·
+    <a href="gumroad_compliance_starter_kit.html">Compliance Kit</a> ·
+    <a href="gumroad_technical_writing_templates.html">Writing Templates</a>
+  </div>
+</footer>
+
+</body>
+</html>

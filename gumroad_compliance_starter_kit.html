@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Small Business Compliance Starter Kit — Logical Coders</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f0f4ff; color: #1e293b; }
+
+  nav { background: #0f2557; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #60a5fa; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #cbd5e1; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #60a5fa; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #0f2557 0%, #1e3a8a 60%, #2563eb 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(96,165,250,0.2); border: 1px solid rgba(96,165,250,0.5); color: #93c5fd; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.3rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.05rem; color: #bfdbfe; max-width: 680px; margin: 0 auto 1.5rem; line-height: 1.7; }
+  .price-row { display: flex; align-items: baseline; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .price { font-size: 2.2rem; font-weight: 800; color: white; }
+  .price-note { font-size: 0.85rem; color: #93c5fd; }
+  .buy-btn { display: inline-block; background: #f59e0b; color: #1e293b; font-weight: 700; font-size: 1rem; padding: 0.9rem 2.2rem; border-radius: 999px; text-decoration: none; box-shadow: 0 4px 14px rgba(245,158,11,0.4); transition: transform 0.15s; }
+  .buy-btn:hover { transform: translateY(-2px); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .section-title { font-size: 1.4rem; font-weight: 800; color: #0f2557; margin-bottom: 0.35rem; }
+  .section-sub  { font-size: 0.9rem; color: #64748b; margin-bottom: 1.75rem; }
+
+  .kit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  @media (max-width: 900px) { .kit-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kit-item { background: white; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #2563eb; }
+  .kit-num { font-size: 1.6rem; font-weight: 800; color: #2563eb; }
+  .kit-name { font-size: 0.85rem; font-weight: 700; color: #0f2557; margin-top: 0.3rem; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+
+  .doc-sample { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .doc-sample-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: #2563eb; font-weight: 700; margin-bottom: 0.6rem; }
+  .doc-sample h4 { font-size: 1.02rem; color: #0f2557; margin-bottom: 0.7rem; }
+  .doc-sample p, .doc-sample li { font-size: 0.86rem; color: #334155; line-height: 1.75; }
+  .doc-sample table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.82rem; }
+  .doc-sample th { background: #0f2557; color: #93c5fd; padding: 0.55rem 0.8rem; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .doc-sample td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #e2e8f0; color: #334155; }
+  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
+  .badge.green { background: #dcfce7; color: #166534; }
+  .badge.amber { background: #fef3c7; color: #92400e; }
+
+  .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 760px) { .who-grid { grid-template-columns: 1fr; } }
+  .who-item { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 1.1rem; font-size: 0.86rem; color: #1e3a8a; font-weight: 600; }
+
+  .cta-block { background: white; border-radius: 14px; padding: 2rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-top: 1rem; }
+  .cta-block p { color: #475569; font-size: 0.9rem; margin-bottom: 1.25rem; }
+
+  footer { background: #0f2557; color: #94a3b8; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #60a5fa; }
+  footer a { color: #93c5fd; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Logical Coders <span>· Compliance Starter Kit</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_index.html">Portfolio</a>
+    <a class="nav-link active" href="gumroad_compliance_starter_kit.html">Compliance Kit</a>
+    <a class="nav-link" href="gumroad_technical_writing_templates.html">Writing Templates</a>
+    <a class="nav-link" href="gumroad_instructional_design_samples.html">Training Modules</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Digital Download · Editable Word Files</div>
+  <h1>Small Business Compliance Starter Kit</h1>
+  <p>Four ready-to-customize compliance documents for small businesses, dental/medical practices, and early-stage startups who need real documentation but can't justify a $15K consultant or an enterprise GRC subscription.</p>
+  <div class="price-row">
+    <span class="price">$59</span>
+    <span class="price-note">one-time · instant download</span>
+  </div>
+  <a class="buy-btn" href="#" target="_blank">Buy on Gumroad →</a>
+</div>
+
+<main>
+
+  <div class="kit-grid">
+    <div class="kit-item"><div class="kit-num">01</div><div class="kit-name">HIPAA Notice of Privacy Practices</div></div>
+    <div class="kit-item"><div class="kit-num">02</div><div class="kit-name">NIST CSF Security Policy Package</div></div>
+    <div class="kit-item"><div class="kit-num">03</div><div class="kit-name">Startup Compliance Checklist</div></div>
+    <div class="kit-item"><div class="kit-num">04</div><div class="kit-name">Access Review Report Template</div></div>
+  </div>
+
+  <section>
+    <div class="section-title">This kit is built for</div>
+    <div class="section-sub">If you recognize your business below, this is written for you</div>
+    <div class="who-grid">
+      <div class="who-item">Dental &amp; small medical practices that need a HIPAA-compliant patient privacy notice</div>
+      <div class="who-item">Startups establishing their first compliance posture before a customer security review</div>
+      <div class="who-item">Small businesses that got a vendor security questionnaire and have no idea where to start</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">What's inside — real samples</div>
+    <div class="section-sub">Excerpts from the actual documents, so you know exactly what you're buying</div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Document 01</div>
+      <h4>HIPAA Notice of Privacy Practices — Small Dental/Medical Practice</h4>
+      <p><strong>What it does:</strong> A plain-language notice explaining how your practice may use and disclose protected health information (PHI), accurate to 45 CFR §164.520, written so patients actually understand it.</p>
+      <p style="margin-top:0.6rem;"><em>Excerpt:</em> "This notice describes how medical information about you may be used and disclosed, and how you can get access to this information. We are required by law to maintain the privacy of your protected health information, provide you with this notice of our legal duties and privacy practices, and notify affected individuals following a breach of unsecured PHI."</p>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Document 02</div>
+      <h4>NIST CSF-Aligned Security Policy Package</h4>
+      <p><strong>What it does:</strong> Five foundational policies mapped to the NIST Cybersecurity Framework's core functions — for businesses without a dedicated security team.</p>
+      <table>
+        <thead><tr><th>NIST CSF Function</th><th>Policy Document Included</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Identify</td><td>Asset Inventory &amp; Risk Assessment Policy</td><td><span class="badge green">Included</span></td></tr>
+          <tr><td>Protect</td><td>Access Control &amp; Acceptable Use Policy</td><td><span class="badge green">Included</span></td></tr>
+          <tr><td>Detect</td><td>Security Monitoring &amp; Logging Policy</td><td><span class="badge green">Included</span></td></tr>
+          <tr><td>Respond</td><td>Incident Response Procedure</td><td><span class="badge green">Included</span></td></tr>
+          <tr><td>Recover</td><td>Business Continuity &amp; Recovery Plan</td><td><span class="badge green">Included</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Documents 03 &amp; 04</div>
+      <h4>Startup Compliance Checklist + Access Review Report Template</h4>
+      <p><strong>What they do:</strong> A structured onboarding checklist for companies building their first compliance posture, paired with a recurring report template for tracking who has access to what.</p>
+      <ul style="margin-top:0.6rem;">
+        <li><strong>Startup checklist covers:</strong> data inventory, privacy policy status, vendor/BAA tracking, employee security training, incident response contact tree</li>
+        <li><strong>Access review template covers:</strong> system name, user, access level, last review date, reviewer sign-off, remediation notes for flagged accounts</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="cta-block">
+    <h3 style="color:#0f2557; margin-bottom:0.5rem;">Built by a compliance documentation specialist</h3>
+    <p>HIPAA Business Associate certified, finishing a Master's in Cybersecurity Management, member of ISACA West Florida and ISC2 Tampa Bay. These templates come from real coursework and practice — not AI-generated boilerplate.</p>
+    <a class="buy-btn" href="#" target="_blank">Buy on Gumroad — $59 →</a>
+  </div>
+
+</main>
+
+<footer>
+  <strong>Logical Coders</strong> — South Tampa, FL · 813.743.1661 · logicalcoders@outlook.com
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_index.html">Portfolio</a> ·
+    <a href="gumroad_technical_writing_templates.html">Writing Templates</a> ·
+    <a href="gumroad_instructional_design_samples.html">Training Modules</a>
+  </div>
+</footer>
+
+</body>
+</html>
