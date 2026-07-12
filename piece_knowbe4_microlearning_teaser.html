@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Awareness Microlearning Samples | Anel Henning</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #fef9c3; color: #1e293b; }
+
+  nav { background: #1c1917; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #facc15; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #fef3c7; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #facc15; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #1c1917 0%, #78350f 60%, #d97706 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(250,204,21,0.2); border: 1px solid rgba(250,204,21,0.5); color: #fde68a; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.1rem; font-weight: 800; line-height: 1.25; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.02rem; color: #fef3c7; max-width: 680px; margin: 0 auto 1rem; line-height: 1.7; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  .disclosure { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; margin-bottom: 2rem; }
+  .disclosure strong { color: #7c2d12; }
+
+  .context-box { background: white; border-left: 4px solid #d97706; border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .context-box h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em; color: #d97706; margin-bottom: 0.5rem; font-weight: 700; }
+  .context-box p { font-size: 0.92rem; color: #334155; line-height: 1.7; }
+  .context-box a { color: #d97706; }
+
+  .section-title { font-size: 1.3rem; font-weight: 800; color: #1c1917; margin: 2.25rem 0 0.75rem; }
+  .section-sub { font-size: 0.88rem; color: #64748b; margin-bottom: 1.25rem; line-height: 1.6; }
+
+  .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  @media (max-width: 700px) { .module-grid { grid-template-columns: 1fr; } }
+  .module-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); text-decoration: none; color: inherit; display: block; transition: transform 0.15s; }
+  .module-card:hover { transform: translateY(-3px); }
+  .module-tag { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: #d97706; font-weight: 700; margin-bottom: 0.5rem; }
+  .module-card h3 { font-size: 1.05rem; color: #1c1917; margin-bottom: 0.5rem; }
+  .module-card p { font-size: 0.85rem; color: #475569; line-height: 1.65; margin-bottom: 0.75rem; }
+  .module-mech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .mech-pill { background: #fef3c7; color: #92400e; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+  .module-cta { font-size: 0.78rem; font-weight: 700; color: #d97706; margin-top: 0.75rem; }
+  .module-cta::after { content: ' →'; }
+
+  .mock-preview { background: #fafaf9; border: 1px solid #e7e5e4; border-radius: 10px; padding: 1.25rem; margin: 1.5rem 0; }
+  .mock-preview .field { color: #57534e; font-size: 0.85rem; margin-bottom: 4px; }
+  .mock-preview .flag { border-bottom: 2px dashed #d97706; color: #1c1917; }
+  .mock-note { font-size: 0.78rem; color: #92400e; margin-top: 0.75rem; }
+
+  footer { background: #1c1917; color: #fef3c7; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #facc15; }
+  footer a { color: #fef3c7; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· Security Awareness Samples</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_outreach.html">Outreach Pieces</a>
+    <a class="nav-link" href="id-portfolio/index.html">Instructional Design Portfolio</a>
+    <a class="nav-link" href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Microlearning Leave-Behind</div>
+  <h1>Security Awareness Training, Built Exactly Like the Modules KnowBe4 Sells</h1>
+  <p>Two interactive microlearning modules — phishing recognition and HIPAA security awareness — built with the same short, scenario-driven, self-check format used across the security awareness training category.</p>
+</div>
+
+<main>
+
+  <div class="disclosure">
+    <strong>What this is:</strong> Original instructional design work I built independently, not client work for or commissioned by KnowBe4. It's offered here as a leave-behind sample of my own microlearning modules, sized for a quick review.
+  </div>
+
+  <div class="context-box">
+    <h4>Why I built this for KnowBe4's marketing team</h4>
+    <p>James Hansel works marketing operations at KnowBe4, a company whose entire product category is security awareness training. Rather than write copy <em>about</em> that category, I built two working modules <em>in</em> it — a phishing hotspot exercise and a HIPAA awareness module — using the same short, interactive, self-check format the category runs on. Both are already live in my <a href="id-portfolio/index.html">instructional design portfolio</a>; this page pulls them together as a single quick-review sheet.</p>
+  </div>
+
+  <div class="section-title">The Two Modules</div>
+  <div class="module-grid">
+    <a href="id-portfolio/05-phishing-microlearning/module.html" class="module-card">
+      <div class="module-tag">Module 01</div>
+      <h3>Phishing Awareness Refresher</h3>
+      <p>A tap-to-reveal mock phishing email — the learner identifies red flags directly inside a simulated inbox, then answers a single scenario-based check.</p>
+      <div class="module-mech">
+        <span class="mech-pill">Hotspot interaction</span>
+        <span class="mech-pill">Under 2 min</span>
+        <span class="mech-pill">Scenario quiz</span>
+      </div>
+      <div class="module-cta">Open module</div>
+    </a>
+    <a href="id-portfolio/01-hipaa-security-awareness/module.html" class="module-card">
+      <div class="module-tag">Module 02</div>
+      <h3>HIPAA Security Awareness Training</h3>
+      <p>A screen-by-screen walkthrough of what "protecting patient data" actually means in daily tasks, ending in a knowledge check with plain-language feedback either way.</p>
+      <div class="module-mech">
+        <span class="mech-pill">Progress bar</span>
+        <span class="mech-pill">Branching feedback</span>
+        <span class="mech-pill">Plain language</span>
+      </div>
+      <div class="module-cta">Open module</div>
+    </a>
+  </div>
+
+  <div class="section-title">A Preview of the Interaction Model</div>
+  <div class="mock-preview">
+    <div class="field">From: <span class="flag">IT-Support@yourcompanny.com</span></div>
+    <div class="field">Subject: Account Verification Required</div>
+    <div class="field" style="margin-top:8px;"><span class="flag">Your access will be suspended in 1 hour unless you verify immediately.</span></div>
+    <div class="mock-note">Tapping either flagged phrase reveals why it's a red flag — the same "tap to learn why" mechanic used throughout both modules.</div>
+  </div>
+
+  <div class="section-title">Why This Format, Not a Slide Deck</div>
+  <div class="module-card" style="display:block;">
+    <p style="font-size:0.9rem; color:#334155; line-height:1.75; margin-bottom:0;">Security awareness training fails when it's read passively. Both modules force a decision — tap the red flag, answer the scenario — before the learner can move on, which is the same completion logic KnowBe4's own training platform is built around. I built these because I wanted to prove I understand <em>why</em> the format works, not just that I can write copy describing it.</p>
+  </div>
+
+</main>
+
+<footer>
+  Anel Henning · Tampa, FL · <strong>Original work — offered as a sample, not affiliated with or commissioned by KnowBe4</strong>
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_outreach.html">All Outreach Pieces</a> · <a href="id-portfolio/index.html">Instructional Design Portfolio</a> · <a href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</footer>
+
+</body>
+</html>

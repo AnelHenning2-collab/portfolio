@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual vs. Automated Compliance: A Drata-Framed One-Pager | Anel Henning</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #ecfdf5; color: #1e293b; }
+
+  nav { background: #052e2b; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #34d399; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #a7f3d0; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #34d399; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #052e2b 0%, #065f46 60%, #059669 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(52,211,153,0.2); border: 1px solid rgba(52,211,153,0.5); color: #a7f3d0; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.1rem; font-weight: 800; line-height: 1.25; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.02rem; color: #d1fae5; max-width: 680px; margin: 0 auto 1rem; line-height: 1.7; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  .disclosure { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; margin-bottom: 2rem; }
+  .disclosure strong { color: #7c2d12; }
+
+  .context-box { background: white; border-left: 4px solid #059669; border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .context-box h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em; color: #059669; margin-bottom: 0.5rem; font-weight: 700; }
+  .context-box p { font-size: 0.92rem; color: #334155; line-height: 1.7; }
+
+  .section-title { font-size: 1.3rem; font-weight: 800; color: #052e2b; margin: 2.25rem 0 0.75rem; }
+  .section-sub { font-size: 0.88rem; color: #64748b; margin-bottom: 1.25rem; line-height: 1.6; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 700px) { .compare-grid { grid-template-columns: 1fr; } }
+  .compare-col { border-radius: 10px; padding: 1.1rem 1.25rem; }
+  .compare-col.manual { background: #fef2f2; border: 1px solid #fecaca; }
+  .compare-col.auto { background: #ecfdf5; border: 1px solid #a7f3d0; }
+  .compare-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; margin-bottom: 0.7rem; }
+  .compare-col.manual .compare-label { color: #b91c1c; }
+  .compare-col.auto .compare-label { color: #059669; }
+  .compare-col ul { padding-left: 1.1rem; font-size: 0.85rem; color: #334155; line-height: 1.75; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 0.5rem; }
+  th { background: #052e2b; color: #a7f3d0; padding: 0.6rem 0.9rem; text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 0.65rem 0.9rem; border-bottom: 1px solid #e2e8f0; color: #334155; }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+  .badge.red { background: #fee2e2; color: #991b1b; }
+  .badge.green { background: #d1fae5; color: #065f46; }
+
+  .pull-quote { border-left: 4px solid #059669; padding: 0.25rem 0 0.25rem 1.25rem; margin: 1.5rem 0; font-size: 1.05rem; color: #052e2b; font-weight: 600; font-style: italic; line-height: 1.6; }
+
+  footer { background: #052e2b; color: #a7f3d0; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #34d399; }
+  footer a { color: #a7f3d0; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· Manual vs. Automated Compliance</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_outreach.html">Outreach Pieces</a>
+    <a class="nav-link" href="grc-suite/index.html">GRC Suite</a>
+    <a class="nav-link" href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Product Positioning Sample — Compliance Automation</div>
+  <h1>What Changes When Evidence Collection Stops Being Manual</h1>
+  <p>A before/after one-pager written from direct experience building the manual version of the workflow that compliance-automation platforms replace.</p>
+</div>
+
+<main>
+
+  <div class="disclosure">
+    <strong>What this is:</strong> A speculative positioning piece, not client work for or commissioned by Drata. I built it by comparing my own manual GRC artifacts against how automated evidence collection is typically described, to show I understand the mechanics well enough to write about them credibly.
+  </div>
+
+  <div class="context-box">
+    <h4>Why I built this for Drata's marketing team</h4>
+    <p>Drata's marketing leadership has talked publicly about category leadership and go-to-market alignment in compliance automation — the pitch that resonates most with buyers isn't "software," it's "the manual process you're already doing, done for you." I've actually built the manual version: a <a href="grc-suite/templates/evidence-log.html" style="color:#059669;">line-by-line evidence log</a> and a <a href="grc-suite/templates/control-assessment.html" style="color:#059669;">control assessment workpaper</a> in my GRC Suite. This piece translates that hands-on knowledge into the kind of before/after copy a compliance-automation company sells with.</p>
+  </div>
+
+  <div class="section-title">The Same Control, Two Ways</div>
+  <div class="section-sub">SOC 2 control: "Access to production systems is reviewed quarterly." Here's what proving that looks like manually vs. automated.</div>
+
+  <div class="card">
+    <div class="compare-grid">
+      <div class="compare-col manual">
+        <div class="compare-label">Manual — What I Built By Hand</div>
+        <ul>
+          <li>Export user list from each system separately</li>
+          <li>Cross-reference against HR's current employee roster in a spreadsheet</li>
+          <li>Flag mismatches, chase down managers for confirmation</li>
+          <li>Screenshot the final spreadsheet as "evidence"</li>
+          <li>Repeat this from scratch next quarter</li>
+        </ul>
+      </div>
+      <div class="compare-col auto">
+        <div class="compare-label">Automated — What Gets Sold</div>
+        <ul>
+          <li>Systems connect once via API, no manual export</li>
+          <li>Access lists reconcile against HR data continuously</li>
+          <li>Mismatches surface as alerts, not quarterly surprises</li>
+          <li>Evidence timestamps itself automatically for the audit</li>
+          <li>The next quarter's review is already half-done</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:#052e2b; font-size:1rem; margin-bottom:0.75rem;">Where the Real Cost Is (and Where the Pitch Should Point)</h3>
+    <table>
+      <tr><th>Manual Cost</th><th>Automation's Answer</th></tr>
+      <tr><td>Analyst time re-collecting the same evidence every quarter</td><td><span class="badge green">Continuous</span> monitoring replaces repeat collection</td></tr>
+      <tr><td>Evidence going stale between audits</td><td><span class="badge green">Always audit-ready</span> instead of audit-ready once a year</td></tr>
+      <tr><td>Human error in cross-referencing spreadsheets</td><td><span class="badge green">System-to-system</span> reconciliation, no copy-paste</td></tr>
+      <tr><td><span class="badge red">Compliance as a fire drill</span> before renewal or audit season</td><td>Compliance as a background state, not an event</td></tr>
+    </table>
+  </div>
+
+  <div class="pull-quote">"The manual version isn't wrong — it's just where the labor hides. Good automation copy names that labor specifically instead of gesturing at 'saving time.'"</div>
+
+  <div class="section-title">What I'd Bring to a Content or Product Marketing Seat</div>
+  <div class="card">
+    <p style="font-size:0.9rem; color:#334155; line-height:1.75;">I've done the unglamorous version of the job compliance-automation software replaces — built risk registers, evidence logs, and control assessments by hand for two sample small-business clients in my GRC Suite. That means I can write positioning copy that names the exact manual pain point instead of a generic one, because I've felt it directly.</p>
+  </div>
+
+</main>
+
+<footer>
+  Anel Henning · Tampa, FL · <strong>Speculative writing sample — not affiliated with or commissioned by Drata</strong>
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_outreach.html">All Outreach Pieces</a> · <a href="grc-suite/index.html">GRC Suite</a> · <a href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</footer>
+
+</body>
+</html>

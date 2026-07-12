@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIST CSF Without the Jargon | Anel Henning</title>
+<meta name="description" content="A plain-language walkthrough of the NIST Cybersecurity Framework's five functions, written for non-technical teams.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
+
+  nav { background: #111827; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #38bdf8; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #cbd5e1; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #38bdf8; background: rgba(255,255,255,0.05); }
+
+  .disclosure { max-width: 720px; margin: 1.5rem auto 0; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; }
+  .disclosure strong { color: #7c2d12; }
+
+  article { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+  .article-tag { color: #0284c7; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.75rem; }
+  .article-title { font-family: 'Source Serif 4', serif; font-size: 2.1rem; font-weight: 700; color: #0f172a; line-height: 1.25; margin-bottom: 0.75rem; }
+  .article-dek { font-size: 1.1rem; color: #475569; line-height: 1.6; margin-bottom: 1.25rem; }
+  .article-meta { display: flex; gap: 1rem; align-items: center; font-size: 0.82rem; color: #64748b; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0; margin-bottom: 1.75rem; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: #0284c7; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+
+  .article-body p { font-size: 1.02rem; line-height: 1.85; color: #334155; margin-bottom: 1.25rem; }
+  .article-body h2 { font-family: 'Source Serif 4', serif; font-size: 1.4rem; color: #0f172a; margin: 2rem 0 0.85rem; }
+  .article-body strong { color: #0f172a; }
+
+  .func-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; margin: 1.5rem 0; }
+  @media (max-width: 680px) { .func-grid { grid-template-columns: repeat(2, 1fr); } }
+  .func-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem 0.75rem; text-align: center; }
+  .func-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+  .func-name { font-weight: 700; font-size: 0.85rem; color: #0f172a; margin-bottom: 0.3rem; }
+  .func-desc { font-size: 0.72rem; color: #64748b; line-height: 1.5; }
+
+  .scenario-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+  .scenario-box .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: #0284c7; font-weight: 700; margin-bottom: 0.5rem; }
+  .scenario-box p { font-size: 0.95rem; color: #0c4a6e; line-height: 1.7; margin-bottom: 0; }
+
+  .context-box { background: white; border-left: 4px solid #0284c7; border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin: 2rem 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .context-box h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em; color: #0284c7; margin-bottom: 0.5rem; font-weight: 700; }
+  .context-box p { font-size: 0.9rem; color: #334155; line-height: 1.7; margin-bottom: 0; }
+  .context-box a { color: #0284c7; }
+
+  footer { background: #111827; color: #cbd5e1; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #38bdf8; }
+  footer a { color: #cbd5e1; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· Blog Writing Sample</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_outreach.html">Outreach Pieces</a>
+    <a class="nav-link" href="id-portfolio/03-nist-csf-basics/module.html">Original Module</a>
+    <a class="nav-link" href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</nav>
+
+<div class="disclosure">
+  <strong>What this is:</strong> A blog-post-style writing sample, not published by or commissioned by Secureframe. I adapted the content from my own <a href="id-portfolio/03-nist-csf-basics/module.html" style="color:#7c2d12;">interactive NIST CSF training module</a> into article form to show I can write the same idea in more than one format.
+</div>
+
+<article>
+  <div class="article-tag">Compliance, Explained</div>
+  <h1 class="article-title">NIST CSF Without the Jargon</h1>
+  <p class="article-dek">The five-function framework behind most security programs, translated for the people who aren't on the security team but are still part of it.</p>
+  <div class="article-meta">
+    <div class="avatar">AH</div>
+    <div>Anel Henning · Writing sample · 7 min read</div>
+  </div>
+
+  <div class="article-body">
+    <p>Here's a scenario: your department gets a new laptop-tracking spreadsheet, sits through a phishing test, and fills out an incident report template — all in the same quarter, none of it explained as connected. It is connected. All three are part of the same framework, and once you can see the shape of it, every one of those "random" security asks starts making sense.</p>
+
+    <p>That framework is the <strong>NIST Cybersecurity Framework</strong>, and despite the name, you don't need to be technical to understand it. It organizes everything a security program does into five plain functions.</p>
+
+    <h2>The Five Functions, in Plain Language</h2>
+
+    <div class="func-grid">
+      <div class="func-card"><div class="func-icon">🔍</div><div class="func-name">Identify</div><div class="func-desc">Know what devices, data, and systems you have.</div></div>
+      <div class="func-card"><div class="func-icon">🛡️</div><div class="func-name">Protect</div><div class="func-desc">Put safeguards in place before something goes wrong.</div></div>
+      <div class="func-card"><div class="func-icon">👀</div><div class="func-name">Detect</div><div class="func-desc">Notice when something unusual is happening.</div></div>
+      <div class="func-card"><div class="func-icon">🚨</div><div class="func-name">Respond</div><div class="func-desc">Take action right away when a problem is found.</div></div>
+      <div class="func-card"><div class="func-icon">🔄</div><div class="func-name">Recover</div><div class="func-desc">Get back to normal and learn from what happened.</div></div>
+    </div>
+
+    <p>None of these require a security certification to understand, because none of them are exclusively the security team's job. That laptop-tracking spreadsheet from the opening example? That's <strong>Identify</strong> — you can't protect what you don't know you have. The phishing test is testing <strong>Detect</strong>, at the individual level. The incident report template exists for <strong>Respond</strong>.</p>
+
+    <h2>Where This Gets Real</h2>
+
+    <div class="scenario-box">
+      <div class="label">A scenario worth sitting with</div>
+      <p>An employee reports their laptop was stolen from their car. Reporting it immediately — before anything else happens — is the <strong>Respond</strong> function. Getting a replacement device set up and data restored afterward is <strong>Recover</strong>. Notice that both matter, and neither works without the other: responding fast without a recovery plan just means a fast, disorganized scramble.</p>
+    </div>
+
+    <p>This is the part most jargon-heavy explanations skip: the framework isn't a checklist owned by IT. It's a shared vocabulary for who does what, when. Once a non-technical team understands that a shared drive lock is <strong>Protect</strong> and a strange login alert is <strong>Detect</strong>, security stops feeling like something that happens <em>to</em> them and starts feeling like something they're already part of.</p>
+
+    <h2>Why This Matters for How Compliance Content Gets Written</h2>
+
+    <p>Most NIST CSF explainers are written for people who already work in security, which means they use security vocabulary to explain security vocabulary. The framework doesn't need that. It needs the same treatment you'd give any five-step process a new hire has to learn — plain nouns, real scenarios, and a reason to care that has nothing to do with fear of an audit.</p>
+  </div>
+
+  <div class="context-box">
+    <h4>Why I built this for Secureframe's content team</h4>
+    <p>Emily Bonnie's own bio describes her work at Secureframe as helping "demystify complex governance, risk, and compliance topics" — which is precisely the exercise this article is doing. I already had the underlying knowledge structured as an interactive training module; this piece proves I can take the same subject matter and write it as a publishable article instead, matching the format her content team actually produces.</p>
+  </div>
+</article>
+
+<footer>
+  Anel Henning · Tampa, FL · <strong>Writing sample — not published by or affiliated with Secureframe</strong>
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_outreach.html">All Outreach Pieces</a> · <a href="id-portfolio/03-nist-csf-basics/module.html">Original Interactive Module</a> · <a href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calm vs. Fear: Compliance Messaging Rewrites | Anel Henning</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #eff6ff; color: #1e293b; }
+
+  nav { background: #0c2340; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #7dd3fc; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #bae6fd; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #7dd3fc; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #0c2340 0%, #1d4ed8 60%, #0ea5e9 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(125,211,252,0.2); border: 1px solid rgba(125,211,252,0.5); color: #bae6fd; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.1rem; font-weight: 800; line-height: 1.25; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.02rem; color: #dbeafe; max-width: 700px; margin: 0 auto 1rem; line-height: 1.7; }
+
+  main { max-width: 920px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  .disclosure { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; margin-bottom: 2rem; }
+  .disclosure strong { color: #7c2d12; }
+
+  .context-box { background: white; border-left: 4px solid #1d4ed8; border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .context-box h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em; color: #1d4ed8; margin-bottom: 0.5rem; font-weight: 700; }
+  .context-box p { font-size: 0.92rem; color: #334155; line-height: 1.7; }
+
+  .section-title { font-size: 1.3rem; font-weight: 800; color: #0c2340; margin: 2.25rem 0 0.75rem; }
+  .section-sub { font-size: 0.88rem; color: #64748b; margin-bottom: 1.25rem; line-height: 1.6; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+
+  .rewrite-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 700px) { .rewrite-grid { grid-template-columns: 1fr; } }
+  .rewrite-col { border-radius: 10px; padding: 1.1rem 1.25rem; }
+  .rewrite-col.fear { background: #fef2f2; border: 1px solid #fecaca; }
+  .rewrite-col.calm { background: #eff6ff; border: 1px solid #bfdbfe; }
+  .rewrite-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; margin-bottom: 0.6rem; }
+  .rewrite-col.fear .rewrite-label { color: #b91c1c; }
+  .rewrite-col.calm .rewrite-label { color: #1d4ed8; }
+  .rewrite-headline { font-size: 1rem; font-weight: 700; color: #0c2340; margin-bottom: 0.5rem; line-height: 1.5; }
+  .rewrite-sub { font-size: 0.83rem; color: #475569; line-height: 1.6; }
+
+  .why-note { background: #f8fafc; border-left: 3px solid #94a3b8; padding: 0.6rem 1rem; margin-top: 0.75rem; font-size: 0.82rem; color: #475569; }
+
+  .pull-quote { border-left: 4px solid #1d4ed8; padding: 0.25rem 0 0.25rem 1.25rem; margin: 1.5rem 0; font-size: 1.05rem; color: #0c2340; font-weight: 600; font-style: italic; line-height: 1.6; }
+
+  footer { background: #0c2340; color: #bae6fd; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #7dd3fc; }
+  footer a { color: #bae6fd; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· Calm vs. Fear Messaging</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_outreach.html">Outreach Pieces</a>
+    <a class="nav-link" href="portfolio_compliance_coordinator.html">Compliance Coordinator</a>
+    <a class="nav-link" href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Compliance Messaging Sample</div>
+  <h1>Rewriting Fear-Based Security Copy Into Calm, Plain Language</h1>
+  <p>Three real compliance messaging moments, rewritten from the panic register to the calm register — using the same plain-language instinct behind the HIPAA notices and security policies I've written for actual small-business clients.</p>
+</div>
+
+<main>
+
+  <div class="disclosure">
+    <strong>What this is:</strong> A speculative writing exercise, not client work for or commissioned by Vanta. I built it after noticing Vanta's marketing leadership has taken a public stance against fear-based security marketing — this is my attempt to demonstrate the calmer alternative, not a summary of Vanta's existing copy.
+  </div>
+
+  <div class="context-box">
+    <h4>Why I built this for Vanta specifically</h4>
+    <p>Vanta's VP of Marketing, Sarah Scharf, has been explicit in public posts about rejecting fear-based security marketing in favor of calm, human copy — she's called it out by name as a deliberate positioning choice, and she personally led Vanta's HIPAA and ISO 27001 product launches. I've written an actual <a href="01_HIPAA_Notice_of_Privacy_Practices_Dental.docx" style="color:#1d4ed8;">HIPAA Notice of Privacy Practices</a> for a dental client, where the entire job was translating a scary federal requirement into something a patient could read without alarm. This piece applies that same instinct to security-vendor marketing copy.</p>
+  </div>
+
+  <div class="section-title">Three Rewrites</div>
+  <div class="section-sub">Same underlying fact, two different relationships with the reader.</div>
+
+  <div class="card">
+    <div class="rewrite-grid">
+      <div class="rewrite-col fear">
+        <div class="rewrite-label">Fear-Based</div>
+        <div class="rewrite-headline">"One HIPAA violation could cost you $1.5 million — and your reputation."</div>
+        <div class="rewrite-sub">Leads with the worst-case dollar figure. Assumes the reader is already failing.</div>
+      </div>
+      <div class="rewrite-col calm">
+        <div class="rewrite-label">Calm</div>
+        <div class="rewrite-headline">"HIPAA compliance isn't about fear — it's about knowing exactly what to do the moment patient data is involved."</div>
+        <div class="rewrite-sub">Leads with competence and clarity. Assumes the reader wants to do this well, not that they're already in trouble.</div>
+      </div>
+    </div>
+    <div class="why-note">Why it works: the fear version sells insurance against catastrophe; the calm version sells confidence. Buyers who are already anxious about compliance respond better to the second — it doesn't add to the anxiety they came in with.</div>
+  </div>
+
+  <div class="card">
+    <div class="rewrite-grid">
+      <div class="rewrite-col fear">
+        <div class="rewrite-label">Fear-Based</div>
+        <div class="rewrite-headline">"Hackers are already inside networks like yours. Most companies don't find out until it's too late."</div>
+        <div class="rewrite-sub">Generic threat, no actionable next step, designed to alarm rather than inform.</div>
+      </div>
+      <div class="rewrite-col calm">
+        <div class="rewrite-label">Calm</div>
+        <div class="rewrite-headline">"Continuous monitoring means you find out about a problem the same day — not during next year's audit."</div>
+        <div class="rewrite-sub">Names a specific, concrete benefit (speed of detection) instead of a vague, unfalsifiable threat.</div>
+      </div>
+    </div>
+    <div class="why-note">Why it works: specificity is calming. A reader can picture "same day" — they can't picture "already inside," so it just produces anxiety with nowhere to go.</div>
+  </div>
+
+  <div class="card">
+    <div class="rewrite-grid">
+      <div class="rewrite-col fear">
+        <div class="rewrite-label">Fear-Based</div>
+        <div class="rewrite-headline">"Your last auditor conversation could be your last customer conversation."</div>
+        <div class="rewrite-sub">Ties compliance failure directly to business death. High drama, low usefulness.</div>
+      </div>
+      <div class="rewrite-col calm">
+        <div class="rewrite-label">Calm</div>
+        <div class="rewrite-headline">"Walk into your next audit with evidence that's already organized — not evidence you're building the week before."</div>
+        <div class="rewrite-sub">Names the actual dreaded moment (audit week scramble) and offers relief from that specific, real feeling instead of an abstract doom scenario.</div>
+      </div>
+    </div>
+    <div class="why-note">Why it works: everyone who's been through an audit has felt the "week before" scramble. Naming that real feeling builds more trust than inventing a bigger, vaguer one.</div>
+  </div>
+
+  <div class="pull-quote">"Fear-based copy assumes the reader needs to be scared into acting. Calm copy assumes the reader already wants to do this well and just needs to be shown how."</div>
+
+  <div class="section-title">What I'd Bring to a Content or Trust Marketing Seat</div>
+  <div class="card">
+    <p style="font-size:0.9rem; color:#334155; line-height:1.75;">I've written the actual document a patient or employee receives when a business is trying to explain compliance without alarming them — a real HIPAA Notice of Privacy Practices, plus internal security policies for small-business GRC clients. That's the same register Vanta's "calm-pliance" positioning is built on, and I can write in it without having to learn it first.</p>
+  </div>
+
+</main>
+
+<footer>
+  Anel Henning · Tampa, FL · <strong>Speculative writing sample — not affiliated with or commissioned by Vanta</strong>
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_outreach.html">All Outreach Pieces</a> · <a href="portfolio_compliance_coordinator.html">Compliance Coordinator</a> · <a href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</footer>
+
+</body>
+</html>

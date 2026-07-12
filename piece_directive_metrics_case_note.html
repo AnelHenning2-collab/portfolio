@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content ROI Case Note | Anel Henning</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #fdf4ff; color: #1e293b; }
+
+  nav { background: #2e1065; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #e879f9; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #f0abfc; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #e879f9; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #2e1065 0%, #6b21a8 60%, #a21caf 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(232,121,249,0.2); border: 1px solid rgba(232,121,249,0.5); color: #f5d0fe; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.1rem; font-weight: 800; line-height: 1.25; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.02rem; color: #fae8ff; max-width: 700px; margin: 0 auto 1rem; line-height: 1.7; }
+
+  main { max-width: 920px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  .disclosure { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; margin-bottom: 2rem; }
+  .disclosure strong { color: #7c2d12; }
+
+  .context-box { background: white; border-left: 4px solid #a21caf; border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .context-box h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em; color: #a21caf; margin-bottom: 0.5rem; font-weight: 700; }
+  .context-box p { font-size: 0.92rem; color: #334155; line-height: 1.7; }
+  .context-box a { color: #a21caf; }
+
+  .section-title { font-size: 1.3rem; font-weight: 800; color: #2e1065; margin: 2.25rem 0 0.75rem; }
+  .section-sub { font-size: 0.88rem; color: #64748b; margin-bottom: 1.25rem; line-height: 1.6; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+
+  .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 700px) { .metric-grid { grid-template-columns: 1fr; } }
+  .metric-col { border-radius: 10px; padding: 1.1rem 1.25rem; }
+  .metric-col.old { background: #f1f5f9; border: 1px solid #e2e8f0; }
+  .metric-col.new { background: #fdf4ff; border: 1px solid #f5d0fe; }
+  .metric-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; margin-bottom: 0.6rem; }
+  .metric-col.old .metric-label { color: #64748b; }
+  .metric-col.new .metric-label { color: #a21caf; }
+  .metric-col ul { padding-left: 1.1rem; font-size: 0.85rem; color: #334155; line-height: 1.75; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { background: #2e1065; color: #f5d0fe; padding: 0.6rem 0.9rem; text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 0.65rem 0.9rem; border-bottom: 1px solid #e2e8f0; color: #334155; }
+  tr:last-child td { border-bottom: none; }
+
+  .pull-quote { border-left: 4px solid #a21caf; padding: 0.25rem 0 0.25rem 1.25rem; margin: 1.5rem 0; font-size: 1.05rem; color: #2e1065; font-weight: 600; font-style: italic; line-height: 1.6; }
+
+  footer { background: #2e1065; color: #f0abfc; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #e879f9; }
+  footer a { color: #f0abfc; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· Content ROI Case Note</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_outreach.html">Outreach Pieces</a>
+    <a class="nav-link" href="weiss-subscription-portfolio.html">Subscription Analytics</a>
+    <a class="nav-link" href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Performance Marketing Case Note</div>
+  <h1>Reframing a Compliance Content Piece in Cost-Per-Opportunity Terms</h1>
+  <p>A short case note applying performance-marketing metrics — not vanity metrics — to a piece of GRC content, to show the content is judged the way a revenue-focused agency judges it.</p>
+</div>
+
+<main>
+
+  <div class="disclosure">
+    <strong>What this is:</strong> A speculative case note, not client work for or commissioned by Directive Consulting. I wrote it to demonstrate that I can think about content the way a performance-marketing agency does, using one of my own existing pieces as the example.
+  </div>
+
+  <div class="context-box">
+    <h4>Why I built this for Directive's team</h4>
+    <p>Directive's CEO Garrett Mehrguth has been publicly specific about what he thinks B2B marketers get wrong: too much attention on bounce rate, cost-per-click, and site-wide rankings, not nearly enough on close rate, cost-per-opportunity, and page-level authority. I already have a real content piece — my <a href="piece_secureframe_nist_article.html" style="color:#a21caf;">"NIST CSF Without the Jargon" article</a> — and a working <a href="weiss-subscription-portfolio.html" style="color:#a21caf;">subscription funnel analytics dashboard</a>. This note connects the two: what would it mean to judge that article by his stated metrics instead of the usual ones.</p>
+  </div>
+
+  <div class="section-title">Two Ways to Judge the Same Content</div>
+  <div class="card">
+    <div class="metric-grid">
+      <div class="metric-col old">
+        <div class="metric-label">Vanity Metrics</div>
+        <ul>
+          <li>Site-wide domain authority</li>
+          <li>Total pageviews</li>
+          <li>Bounce rate</li>
+          <li>Cost per click</li>
+        </ul>
+      </div>
+      <div class="metric-col new">
+        <div class="metric-label">Metrics That Tie to Revenue</div>
+        <ul>
+          <li>Authority of <em>this specific page</em> for "NIST CSF for non-technical teams"</li>
+          <li>Demo requests attributed to this page, not just traffic to it</li>
+          <li>Close rate of leads that touched this page vs. leads that didn't</li>
+          <li>Cost per opportunity generated, not cost per visitor</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Applying It to a Real Page</div>
+  <div class="card">
+    <table>
+      <tr><th>Question</th><th>Why It Matters More Than the Obvious Metric</th></tr>
+      <tr><td>Who actually searches "NIST CSF explained simply"?</td><td>Likely a compliance manager two levels below the CISO doing the buying — not the CISO. Write for the searcher, sell to the buyer.</td></tr>
+      <tr><td>Does this page rank for its specific target term, not just the domain overall?</td><td>Page-level authority compounds; site-wide authority is a lagging indicator that doesn't tell you which content is doing the work.</td></tr>
+      <tr><td>What's the cost of producing this page vs. one sales-qualified opportunity it generates?</td><td>Cost-per-opportunity is the number a CFO can actually defend content spend with — cost-per-click isn't.</td></tr>
+    </table>
+  </div>
+
+  <div class="pull-quote">"A page that ranks for the wrong term at a low cost per click is still a bad investment. A page that ranks for the right term at a higher cost per click, but produces one qualified opportunity, isn't."</div>
+
+  <div class="section-title">What I'd Bring to a Content Seat at a Performance-Focused Agency</div>
+  <div class="card">
+    <p style="font-size:0.9rem; color:#334155; line-height:1.75;">I built a working subscription-funnel analytics dashboard (CAC, LTV, churn, conversion-by-stage) as part of my own portfolio, so I'm not learning to think in these metrics for the first time on the job — I'm applying a habit I already have to a new content vertical.</p>
+  </div>
+
+</main>
+
+<footer>
+  Anel Henning · Tampa, FL · <strong>Speculative case note — not affiliated with or commissioned by Directive Consulting</strong>
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_outreach.html">All Outreach Pieces</a> · <a href="weiss-subscription-portfolio.html">Subscription Analytics</a> · <a href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</footer>
+
+</body>
+</html>

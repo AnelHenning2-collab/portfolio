@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Marketing Campaign Brief | Anel Henning</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f1f5f9; color: #1e293b; }
+
+  nav { background: #0a2540; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #38bdf8; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #bae6fd; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #38bdf8; background: rgba(255,255,255,0.05); }
+
+  .hero { background: linear-gradient(135deg, #0a2540 0%, #0c4a6e 60%, #0369a1 100%); color: white; padding: 3.5rem 2rem 3rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(56,189,248,0.2); border: 1px solid rgba(56,189,248,0.5); color: #bae6fd; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.1rem; font-weight: 800; line-height: 1.25; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1.02rem; color: #e0f2fe; max-width: 700px; margin: 0 auto 1rem; line-height: 1.7; }
+
+  main { max-width: 980px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  .disclosure { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; margin-bottom: 2rem; }
+  .disclosure strong { color: #7c2d12; }
+
+  .context-box { background: white; border-left: 4px solid #0369a1; border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .context-box h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em; color: #0369a1; margin-bottom: 0.5rem; font-weight: 700; }
+  .context-box p { font-size: 0.92rem; color: #334155; line-height: 1.7; }
+
+  .section-title { font-size: 1.3rem; font-weight: 800; color: #0a2540; margin: 2.25rem 0 0.75rem; }
+  .section-sub { font-size: 0.88rem; color: #64748b; margin-bottom: 1.25rem; line-height: 1.6; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+
+  .brief-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 700px) { .brief-grid { grid-template-columns: 1fr; } }
+  .brief-item .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #0369a1; font-weight: 700; margin-bottom: 0.3rem; }
+  .brief-item .val { font-size: 0.9rem; color: #334155; line-height: 1.6; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  th { background: #0a2540; color: #bae6fd; padding: 0.6rem 0.8rem; text-align: left; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 0.65rem 0.8rem; border-bottom: 1px solid #e2e8f0; color: #334155; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .phase { font-weight: 700; color: #0a2540; }
+  .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.68rem; font-weight: 600; background: #e0f2fe; color: #075985; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0; }
+  @media (max-width: 700px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: white; border-radius: 10px; padding: 1rem; text-align: center; border-top: 4px solid #0369a1; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .kpi-val { font-size: 1.5rem; font-weight: 800; color: #0a2540; }
+  .kpi-lbl { font-size: 0.68rem; text-transform: uppercase; color: #64748b; font-weight: 600; margin-top: 0.25rem; }
+
+  footer { background: #0a2540; color: #bae6fd; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #38bdf8; }
+  footer a { color: #bae6fd; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· Field Marketing Campaign Brief</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_outreach.html">Outreach Pieces</a>
+    <a class="nav-link" href="portfolio_marketing_coordinator.html">Marketing Coordinator</a>
+    <a class="nav-link" href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Campaign Brief + Content Calendar Sample</div>
+  <h1>Regional Enterprise Event Campaign Brief &amp; Content Calendar</h1>
+  <p>A spec campaign brief for a traveling enterprise field-marketing event — the kind of pre/during/post structure that turns a single-day event into a multi-week content campaign.</p>
+</div>
+
+<main>
+
+  <div class="disclosure">
+    <strong>What this is:</strong> A speculative planning-template sample, not client work for or commissioned by SAP. I built it using a generic enterprise field-marketing scenario to demonstrate campaign planning and content-calendar structure, not to represent an actual SAP program.
+  </div>
+
+  <div class="context-box">
+    <h4>Why I built this for SAP's field marketing team</h4>
+    <p>Chris Durkin has worked as Marketing Director on SAP's regional field tour programs, and Keith Schmehl runs North America Field Marketing strategy and execution out of the Office of the CMO. Both roles live at the intersection of event logistics and sustained content output — a single regional event only pays off if it's wrapped in weeks of promotion and follow-up content, not treated as a one-day expense. This brief shows I can build that structure end to end.</p>
+  </div>
+
+  <div class="section-title">Campaign Brief</div>
+  <div class="card">
+    <div class="brief-grid">
+      <div class="brief-item"><div class="label">Campaign</div><div class="val">Regional "Business Reimagined"-style enterprise roadshow, single city stop</div></div>
+      <div class="brief-item"><div class="label">Audience</div><div class="val">Mid-market and enterprise IT/operations decision-makers within driving distance of the venue</div></div>
+      <div class="brief-item"><div class="label">Objective</div><div class="val">Fill the room, then convert attendance into a sales-qualified pipeline within 30 days of the event</div></div>
+      <div class="brief-item"><div class="label">Primary Channels</div><div class="val">Email nurture, LinkedIn organic + paid, landing page, sales outreach enablement</div></div>
+    </div>
+  </div>
+
+  <div class="section-title">Content Calendar</div>
+  <div class="section-sub">Three phases, each with a distinct job to do.</div>
+
+  <div class="card">
+    <table>
+      <tr><th>Week</th><th>Phase</th><th>Content / Asset</th><th>Channel</th></tr>
+      <tr><td>-6</td><td class="phase">Pre-Event</td><td>Registration landing page live; "why attend" LinkedIn post from the regional sales lead</td><td><span class="badge">Landing Page</span> <span class="badge">Social</span></td></tr>
+      <tr><td>-4</td><td class="phase">Pre-Event</td><td>Email #1: agenda + featured speaker announcement</td><td><span class="badge">Email</span></td></tr>
+      <tr><td>-2</td><td class="phase">Pre-Event</td><td>Email #2: customer proof point relevant to the region's dominant industry</td><td><span class="badge">Email</span></td></tr>
+      <tr><td>-1</td><td class="phase">Pre-Event</td><td>Reminder email + "what to expect" one-pager for registrants</td><td><span class="badge">Email</span> <span class="badge">PDF</span></td></tr>
+      <tr><td>0</td><td class="phase">Event Day</td><td>Live social coverage; on-site lead capture; recorded session clips</td><td><span class="badge">Social</span> <span class="badge">Video</span></td></tr>
+      <tr><td>+1</td><td class="phase">Post-Event</td><td>Thank-you email with session recap + on-demand video link</td><td><span class="badge">Email</span></td></tr>
+      <tr><td>+2</td><td class="phase">Post-Event</td><td>Blog recap repackaging the top session insight for non-attendees</td><td><span class="badge">Blog</span></td></tr>
+      <tr><td>+3</td><td class="phase">Post-Event</td><td>Sales enablement one-pager: talking points + objection handling drawn from Q&amp;A at the event</td><td><span class="badge">Sales Enablement</span></td></tr>
+      <tr><td>+4</td><td class="phase">Post-Event</td><td>Nurture email #2 for non-converted attendees, tied to a smaller follow-up offer (demo, assessment)</td><td><span class="badge">Email</span></td></tr>
+    </table>
+  </div>
+
+  <div class="section-title">KPIs This Brief Is Built Around</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">Registration → Attendance</div><div class="kpi-lbl">Show-Up Rate</div></div>
+    <div class="kpi"><div class="kpi-val">Attendance → SQL</div><div class="kpi-lbl">Pipeline Conversion</div></div>
+    <div class="kpi"><div class="kpi-val">Email Open/Click</div><div class="kpi-lbl">Nurture Engagement</div></div>
+    <div class="kpi"><div class="kpi-val">Video Views</div><div class="kpi-lbl">Post-Event Reach</div></div>
+  </div>
+
+  <div class="section-title">What I'd Bring to a Field Marketing Content Seat</div>
+  <div class="card">
+    <p style="font-size:0.9rem; color:#334155; line-height:1.75;">Ten years of freelance client marketing work taught me that the event is the easy part — the content system wrapped around it is what determines whether it pays for itself. I can build the full calendar, write the assets in it, and track which touch actually moved a prospect from registrant to pipeline.</p>
+  </div>
+
+</main>
+
+<footer>
+  Anel Henning · Tampa, FL · <strong>Speculative planning sample — not affiliated with or commissioned by SAP</strong>
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_outreach.html">All Outreach Pieces</a> · <a href="portfolio_marketing_coordinator.html">Marketing Coordinator</a> · <a href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</footer>
+
+</body>
+</html>
