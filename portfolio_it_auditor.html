@@ -103,6 +103,7 @@
     <span class="tag">ISC2 CC Candidate — Exam Completed June 2026</span>
     <span class="tag">ISACA West Florida Chapter Member</span>
     <span class="tag">MS Cybersecurity Management (2026)</span>
+    <span class="tag">AI Governance Research — NIST AI RMF</span>
   </div>
 </div>
 
@@ -112,7 +113,7 @@
     <div class="kpi"><div class="kpi-val">5+ yrs</div><div class="kpi-lbl">Audit Evidence &amp; Control Documentation</div></div>
     <div class="kpi"><div class="kpi-val">3</div><div class="kpi-lbl">Frameworks — HIPAA / NIST CSF / ISO 27001</div></div>
     <div class="kpi"><div class="kpi-val">2</div><div class="kpi-lbl">Professional Memberships — ISACA &amp; ISC2</div></div>
-    <div class="kpi"><div class="kpi-val">1</div><div class="kpi-lbl">SOC 2 Foundational Exposure</div></div>
+    <div class="kpi"><div class="kpi-val">8</div><div class="kpi-lbl">Original Audit &amp; Governance Artifacts</div></div>
   </div>
 
   <section>
@@ -129,6 +130,9 @@
         <div class="skill-pill">Compliance documentation &amp; version control</div>
         <div class="skill-pill">SOP &amp; audit workpaper writing</div>
         <div class="skill-pill">Document library management</div>
+        <div class="skill-pill">Third-party / vendor risk assessment</div>
+        <div class="skill-pill">Corrective action plan (CAP) tracking</div>
+        <div class="skill-pill">AI agent governance — NIST AI RMF</div>
       </div>
     </div>
   </section>
@@ -201,6 +205,80 @@
       <div class="doc-sample-label">Sample 03 — Control Narrative</div>
       <h4>Control Narrative Excerpt — User Access Provisioning</h4>
       <p>"New user accounts are requested by the hiring manager via the standard access request form and require written approval from the system owner before provisioning. Access is granted at the minimum level required for the employee's role (least privilege). IT confirms provisioning within one business day and logs the request, approval, and grant date in the access log. This control addresses the risk of unauthorized or excessive access being granted at onboarding."</p>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 04 — ITGC Control Testing Workpaper</div>
+      <h4>Control Test — User Access Review (NIST CSF PR.AC-1)</h4>
+      <p><strong>Objective:</strong> Confirm quarterly access reviews are performed and unauthorized access is revoked timely.<br>
+      <strong>Population:</strong> 42 active user accounts across 3 in-scope systems · <strong>Sample size:</strong> 10 (judgmental, weighted toward privileged accounts)</p>
+      <table>
+        <thead><tr><th>Step</th><th>Procedure</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Obtain quarterly access review sign-off from system owner</td><td><span class="badge green">Evidence obtained</span></td></tr>
+          <tr><td>2</td><td>Trace 10 sampled accounts to active employee roster (HRIS)</td><td><span class="badge green">10/10 traced</span></td></tr>
+          <tr><td>3</td><td>Confirm access level matches documented job role</td><td><span class="badge amber">1 exception noted</span></td></tr>
+          <tr><td>4</td><td>Confirm terminated employees' access revoked within SLA (5 business days)</td><td><span class="badge green">Within SLA</span></td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:0.75rem;"><strong>Exception:</strong> One account retained elevated access beyond documented role scope (contractor conversion) — logged to CAP tracker below.<br><strong>Conclusion:</strong> Control operating effectively with one exception; no control failure.</p>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 05 — Corrective Action Plan (CAP) Tracker</div>
+      <h4>Findings &amp; Remediation Log</h4>
+      <table>
+        <thead><tr><th>Finding</th><th>Root Cause</th><th>Owner</th><th>Target Date</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Contractor retained elevated access post role-change</td><td>Role-change not routed through access request form</td><td>IT Manager</td><td>30 days</td><td><span class="badge amber">In Progress</span></td></tr>
+          <tr><td>Vendor with PHI access lacks signed BAA</td><td>No vendor onboarding checklist requiring BAA before data access</td><td>Compliance Lead</td><td>15 days</td><td><span class="badge red">Open</span></td></tr>
+          <tr><td>No documented incident response plan</td><td>Plan drafted but never formally approved</td><td>Security Lead</td><td>Closed</td><td><span class="badge green">Remediated</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 06 — Vendor / Third-Party Risk Assessment</div>
+      <h4>Vendor Risk Questionnaire Summary — Cloud Document Storage Provider</h4>
+      <p><strong>Data accessed:</strong> Client PHI-adjacent documents, no direct PHI storage · <strong>Risk tier:</strong> <span class="badge amber">Medium</span></p>
+      <ul>
+        <li><strong>Security posture:</strong> SOC 2 Type II report obtained and reviewed, no material exceptions</li>
+        <li><strong>Data handling:</strong> Encryption at rest and in transit confirmed via vendor attestation</li>
+        <li><strong>Contractual:</strong> BAA on file; data processing terms reviewed against HIPAA minimum necessary standard</li>
+        <li><strong>Mitigation:</strong> Annual re-assessment scheduled; access limited to named users with MFA enforced</li>
+      </ul>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 07 — Compliance Calendar</div>
+      <h4>12-Month Recurring Control Testing &amp; Review Schedule</h4>
+      <table>
+        <thead><tr><th>Cadence</th><th>Activity</th><th>Framework Tie</th></tr></thead>
+        <tbody>
+          <tr><td>Quarterly</td><td>User access review, all in-scope systems</td><td>NIST CSF PR.AC-1</td></tr>
+          <tr><td>Quarterly</td><td>Vendor risk re-screen for medium/high-tier vendors</td><td>HIPAA Business Associate Mgmt</td></tr>
+          <tr><td>Semi-annual</td><td>Policy review &amp; version-control audit</td><td>ISO 27001 A.5</td></tr>
+          <tr><td>Annual</td><td>Incident response tabletop exercise</td><td>HIPAA §164.308(a)(7)</td></tr>
+          <tr><td>Annual</td><td>Security awareness training refresh &amp; roster sign-off</td><td>HIPAA §164.308(a)(5)</td></tr>
+          <tr><td>Continuous</td><td>AI agent activity log review (see Sample 08)</td><td>NIST AI RMF — MANAGE</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-sample">
+      <div class="doc-sample-label">Sample 08 — AI Agent Governance &amp; Risk Assessment</div>
+      <h4>Governance Framework for Agentic AI Tools (Claude Code) — Mapped to NIST AI RMF</h4>
+      <p>Built from direct hands-on use of agentic AI (Claude/Claude Code, Perplexity) in compliance documentation work — applying the same GRC discipline to the AI tools performing the work as to the systems being audited.</p>
+      <table>
+        <thead><tr><th>NIST AI RMF Function</th><th>Control Applied</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>GOVERN</td><td>Documented scope of what the agent may act on (file edits, research) vs. what requires human approval (sending, publishing, purchasing)</td><td><span class="badge green">In place</span></td></tr>
+          <tr><td>MAP</td><td>Risk categorization of agent tasks — low-risk (drafting, research) vs. high-risk (external communication, financial, credential handling)</td><td><span class="badge green">In place</span></td></tr>
+          <tr><td>MEASURE</td><td>Review of agent output for accuracy before use (e.g., verifying sourced claims, checking generated content against source documents)</td><td><span class="badge blue">Ongoing</span></td></tr>
+          <tr><td>MANAGE</td><td>Human-in-the-loop checkpoint before any irreversible or externally-visible action; activity log retained for traceability</td><td><span class="badge green">In place</span></td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:0.75rem;"><strong>Why this matters:</strong> As agentic AI tools become embedded in compliance and audit workflows, the ability to govern the tool — not just use it — is an emerging GRC skill. This artifact demonstrates that oversight applied in practice, not just studied.</p>
     </div>
   </section>
 
