@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anel Henning — Compliance Calendar (GRC Artifact)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
+
+  nav { background: #111827; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #818cf8; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #cbd5e1; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #818cf8; background: rgba(255,255,255,0.05); }
+
+  .subnav { background: #1e293b; padding: 0.7rem 2rem; display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+  .subnav a { color: #cbd5e1; font-size: 0.78rem; font-weight: 600; text-decoration: none; padding: 0.4rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s; }
+  .subnav a:hover, .subnav a.active { background: #4338ca; color: white; border-color: #4338ca; }
+
+  .hero { background: linear-gradient(135deg, #111827 0%, #1e293b 60%, #4338ca 100%); color: white; padding: 3rem 2rem 2.5rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(129,140,248,0.2); border: 1px solid rgba(129,140,248,0.5); color: #c7d2fe; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.1rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1rem; color: #cbd5e1; max-width: 760px; margin: 0 auto; line-height: 1.7; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .section-title { font-size: 1.3rem; font-weight: 800; color: #111827; margin-bottom: 0.35rem; }
+  .section-sub  { font-size: 0.88rem; color: #64748b; margin-bottom: 1.5rem; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: white; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #4338ca; }
+  .kpi-val  { font-size: 1.9rem; font-weight: 800; color: #111827; line-height: 1.1; }
+  .kpi-lbl  { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; margin-top: 0.3rem; font-weight: 600; }
+
+  .month-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-bottom: 2rem; }
+  @media (max-width: 900px) { .month-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .month-grid { grid-template-columns: 1fr; } }
+  .month-card { background: white; border-radius: 12px; padding: 1.2rem 1.3rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .month-name { font-size: 0.95rem; font-weight: 800; color: #111827; margin-bottom: 0.7rem; padding-bottom: 0.5rem; border-bottom: 2px solid #eef2ff; }
+  .month-card ul { list-style: none; }
+  .month-card li { font-size: 0.78rem; color: #334155; line-height: 1.6; padding: 0.35rem 0; border-bottom: 1px dashed #f1f5f9; display: flex; justify-content: space-between; gap: 0.5rem; align-items: flex-start; }
+  .month-card li:last-child { border-bottom: none; }
+  .activity-text { flex: 1; }
+  .activity-tag { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #4338ca; background: #eef2ff; padding: 0.12rem 0.4rem; border-radius: 4px; white-space: nowrap; }
+
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.62rem; font-weight: 700; white-space: nowrap; margin-left: 0.3rem; }
+  .badge.green { background: #dcfce7; color: #166534; }
+  .badge.amber { background: #fef3c7; color: #92400e; }
+  .badge.blue { background: #e0e7ff; color: #3730a3; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.75rem; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  th { background: #111827; color: #c7d2fe; padding: 0.55rem 0.7rem; text-align: left; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 0.55rem 0.7rem; border-bottom: 1px solid #e2e8f0; color: #334155; }
+
+  .note-box { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 10px; padding: 1.1rem 1.3rem; font-size: 0.85rem; color: #3730a3; line-height: 1.7; margin-bottom: 2rem; }
+
+  footer { background: #111827; color: #94a3b8; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #818cf8; }
+  footer a { color: #c7d2fe; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· GRC Artifacts</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_it_auditor.html">IT Auditor Portfolio</a>
+    <a class="nav-link" href="portfolio_index.html">Design Portfolio</a>
+  </div>
+</nav>
+<div class="subnav">
+  <a href="artifact_risk_register.html">Risk Register</a>
+  <a href="artifact_itgc_workpapers.html">ITGC Workpapers</a>
+  <a href="artifact_cap_tracker.html">CAP Tracker</a>
+  <a href="artifact_vendor_risk_assessment.html">Vendor Risk Assessment</a>
+  <a href="artifact_compliance_calendar.html" class="active">Compliance Calendar</a>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">Practice Artifact · Not Client Work Product</div>
+  <h1>Compliance Calendar</h1>
+  <p>A month-by-month operating calendar for the same annual cycle covered in the risk register, ITGC workpapers, CAP tracker, and vendor risk assessment — showing how recurring controls, testing, and review activities actually land across a real year rather than as an abstract cadence table.</p>
+</div>
+
+<main>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val">34</div><div class="kpi-lbl">Scheduled Activities</div></div>
+    <div class="kpi"><div class="kpi-val">12</div><div class="kpi-lbl">Months Covered</div></div>
+    <div class="kpi"><div class="kpi-val">5</div><div class="kpi-lbl">Frameworks Tracked</div></div>
+    <div class="kpi"><div class="kpi-val">29/34</div><div class="kpi-lbl">Completed On Schedule</div></div>
+  </div>
+
+  <div class="month-grid">
+    <div class="month-card">
+      <div class="month-name">January</div>
+      <ul>
+        <li><span class="activity-text">Baseline gap analysis kickoff — NIST CSF / HIPAA</span><span class="activity-tag">Risk</span></li>
+        <li><span class="activity-text">Incident response plan review</span><span class="activity-tag">HIPAA</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Vendor BAA compliance sweep</span><span class="activity-tag">HIPAA</span><span class="badge green">Done</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">February</div>
+      <ul>
+        <li><span class="activity-text">Password policy remediation (F-04)</span><span class="activity-tag">ISO</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Payroll processor annual vendor review</span><span class="activity-tag">Vendor</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Log review cadence implemented</span><span class="activity-tag">NIST</span><span class="badge green">Done</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">March</div>
+      <ul>
+        <li><span class="activity-text">Q1 access review sign-off (all systems)</span><span class="activity-tag">ITGC</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Physical access log remediation</span><span class="activity-tag">ISO</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Q1 risk register review meeting</span><span class="activity-tag">Risk</span><span class="badge green">Done</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">April</div>
+      <ul>
+        <li><span class="activity-text">ITGC WP-01 — Access Provisioning testing</span><span class="activity-tag">ITGC</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Data classification scheme drafting begins</span><span class="activity-tag">ISO</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">May</div>
+      <ul>
+        <li><span class="activity-text">Managed IT services provider annual review</span><span class="activity-tag">Vendor</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Security awareness training refresh launched</span><span class="activity-tag">HIPAA</span><span class="badge green">Done</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">June</div>
+      <ul>
+        <li><span class="activity-text">Q2 access review sign-off</span><span class="activity-tag">ITGC</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Cloud storage vendor annual review</span><span class="activity-tag">Vendor</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Training completion roster finalized (F-05 close)</span><span class="activity-tag">HIPAA</span><span class="badge green">Done</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">July</div>
+      <ul>
+        <li><span class="activity-text">ITGC WP-02 — Change Management testing</span><span class="activity-tag">ITGC</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Backup restoration test scheduling begins</span><span class="activity-tag">Risk</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">August</div>
+      <ul>
+        <li><span class="activity-text">ITGC WP-03 — Backup &amp; Recovery testing</span><span class="activity-tag">ITGC</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">ITGC WP-04 — Logical Security testing</span><span class="activity-tag">ITGC</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Email/marketing platform annual review</span><span class="activity-tag">Vendor</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Change management approval trail fix (F-06 close)</span><span class="activity-tag">ISO</span><span class="badge green">Done</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">September</div>
+      <ul>
+        <li><span class="activity-text">Q3 access review sign-off</span><span class="activity-tag">ITGC</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Semi-annual policy review &amp; version-control audit</span><span class="activity-tag">ISO</span><span class="badge green">Done</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">October</div>
+      <ul>
+        <li><span class="activity-text">ITGC WP-05 — Segregation of Duties testing</span><span class="activity-tag">ITGC</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Background check vendor annual review</span><span class="activity-tag">Vendor</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Incident response tabletop exercise</span><span class="activity-tag">HIPAA</span><span class="badge amber">Delayed</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">November</div>
+      <ul>
+        <li><span class="activity-text">SOD finding remediation (F-08)</span><span class="activity-tag">ISO</span><span class="badge amber">In progress</span></li>
+        <li><span class="activity-text">Backup restoration test executed (F-07)</span><span class="activity-tag">NIST</span><span class="badge amber">In progress</span></li>
+      </ul>
+    </div>
+    <div class="month-card">
+      <div class="month-name">December</div>
+      <ul>
+        <li><span class="activity-text">Q4 access review sign-off</span><span class="activity-tag">ITGC</span><span class="badge green">Done</span></li>
+        <li><span class="activity-text">Annual policy review cycle close-out (3 of 9 carried)</span><span class="activity-tag">ISO</span><span class="badge blue">Carried</span></li>
+        <li><span class="activity-text">Year-end risk register &amp; CAP review, next-year plan drafted</span><span class="activity-tag">Risk</span><span class="badge green">Done</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-title">Recurring Cadence Reference</div>
+    <div class="section-sub">The underlying schedule that produces the month-by-month activity above</div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Cadence</th><th>Activity</th><th>Framework Tie</th></tr></thead>
+        <tbody>
+          <tr><td>Quarterly</td><td>User access review, all in-scope systems</td><td>NIST CSF PR.AC-1</td></tr>
+          <tr><td>Quarterly</td><td>Risk register review meeting</td><td>Internal governance</td></tr>
+          <tr><td>Quarterly (rotating)</td><td>ITGC control testing — one control area per quarter, five-area rotation</td><td>ISO 27001 / NIST CSF</td></tr>
+          <tr><td>Semi-annual</td><td>Policy review &amp; version-control audit</td><td>ISO 27001 A.5.1.2</td></tr>
+          <tr><td>Semi-annual</td><td>High-tier vendor re-screen (payroll, managed IT)</td><td>Vendor risk program</td></tr>
+          <tr><td>Annual</td><td>Standard-tier vendor re-screen (all others)</td><td>Vendor risk program</td></tr>
+          <tr><td>Annual</td><td>Incident response tabletop exercise</td><td>HIPAA §164.308(a)(7)</td></tr>
+          <tr><td>Annual</td><td>Security awareness training refresh &amp; roster sign-off</td><td>HIPAA §164.308(a)(5)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="note-box">
+    <strong>Year-end summary:</strong> 29 of 34 scheduled activities completed on the original timeline (85%); the incident response tabletop slipped one month due to scheduling conflicts, and three policy reviews plus one SOD remediation carried into the following year's calendar with named owners and dates — consistent with how the risk register and CAP tracker above show those same items closing out.
+  </div>
+
+</main>
+
+<footer>
+  <strong>Anél Henning</strong> — Tampa, FL (Open to Remote) · 813.743.1661 · logicalcoders@outlook.com
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_it_auditor.html">IT Auditor Portfolio</a> ·
+    <a href="artifact_risk_register.html">Risk Register</a> ·
+    <a href="artifact_itgc_workpapers.html">ITGC Workpapers</a> ·
+    <a href="artifact_cap_tracker.html">CAP Tracker</a> ·
+    <a href="artifact_vendor_risk_assessment.html">Vendor Risk Assessment</a>
+  </div>
+</footer>
+
+</body>
+</html>

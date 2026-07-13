@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anel Henning — Vendor / Third-Party Risk Assessment (GRC Artifact)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
+
+  nav { background: #111827; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-wrap: wrap; }
+  .nav-brand { color: white; font-size: 1rem; font-weight: 700; padding: 1rem 0; }
+  .nav-brand span { color: #818cf8; }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-link { color: #cbd5e1; padding: 1.2rem 0.9rem; font-size: 0.78rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; text-decoration: none; }
+  .nav-link:hover, .nav-link.active { color: white; border-bottom-color: #818cf8; background: rgba(255,255,255,0.05); }
+
+  .subnav { background: #1e293b; padding: 0.7rem 2rem; display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+  .subnav a { color: #cbd5e1; font-size: 0.78rem; font-weight: 600; text-decoration: none; padding: 0.4rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s; }
+  .subnav a:hover, .subnav a.active { background: #4338ca; color: white; border-color: #4338ca; }
+
+  .hero { background: linear-gradient(135deg, #111827 0%, #1e293b 60%, #4338ca 100%); color: white; padding: 3rem 2rem 2.5rem; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(129,140,248,0.2); border: 1px solid rgba(129,140,248,0.5); color: #c7d2fe; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 2.1rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1rem; color: #cbd5e1; max-width: 760px; margin: 0 auto; line-height: 1.7; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+  .section-title { font-size: 1.3rem; font-weight: 800; color: #111827; margin-bottom: 0.35rem; }
+  .section-sub  { font-size: 0.88rem; color: #64748b; margin-bottom: 1.5rem; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: white; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #4338ca; }
+  .kpi-val  { font-size: 1.9rem; font-weight: 800; color: #111827; line-height: 1.1; }
+  .kpi-lbl  { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; margin-top: 0.3rem; font-weight: 600; }
+
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.75rem; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.79rem; min-width: 950px; }
+  th { background: #111827; color: #c7d2fe; padding: 0.55rem 0.7rem; text-align: left; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 0.55rem 0.7rem; border-bottom: 1px solid #e2e8f0; color: #334155; vertical-align: top; }
+
+  .vendor-card { background: white; border-radius: 12px; padding: 1.6rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+  .vendor-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.9rem; padding-bottom: 0.9rem; border-bottom: 1px solid #e2e8f0; }
+  .vendor-title { font-size: 1.02rem; font-weight: 700; color: #111827; }
+  .vendor-type { font-size: 0.8rem; color: #64748b; margin-top: 2px; }
+  .vendor-body ul { padding-left: 1.1rem; color: #334155; font-size: 0.85rem; line-height: 1.85; }
+  .vendor-body ul strong { color: #111827; }
+
+  .tier { font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 999px; white-space: nowrap; }
+  .tier.high { background: #fee2e2; color: #991b1b; }
+  .tier.med { background: #fef3c7; color: #92400e; }
+  .tier.low { background: #dcfce7; color: #166534; }
+
+  .note-box { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 10px; padding: 1.1rem 1.3rem; font-size: 0.85rem; color: #3730a3; line-height: 1.7; margin-bottom: 2rem; }
+
+  footer { background: #111827; color: #94a3b8; text-align: center; padding: 1.75rem; font-size: 0.82rem; margin-top: 2rem; }
+  footer strong { color: #818cf8; }
+  footer a { color: #c7d2fe; text-decoration: none; margin: 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Anél Henning <span>· GRC Artifacts</span></div>
+  <div class="nav-links">
+    <a class="nav-link" href="portfolio_it_auditor.html">IT Auditor Portfolio</a>
+    <a class="nav-link" href="portfolio_index.html">Design Portfolio</a>
+  </div>
+</nav>
+<div class="subnav">
+  <a href="artifact_risk_register.html">Risk Register</a>
+  <a href="artifact_itgc_workpapers.html">ITGC Workpapers</a>
+  <a href="artifact_cap_tracker.html">CAP Tracker</a>
+  <a href="artifact_vendor_risk_assessment.html" class="active">Vendor Risk Assessment</a>
+  <a href="artifact_compliance_calendar.html">Compliance Calendar</a>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">Practice Artifact · Not Client Work Product</div>
+  <h1>Vendor / Third-Party Risk Assessment</h1>
+  <p>Five vendors screened and re-assessed across the year, spanning cloud storage, payroll, email/marketing, managed IT, and background-check services — each scored for risk tier, security posture, contractual controls, and mitigation, plus an annual re-screen cadence.</p>
+</div>
+
+<main>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val">5</div><div class="kpi-lbl">Vendors Assessed</div></div>
+    <div class="kpi"><div class="kpi-val">2</div><div class="kpi-lbl">High-Tier (PHI / Financial Data)</div></div>
+    <div class="kpi"><div class="kpi-val">5/5</div><div class="kpi-lbl">BAA / DPA on File</div></div>
+    <div class="kpi"><div class="kpi-val">Annual</div><div class="kpi-lbl">Re-Screen Cadence</div></div>
+  </div>
+
+  <section>
+    <div class="section-title">Vendor Risk Summary</div>
+    <div class="section-sub">Consolidated view — see full assessments below</div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Vendor</th><th>Category</th><th>Data Accessed</th><th>Risk Tier</th><th>Attestation</th><th>Contract Control</th><th>Last Reviewed</th></tr></thead>
+        <tbody>
+          <tr><td>Cloud Document Storage Provider</td><td>SaaS / Storage</td><td>PHI-adjacent documents</td><td><span class="tier med">Medium</span></td><td>SOC 2 Type II</td><td>BAA on file</td><td>Jun</td></tr>
+          <tr><td>Payroll Processor</td><td>Payroll / HR</td><td>Employee SSNs, bank details, PHI (benefits)</td><td><span class="tier high">High</span></td><td>SOC 1 Type II</td><td>BAA + DPA on file</td><td>Mar</td></tr>
+          <tr><td>Email &amp; Marketing Platform</td><td>Marketing / Comms</td><td>Customer contact info, no PHI/financial</td><td><span class="tier low">Low</span></td><td>SOC 2 Type I</td><td>DPA on file</td><td>Aug</td></tr>
+          <tr><td>Managed IT Services Provider</td><td>IT / Infrastructure</td><td>Full network/admin access</td><td><span class="tier high">High</span></td><td>SOC 2 Type II</td><td>MSA with security addendum</td><td>May</td></tr>
+          <tr><td>Background Check Vendor</td><td>HR / Screening</td><td>Candidate PII (SSN, criminal history)</td><td><span class="tier med">Medium</span></td><td>FCRA-compliant attestation</td><td>DPA on file</td><td>Oct</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Full Vendor Assessments</div>
+
+    <div class="vendor-card">
+      <div class="vendor-head">
+        <div><div class="vendor-title">Cloud Document Storage Provider</div><div class="vendor-type">SaaS / Storage · Reviewed June</div></div>
+        <span class="tier med">Medium Risk</span>
+      </div>
+      <div class="vendor-body">
+        <ul>
+          <li><strong>Data accessed:</strong> Client PHI-adjacent documents; no direct PHI field storage</li>
+          <li><strong>Security posture:</strong> SOC 2 Type II report obtained and reviewed — no material exceptions noted</li>
+          <li><strong>Data handling:</strong> Encryption confirmed at rest (AES-256) and in transit (TLS 1.2+) via vendor attestation</li>
+          <li><strong>Contractual:</strong> BAA on file; data processing terms reviewed against HIPAA minimum-necessary standard</li>
+          <li><strong>Mitigation:</strong> Access limited to named users with MFA enforced; annual re-assessment scheduled</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="vendor-card">
+      <div class="vendor-head">
+        <div><div class="vendor-title">Payroll Processor</div><div class="vendor-type">Payroll / HR · Reviewed March</div></div>
+        <span class="tier high">High Risk</span>
+      </div>
+      <div class="vendor-body">
+        <ul>
+          <li><strong>Data accessed:</strong> Employee SSNs, direct deposit bank details, and benefits-related PHI</li>
+          <li><strong>Security posture:</strong> SOC 1 Type II report reviewed for financial controls; no exceptions affecting data integrity</li>
+          <li><strong>Data handling:</strong> Data tokenized for bank routing/account numbers; PHI segmented from general payroll records</li>
+          <li><strong>Contractual:</strong> Both BAA (for benefits PHI) and DPA (for general PII) on file and reviewed against current policy</li>
+          <li><strong>Mitigation:</strong> High-tier classification triggers semi-annual (not annual) re-screen given breadth of sensitive data</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="vendor-card">
+      <div class="vendor-head">
+        <div><div class="vendor-title">Email &amp; Marketing Platform</div><div class="vendor-type">Marketing / Comms · Reviewed August</div></div>
+        <span class="tier low">Low Risk</span>
+      </div>
+      <div class="vendor-body">
+        <ul>
+          <li><strong>Data accessed:</strong> Customer/prospect names and email addresses only — no PHI, no financial data</li>
+          <li><strong>Security posture:</strong> SOC 2 Type I report reviewed; Type II not yet available from vendor (flagged for follow-up next cycle)</li>
+          <li><strong>Data handling:</strong> Standard TLS in transit; vendor confirmed no data resale or third-party sharing in DPA</li>
+          <li><strong>Contractual:</strong> DPA on file; no BAA required given no PHI exposure</li>
+          <li><strong>Mitigation:</strong> Low-tier classification; annual re-screen sufficient, flagged to request Type II report at renewal</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="vendor-card">
+      <div class="vendor-head">
+        <div><div class="vendor-title">Managed IT Services Provider</div><div class="vendor-type">IT / Infrastructure · Reviewed May</div></div>
+        <span class="tier high">High Risk</span>
+      </div>
+      <div class="vendor-body">
+        <ul>
+          <li><strong>Data accessed:</strong> Full network and administrative access across all in-scope systems</li>
+          <li><strong>Security posture:</strong> SOC 2 Type II report reviewed; one exception noted (patch management SLA missed twice in review period) — followed up directly with vendor, resolved</li>
+          <li><strong>Data handling:</strong> Remote access requires MFA and is logged; access reviewed jointly each quarter</li>
+          <li><strong>Contractual:</strong> Master Services Agreement includes a security addendum with breach notification terms (72-hour requirement)</li>
+          <li><strong>Mitigation:</strong> High-tier classification given breadth of access; quarterly access log review added as compensating control</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="vendor-card">
+      <div class="vendor-head">
+        <div><div class="vendor-title">Background Check Vendor</div><div class="vendor-type">HR / Screening · Reviewed October</div></div>
+        <span class="tier med">Medium Risk</span>
+      </div>
+      <div class="vendor-body">
+        <ul>
+          <li><strong>Data accessed:</strong> Candidate PII including SSN and criminal history records</li>
+          <li><strong>Security posture:</strong> FCRA-compliant attestation on file; SOC 2 report requested but not yet provided by vendor (flagged as open item)</li>
+          <li><strong>Data handling:</strong> Vendor confirmed data purged from their systems 90 days post-decision per contract</li>
+          <li><strong>Contractual:</strong> DPA on file; FCRA disclosure and authorization process reviewed against current HR intake form</li>
+          <li><strong>Mitigation:</strong> Follow-up requested for SOC 2 report before next annual review; interim reliance on FCRA attestation and contractual purge terms</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="note-box">
+    <strong>Program note:</strong> Two vendors (Payroll Processor, Managed IT Services Provider) are classified High-tier due to breadth/sensitivity of access and moved to a semi-annual or quarterly compensating-control cadence rather than the standard annual re-screen — reflecting a risk-based approach to vendor management rather than a flat one-size-fits-all schedule.
+  </div>
+
+</main>
+
+<footer>
+  <strong>Anél Henning</strong> — Tampa, FL (Open to Remote) · 813.743.1661 · logicalcoders@outlook.com
+  <div style="margin-top:0.5rem;">
+    <a href="portfolio_it_auditor.html">IT Auditor Portfolio</a> ·
+    <a href="artifact_risk_register.html">Risk Register</a> ·
+    <a href="artifact_itgc_workpapers.html">ITGC Workpapers</a> ·
+    <a href="artifact_cap_tracker.html">CAP Tracker</a> ·
+    <a href="artifact_compliance_calendar.html">Compliance Calendar</a>
+  </div>
+</footer>
+
+</body>
+</html>
