@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anel Henning — 36 Days of Type: Alphabet &amp; Numbers</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --plum: #4A2545; --rust: #B5451B; --paper: #FAF6EF; --ink: #201A1D; --gold: #C9A84C; }
+  body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); }
+
+  .agency-header { background: linear-gradient(135deg, var(--plum) 0%, #2E1730 100%); color: white; padding: 80px 60px; position: relative; overflow: hidden; }
+  .agency-header::before { content: ''; position: absolute; top: -60px; right: 60px; width: 240px; height: 240px; border: 1px solid rgba(201,168,76,0.25); border-radius: 50%; }
+  .agency-tag { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .agency-header h1 { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 400; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1px; }
+  .agency-header h1 em { font-style: italic; color: var(--gold); }
+  .agency-meta { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .meta-item label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 10px; }
+  .meta-item p { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+
+  .section { padding: 80px 60px; }
+  .piece { margin-bottom: 90px; }
+  .piece-title { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 400; color: var(--plum); margin-bottom: 6px; }
+  .piece-subtitle { font-size: 10px; color: var(--rust); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; }
+  .piece-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 30px; align-items: start; }
+
+  .brief-box { background: var(--plum); color: white; padding: 32px; border-radius: 4px; }
+  .brief-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+  .brief-box p { font-size: 14px; line-height: 1.9; opacity: 0.85; }
+  .voice-box { background: white; padding: 24px; border-left: 2px solid var(--rust); }
+  .voice-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--rust); margin-bottom: 12px; }
+  .voice-box p { font-size: 14px; line-height: 1.9; color: #555; font-style: italic; }
+
+  .artwork-frame { width: 100%; max-width: 640px; margin: 28px auto; border: 1px solid #E7DFD2; border-radius: 6px; background: white; padding: 16px; }
+  .artwork-frame img { width: 100%; height: auto; display: block; border-radius: 3px; }
+  .artwork-caption { font-size: 11px; color: #8a7f74; text-align: center; margin-top: 10px; letter-spacing: 0.5px; }
+
+  .specs-table { width: 100%; border-collapse: collapse; margin: 28px 0; }
+  .specs-table th { background: var(--plum); color: var(--gold); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; padding: 12px 16px; text-align: left; }
+  .specs-table td { padding: 11px 16px; font-size: 13px; border-bottom: 1px solid #E7DFD2; }
+  .specs-table tr:nth-child(even) td { background: white; }
+  .pill { display: inline-block; background: var(--gold); color: var(--plum); font-size: 9px; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; font-weight: 600; }
+
+  .behance-box { background: linear-gradient(135deg, #1769ff 0%, #0047d4 100%); color: white; padding: 40px; border-radius: 4px; margin-top: 30px; }
+  .behance-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; opacity: 0.7; }
+  .behance-box .project-title { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; font-weight: 400; }
+  .behance-box p { font-size: 14px; line-height: 1.85; opacity: 0.9; margin-bottom: 12px; }
+  .behance-box .tags { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .behance-box .tag { font-size: 11px; border: 1px solid rgba(255,255,255,0.35); padding: 4px 12px; border-radius: 20px; opacity: 0.8; }
+
+  .divider { height: 1px; background: linear-gradient(90deg, var(--gold), transparent); margin: 50px 0; }
+  footer { background: var(--plum); color: rgba(255,255,255,0.4); text-align: center; padding: 40px; font-size: 13px; }
+  footer strong { color: var(--gold); }
+  footer a { color: rgba(255,255,255,0.55); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="agency-header">
+  <div class="agency-tag">Design Challenge — Tampa, FL · 2019–2020</div>
+  <h1>Anel Henning<br><em>36 Days of Type</em></h1>
+  <p style="font-size:15px; opacity:0.7; max-width:620px; line-height:1.9;">Participated in 36 Days of Type — the global typography challenge created by designers Nina Sans and Rafa Goicoechea — designing the full alphabet (A–Z) and numbers (0–9), plus background wallpaper designs, styled after a favorite artist. Built during Adobe Live streams using Photoshop and Dimension.</p>
+  <div class="agency-meta">
+    <div class="meta-item"><label>Challenge</label><p>36 Days of Type (est. 2014, Nina Sans &amp; Rafa Goicoechea)</p></div>
+    <div class="meta-item"><label>Scope</label><p>26 letters + 10 numbers = 36 pieces, plus wallpaper backgrounds</p></div>
+    <div class="meta-item"><label>Timeline</label><p>2019 – 2020</p></div>
+    <div class="meta-item"><label>Tools</label><p>Photoshop, Dimension — via Adobe Live</p></div>
+  </div>
+</div>
+
+<div class="section">
+
+  <div class="piece">
+    <div class="piece-subtitle">The Challenge</div>
+    <div class="piece-title">One Letter or Number a Day, 36 Days Straight</div>
+    <div class="piece-grid">
+      <div>
+        <div class="brief-box">
+          <h4>The Concept</h4>
+          <p>36 Days of Type runs the alphabet first — A through Z, one letterform per day — then the numbers 0 through 9. Each piece in this set draws on a favorite artist's style, worked out live during Adobe Live streams with Photoshop and Dimension. Every letter carries its own internal pattern or texture rather than a flat fill, so the set doubles as a study in surface design as much as letterform design.</p>
+        </div>
+      </div>
+      <div>
+        <div class="voice-box">
+          <h4>In My Own Words</h4>
+          <p>"Doing this live on Adobe Live changed the discipline of it — there's no going back to fix a letter once the stream moves on. Thirty-six days of committing to a mark and living with it."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TODO: replace with the real alphabet artwork once the file is saved locally (single piece, A-Z grid, each letter with a unique internal pattern) -->
+    <div class="artwork-frame">
+      <img src="type-images/36-days-of-type-alphabet.png" alt="36 Days of Type — full alphabet A to Z, each letter with a unique pattern" onerror="this.parentElement.style.display='none'">
+      <div class="artwork-caption">The full alphabet set, A–Z — each letter built with its own internal pattern</div>
+    </div>
+
+    <table class="specs-table">
+      <thead><tr><th>Set</th><th>What's Included</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Days 1–26</td><td>Full alphabet, A–Z, one letterform per day</td><td><span class="pill">Alphabet Set</span></td></tr>
+        <tr><td>Days 27–36</td><td>Numbers 0–9</td><td><span class="pill">Numeral Set</span></td></tr>
+        <tr><td>Background Designs</td><td>Wallpaper-ready pattern designs built alongside the letterforms</td><td><span class="pill">Wallpaper Designs</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="piece">
+    <div class="piece-subtitle">Why It Matters</div>
+    <div class="piece-title">Practice, Live and In Public</div>
+    <div class="brief-box" style="max-width:700px;">
+      <h4>The Concept</h4>
+      <p>Participating in 36 Days of Type through Adobe Live meant working in front of an audience in real time, with Photoshop and Dimension as the working tools — a different discipline than refining a piece in private. The finished set of 36 letters and numbers, plus the wallpaper backgrounds built alongside them, remains one of the clearest records of that period's illustration and pattern-design practice.</p>
+    </div>
+
+    <div class="behance-box">
+      <h4>Project Notes</h4>
+      <div class="project-title">36 Days of Type: Alphabet &amp; Numbers</div>
+      <p><strong>Global Design Challenge — Participant, 2019–2020</strong></p>
+      <p>Full alphabet and numeral set plus wallpaper background designs, built live on Adobe Live using Photoshop and Dimension.</p>
+      <div class="tags"><span class="tag">Typography</span><span class="tag">Illustration</span><span class="tag">Pattern Design</span><span class="tag">Adobe Live</span><span class="tag">36 Days of Type</span></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Anel Henning</strong> — Graphic Designer, Tampa FL &nbsp;|&nbsp; behance.net/anellehenning &nbsp;|&nbsp; <a href="logika_studios.html">Logika Studios</a>
+</footer>
+
+</body>
+</html>
