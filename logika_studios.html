@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logika Studios — Creative Direction &amp; Brand Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #0D1B2A; color: white; min-height: 100vh; }
+
+  .role-nav { background: #111827; padding: 14px 60px; display: flex; gap: 4px; flex-wrap: wrap; }
+  .role-nav a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 12px; letter-spacing: 1px; padding: 8px 14px; border-radius: 3px; }
+  .role-nav a:hover, .role-nav a.active { color: white; background: rgba(255,255,255,0.08); }
+
+  .hero { padding: 100px 60px 80px; position: relative; overflow: hidden; display: flex; align-items: center; gap: 60px; background: linear-gradient(135deg, #0D1B2A 0%, #1a3050 100%); }
+  .hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 500px; height: 500px; border: 80px solid rgba(201,168,76,0.08); border-radius: 50%; }
+  .hero::after { content: ''; position: absolute; top: 40px; right: 60px; width: 260px; height: 260px; border: 1px solid rgba(201,168,76,0.18); border-radius: 50%; }
+  .hero-icon { width: 120px; height: 120px; border-radius: 26px; flex-shrink: 0; position: relative; z-index: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+  .hero-text { position: relative; z-index: 1; }
+
+  .hero-tag { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: #C9A84C; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 900; line-height: 1.0; margin-bottom: 32px; }
+  .hero h1 em { font-style: italic; color: #C9A84C; font-weight: 400; }
+  .hero p { font-size: 18px; color: rgba(255,255,255,0.6); max-width: 680px; line-height: 1.85; margin-bottom: 50px; }
+
+  .hero-meta { display: flex; gap: 50px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .meta-stat .number { font-family: 'Playfair Display', serif; font-size: 36px; color: #C9A84C; font-weight: 700; line-height: 1; }
+  .meta-stat .label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+
+  .section { padding: 70px 60px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .section h3 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 400; margin-bottom: 8px; }
+  .section .sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+  .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+  .service-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 26px; transition: transform 0.2s ease, border-color 0.2s ease; }
+  .service-card:hover { transform: translateY(-3px); border-color: #C9A84C; }
+  .service-card .num { font-size: 11px; color: #C9A84C; letter-spacing: 2px; margin-bottom: 12px; }
+  .service-card .name { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+  .service-card .desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+  .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .work-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 22px; text-decoration: none; color: white; display: block; transition: transform 0.2s ease, border-color 0.2s ease; }
+  .work-card:hover { transform: translateY(-3px); border-color: #C9A84C; }
+  .work-card .name { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .work-card .desc { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-item { display: flex; gap: 24px; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-date { font-size: 12px; color: #C9A84C; letter-spacing: 1px; width: 140px; flex-shrink: 0; padding-top: 2px; }
+  .tl-body .tl-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .tl-body .tl-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+  .footer-bar { padding: 40px 60px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+  .footer-bar .brand { font-family: 'Playfair Display', serif; font-size: 20px; color: white; display: flex; align-items: center; gap: 12px; }
+  .footer-bar .brand img { width: 32px; height: 32px; border-radius: 8px; }
+  .footer-bar .links { display: flex; gap: 24px; flex-wrap: wrap; }
+  .footer-bar .links a { font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; letter-spacing: 1px; }
+  .footer-bar .links a:hover { color: #C9A84C; }
+</style>
+</head>
+<body>
+
+<div class="role-nav">
+  <a href="portfolio_index.html">Design Portfolio</a>
+  <a href="portfolio_compliance_coordinator.html">Compliance Coordinator</a>
+  <a href="portfolio_technical_writer.html">Technical Writer</a>
+  <a href="portfolio_marketing_coordinator.html">Marketing Coordinator</a>
+  <a href="portfolio_it_auditor.html">IT Auditor</a>
+  <a href="portfolio_outreach.html">Outreach Pieces</a>
+  <a href="logical_coders.html">Logical Coders</a>
+  <a href="logika_studios.html" class="active">Logika Studios</a>
+</div>
+
+<div class="hero">
+  <img src="company-icons/LogikaStudios_icon_512.png" alt="Logika Studios icon" class="hero-icon">
+  <div class="hero-text">
+    <div class="hero-tag">Tampa, FL · Creative Direction &amp; Brand Design Studio</div>
+    <h1>Logika <em>Studios</em></h1>
+    <p>Logika Studios is Anel Henning's creative practice — 24 years of brand identity, art direction, illustration, and fine art, spanning Manhattan advertising agencies, national nonprofits, and independent clients, now extended into digital product design and prototyping.</p>
+    <div class="hero-meta">
+      <div class="meta-stat"><div class="number">2002</div><div class="label">Founded</div></div>
+      <div class="meta-stat"><div class="number">24+</div><div class="label">Years in Practice</div></div>
+      <div class="meta-stat"><div class="number">4</div><div class="label">Service Areas</div></div>
+      <div class="meta-stat"><div class="number">TPA</div><div class="label">Tampa + Remote</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>What We Do</h3>
+  <p class="sub">Full production-pipeline creative work — from concept sketch to final file — built on two decades of senior-level art direction and creative direction across agencies, nonprofits, and independent clients.</p>
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="num">01</div>
+      <div class="name">Brand Identity &amp; Art Direction</div>
+      <div class="desc">Identity systems, stationery, campaign art direction, and publication design across print and digital.</div>
+    </div>
+    <div class="service-card">
+      <div class="num">02</div>
+      <div class="name">Illustration &amp; Hand-Lettering</div>
+      <div class="desc">Custom illustration, hand-lettering, and editorial artwork, including a fully hand-lettered published picture book.</div>
+    </div>
+    <div class="service-card">
+      <div class="num">03</div>
+      <div class="name">Fine Art &amp; Portraiture</div>
+      <div class="desc">Observational oil and acrylic portraiture, watercolor and pen-and-ink textile rendering, exhibited work.</div>
+    </div>
+    <div class="service-card">
+      <div class="num">04</div>
+      <div class="name">Product Concept &amp; Prototyping</div>
+      <div class="desc">UX/UI concept design and interactive prototyping in Adobe XD and Figma for original app and product concepts.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Selected History</h3>
+  <p class="sub">A studio built across three cities and two decades before formalizing under one name.</p>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">2016 – 2026</div>
+      <div class="tl-body">
+        <div class="tl-title">Creative Director, Logika Studios</div>
+        <div class="tl-desc">Concept and experience design for original product concepts (Glidecart, TransitionTrack); Adobe Live community participant; Adobe Inktober 2018 honorable mention.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2002 – Present</div>
+      <div class="tl-body">
+        <div class="tl-title">Concept Designer / Portraiture</div>
+        <div class="tl-desc">Observational oil and acrylic portrait series; hand-lettered children's picture book; Adobe Stock vendor; exhibited at Ybor Art in the Park, Tampa.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2006 – 2008</div>
+      <div class="tl-body">
+        <div class="tl-title">Senior Art Director, Posner Advertising (Manhattan)</div>
+        <div class="tl-desc">Brand kits and multi-market ad campaigns for real-estate community clients in Greenwich CT, Long Island, and Cape Cod, MA.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2008 – 2009</div>
+      <div class="tl-body">
+        <div class="tl-title">Graphic Designer, Girl Scouts of the USA (Manhattan)</div>
+        <div class="tl-desc">Art directed national convention materials, signage, apparel, and digital displays at GSUSA headquarters.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Portfolio</h3>
+  <p class="sub">Full agency-specific campaign work and case studies live on the main design portfolio and Behance.</p>
+  <div class="work-grid">
+    <a href="portfolio_index.html" class="work-card">
+      <div class="name">Design &amp; Ad Campaign Portfolio</div>
+      <div class="desc">Five agency-specific campaign portfolios, 25 original pieces.</div>
+    </a>
+    <a href="https://www.behance.net/anellehenning" class="work-card">
+      <div class="name">Behance</div>
+      <div class="desc">behance.net/anellehenning — full creative archive.</div>
+    </a>
+    <a href="portfolio_bravada.html" class="work-card">
+      <div class="name">Brand Identity Sample</div>
+      <div class="desc">Boutique identity systems, packaging, and logo suites.</div>
+    </a>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <div class="brand"><img src="company-icons/LogikaStudios_icon_512.png" alt=""> Logika Studios</div>
+  <div class="links">
+    <!-- TODO: swap to the Logika Studios LinkedIn Company Page URL once it's created -->
+    <a href="https://www.linkedin.com/in/anel-henning-quantum">LinkedIn</a>
+    <a href="https://www.behance.net/anellehenning">Behance</a>
+    <a href="logical_coders.html">Logical Coders</a>
+    <a href="portfolio_index.html">Full Portfolio</a>
+  </div>
+</div>
+
+</body>
+</html>
