@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anel Henning — Adobe's 365 Days of Type: Alphabet Letters</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --plum: #4A2545; --rust: #B5451B; --paper: #FAF6EF; --ink: #201A1D; --gold: #C9A84C; }
+  body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); }
+
+  .agency-header { background: linear-gradient(135deg, var(--plum) 0%, #2E1730 100%); color: white; padding: 80px 60px; position: relative; overflow: hidden; }
+  .agency-header::before { content: ''; position: absolute; top: -60px; right: 60px; width: 240px; height: 240px; border: 1px solid rgba(201,168,76,0.25); border-radius: 50%; }
+  .agency-tag { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .agency-header h1 { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 400; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1px; }
+  .agency-header h1 em { font-style: italic; color: var(--gold); }
+  .agency-meta { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .meta-item label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 10px; }
+  .meta-item p { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+
+  .section { padding: 80px 60px; }
+  .piece { margin-bottom: 90px; }
+  .piece-title { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 400; color: var(--plum); margin-bottom: 6px; }
+  .piece-subtitle { font-size: 10px; color: var(--rust); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; }
+  .piece-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 30px; align-items: start; }
+
+  .brief-box { background: var(--plum); color: white; padding: 32px; border-radius: 4px; }
+  .brief-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+  .brief-box p { font-size: 14px; line-height: 1.9; opacity: 0.85; }
+  .voice-box { background: white; padding: 24px; border-left: 2px solid var(--rust); }
+  .voice-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--rust); margin-bottom: 12px; }
+  .voice-box p { font-size: 14px; line-height: 1.9; color: #555; font-style: italic; }
+
+  .letter-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin: 28px 0; }
+  .letter-card { aspect-ratio: 1; background: white; border: 1px solid #E7DFD2; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 30px; color: var(--plum); }
+  .letter-card:nth-child(3n+1) { color: var(--rust); }
+  .letter-card:nth-child(3n+2) { color: var(--gold); background: var(--plum); }
+
+  .specs-table { width: 100%; border-collapse: collapse; margin: 28px 0; }
+  .specs-table th { background: var(--plum); color: var(--gold); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; padding: 12px 16px; text-align: left; }
+  .specs-table td { padding: 11px 16px; font-size: 13px; border-bottom: 1px solid #E7DFD2; }
+  .specs-table tr:nth-child(even) td { background: white; }
+  .pill { display: inline-block; background: var(--gold); color: var(--plum); font-size: 9px; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; font-weight: 600; }
+
+  .behance-box { background: linear-gradient(135deg, #1769ff 0%, #0047d4 100%); color: white; padding: 40px; border-radius: 4px; margin-top: 30px; }
+  .behance-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; opacity: 0.7; }
+  .behance-box .project-title { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; font-weight: 400; }
+  .behance-box p { font-size: 14px; line-height: 1.85; opacity: 0.9; margin-bottom: 12px; }
+  .behance-box .tags { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .behance-box .tag { font-size: 11px; border: 1px solid rgba(255,255,255,0.35); padding: 4px 12px; border-radius: 20px; opacity: 0.8; }
+
+  .divider { height: 1px; background: linear-gradient(90deg, var(--gold), transparent); margin: 50px 0; }
+  footer { background: var(--plum); color: rgba(255,255,255,0.4); text-align: center; padding: 40px; font-size: 13px; }
+  footer strong { color: var(--gold); }
+  footer a { color: rgba(255,255,255,0.55); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="agency-header">
+  <div class="agency-tag">Daily Practice — Tampa, FL</div>
+  <h1>Anel Henning<br><em>365 Days of Type</em></h1>
+  <p style="font-size:15px; opacity:0.7; max-width:620px; line-height:1.9;">A self-directed hand-lettering discipline built around Adobe's daily-practice model: one letterform at a time, explored through the full alphabet, treating typography as illustration rather than typesetting.</p>
+  <div class="agency-meta">
+    <div class="meta-item"><label>Project Type</label><p>Self-directed daily lettering practice</p></div>
+    <div class="meta-item"><label>Discipline</label><p>Hand-lettering, illustration, typography</p></div>
+    <div class="meta-item"><label>Scope</label><p>26 letterforms, A–Z</p></div>
+    <div class="meta-item"><label>Tools</label><p>Illustrator, Photoshop, hand-lettering</p></div>
+  </div>
+</div>
+
+<div class="section">
+
+  <div class="piece">
+    <div class="piece-subtitle">The Practice</div>
+    <div class="piece-title">One Letter, One Idea, Every Day</div>
+    <div class="piece-grid">
+      <div>
+        <div class="brief-box">
+          <h4>The Concept</h4>
+          <p>The rule was simple and unforgiving: one letterform per session, no repeats, no skipped days once started. Working through the alphabet in order forces variety — the same hand that draws a heavy, architectural "M" has to find something completely different for the "S" three letters later. The constraint is the whole point.</p>
+        </div>
+      </div>
+      <div>
+        <div class="voice-box">
+          <h4>In My Own Words</h4>
+          <p>"Twenty-six letters sounds small until you're trying to make each one feel like its own finished piece instead of a repeat of the last. This is the same discipline I bring to hand-lettering client work — just turned entirely inward."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="letter-grid">
+      <div class="letter-card">A</div>
+      <div class="letter-card">B</div>
+      <div class="letter-card">C</div>
+      <div class="letter-card">D</div>
+      <div class="letter-card">E</div>
+      <div class="letter-card">F</div>
+      <div class="letter-card">G</div>
+      <div class="letter-card">H</div>
+      <div class="letter-card">I</div>
+      <div class="letter-card">J</div>
+      <div class="letter-card">K</div>
+      <div class="letter-card">L</div>
+    </div>
+
+    <table class="specs-table">
+      <thead><tr><th>Deliverable</th><th>Format</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>26 Individual Letterforms</td><td>Illustrator / hand-lettering</td><td><span class="pill">Daily Practice</span></td></tr>
+        <tr><td>Process Sketches</td><td>Ink, pencil, digital</td><td><span class="pill">Working Files</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="piece">
+    <div class="piece-subtitle">Why It Matters</div>
+    <div class="piece-title">Practice as a Design Discipline</div>
+    <div class="brief-box" style="max-width:700px;">
+      <h4>The Concept</h4>
+      <p>A daily practice like this isn't meant to produce a finished product — it's meant to keep the hand and eye sharp between paid projects. The habit of hand-lettering and illustration built here shows up directly in client-facing work: the children's picture book, editorial hand-lettering, and packaging typography elsewhere in this portfolio.</p>
+    </div>
+
+    <div class="behance-box">
+      <h4>Project Notes</h4>
+      <div class="project-title">Adobe's 365 Days of Type: Alphabet Letters</div>
+      <p><strong>Self-Directed Daily Practice</strong></p>
+      <p>Twenty-six letterforms, each treated as its own illustration exercise, built as a discipline practice rather than a commissioned project.</p>
+      <div class="tags"><span class="tag">Hand-Lettering</span><span class="tag">Typography</span><span class="tag">Illustration</span><span class="tag">Daily Practice</span><span class="tag">Original Work</span></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Anel Henning</strong> — Graphic Designer, Tampa FL &nbsp;|&nbsp; behance.net/anellehenning &nbsp;|&nbsp; <a href="logika_studios.html">Logika Studios</a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anel Henning — GRC Documentation: Risk Registers, Control Narratives &amp; Audit Evidence</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --navy: #1F2937; --accent: #2A5C8A; --paper: #F5F7FA; --ink: #1A1A1A; --gold: #C9A84C; }
+  body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); }
+
+  .agency-header { background: linear-gradient(135deg, var(--navy) 0%, #111827 100%); color: white; padding: 80px 60px; position: relative; overflow: hidden; }
+  .agency-header::before { content: ''; position: absolute; top: -60px; right: 60px; width: 240px; height: 240px; border: 1px solid rgba(42,92,138,0.35); border-radius: 50%; }
+  .agency-tag { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .agency-header h1 { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 400; line-height: 1.15; margin-bottom: 24px; letter-spacing: -0.5px; }
+  .agency-header h1 em { font-style: italic; color: var(--gold); }
+  .agency-meta { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .meta-item label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 10px; }
+  .meta-item p { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+
+  .section { padding: 70px 60px; }
+  .section h3 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 400; color: var(--navy); margin-bottom: 8px; }
+  .section .sub { font-size: 13px; color: #666; margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+  .brief-box { background: var(--navy); color: white; padding: 32px; border-radius: 4px; margin-bottom: 30px; }
+  .brief-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+  .brief-box p { font-size: 14px; line-height: 1.9; opacity: 0.85; }
+
+  .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .work-card { background: white; border: 1px solid #DCE3EA; border-radius: 6px; padding: 22px; text-decoration: none; color: var(--ink); display: block; transition: transform 0.2s ease, border-color 0.2s ease; }
+  .work-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .work-card .num { font-size: 11px; color: var(--accent); letter-spacing: 2px; margin-bottom: 10px; font-weight: 600; }
+  .work-card .name { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+  .work-card .desc { font-size: 12px; color: #666; line-height: 1.6; }
+
+  .cert-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .cert-pill { font-size: 12px; letter-spacing: 1px; padding: 10px 18px; border-radius: 30px; border: 1px solid rgba(42,92,138,0.3); background: rgba(42,92,138,0.06); color: var(--accent); }
+
+  footer { background: var(--navy); color: rgba(255,255,255,0.4); text-align: center; padding: 40px; font-size: 13px; }
+  footer strong { color: var(--gold); }
+  footer a { color: rgba(255,255,255,0.55); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="agency-header">
+  <div class="agency-tag">Compliance Documentation — Tampa, FL</div>
+  <h1>Anel Henning<br><em>GRC Documentation</em></h1>
+  <p style="font-size:15px; opacity:0.7; max-width:640px; line-height:1.9;">Developed GRC documentation — risk registers, control narratives, and audit evidence — while studying CompTIA Security+. Real work built under Logical Coders, not spec or simulated client work.</p>
+  <div class="agency-meta">
+    <div class="meta-item"><label>Practice</label><p>Logical Coders — Compliance Documentation &amp; GRC</p></div>
+    <div class="meta-item"><label>Discipline</label><p>Risk registers, control narratives, audit evidence</p></div>
+    <div class="meta-item"><label>Certification Study</label><p>CompTIA Security+, (ISC)² CC</p></div>
+    <div class="meta-item"><label>Frameworks</label><p>HIPAA, NIST CSF, ISO 27001</p></div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>What This Documentation Covers</h3>
+  <p class="sub">A full-year GRC artifact set, cross-referenced by finding ID so it reads as one coherent body of work rather than disconnected samples.</p>
+  <div class="brief-box">
+    <h4>The Practice</h4>
+    <p>Each artifact below was built to the same standard an auditor would expect to see in a real engagement: risks tracked from identification through remediation, controls mapped to evidence, and vendors assessed end to end — developed alongside active study toward CompTIA Security+ and (ISC)² Certified in Cybersecurity certifications.</p>
+  </div>
+
+  <div class="work-grid">
+    <a href="portfolio_it_auditor.html" class="work-card">
+      <div class="num">Start Here</div>
+      <div class="name">IT Auditor Portfolio Hub</div>
+      <div class="desc">The full compliance/audit portfolio, including short-form documentation samples.</div>
+    </a>
+    <a href="artifact_risk_register.html" class="work-card">
+      <div class="num">01</div>
+      <div class="name">Risk Register</div>
+      <div class="desc">18 risks tracked across Q1–Q4.</div>
+    </a>
+    <a href="artifact_itgc_workpapers.html" class="work-card">
+      <div class="num">02</div>
+      <div class="name">ITGC Workpapers</div>
+      <div class="desc">Five control areas, audit-ready format.</div>
+    </a>
+    <a href="artifact_cap_tracker.html" class="work-card">
+      <div class="num">03</div>
+      <div class="name">Control Action Plan (CAP) Tracker</div>
+      <div class="desc">Nine findings tracked to remediation — control narratives in practice.</div>
+    </a>
+    <a href="artifact_vendor_risk_assessment.html" class="work-card">
+      <div class="num">04</div>
+      <div class="name">Vendor Risk Assessment</div>
+      <div class="desc">Five vendors assessed end to end.</div>
+    </a>
+    <a href="artifact_compliance_calendar.html" class="work-card">
+      <div class="num">05</div>
+      <div class="name">Compliance Calendar</div>
+      <div class="desc">34 activities scheduled, Jan–Dec — audit evidence cadence.</div>
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Certifications in Progress</h3>
+  <p class="sub">Active study alongside this documentation work.</p>
+  <div class="cert-row">
+    <div class="cert-pill">CompTIA Security+ — in progress</div>
+    <div class="cert-pill">(ISC)² Certified in Cybersecurity (CC) — in progress</div>
+    <div class="cert-pill">MS, Cybersecurity Management — Purdue Global, expected Nov 2026</div>
+  </div>
+</div>
+
+<footer>
+  <strong>Anel Henning</strong> — Graphic Designer &amp; Compliance Documentation Coordinator, Tampa FL &nbsp;|&nbsp; <a href="logical_coders.html">Logical Coders</a>
+</footer>
+
+</body>
+</html>

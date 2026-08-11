@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anel Henning — Glidecart: Concept Branding &amp; Product Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0D1B2A; --deep: #001a57; --cyan: #4ECDC4; --ice: #F2F7F9; --slate: #1A1A1A;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--ice); color: var(--slate); }
+
+  .agency-header { background: linear-gradient(135deg, var(--navy) 0%, var(--deep) 100%); color: white; padding: 80px 60px; position: relative; overflow: hidden; }
+  .agency-header::before { content: ''; position: absolute; top: -60px; right: 60px; width: 240px; height: 240px; border: 1px solid rgba(78,205,196,0.25); border-radius: 50%; }
+  .agency-tag { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--cyan); margin-bottom: 20px; }
+  .agency-header h1 { font-family: 'Playfair Display', serif; font-size: 60px; font-weight: 400; line-height: 1.05; margin-bottom: 24px; letter-spacing: -1px; }
+  .agency-header h1 em { font-style: italic; color: var(--cyan); }
+  .agency-meta { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .meta-item label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 10px; }
+  .meta-item p { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+
+  .section { padding: 80px 60px; }
+  .piece { margin-bottom: 100px; }
+  .piece-number { font-family: 'Playfair Display', serif; font-size: 120px; font-weight: 900; color: rgba(13,27,42,0.05); line-height: 1; margin-bottom: -20px; }
+  .piece-title { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 400; color: var(--navy); margin-bottom: 6px; }
+  .piece-subtitle { font-size: 10px; color: var(--deep); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; opacity: 0.6; }
+  .piece-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 30px; align-items: start; }
+
+  .brief-box { background: var(--navy); color: white; padding: 32px; border-radius: 4px; }
+  .brief-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); margin-bottom: 14px; }
+  .brief-box p { font-size: 14px; line-height: 1.9; opacity: 0.85; }
+  .voice-box { background: white; padding: 24px; border-left: 2px solid var(--cyan); }
+  .voice-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--deep); margin-bottom: 12px; }
+  .voice-box p { font-size: 14px; line-height: 1.9; color: #555; font-style: italic; }
+
+  .specs-table { width: 100%; border-collapse: collapse; margin: 28px 0; }
+  .specs-table th { background: var(--navy); color: var(--cyan); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; padding: 12px 16px; text-align: left; }
+  .specs-table td { padding: 11px 16px; font-size: 13px; border-bottom: 1px solid #E2E8ED; }
+  .specs-table tr:nth-child(even) td { background: white; }
+  .pill { display: inline-block; background: var(--cyan); color: var(--navy); font-size: 9px; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; font-weight: 600; }
+
+  .mock-row { display: flex; flex-wrap: wrap; gap: 30px; margin: 24px 0; }
+  .mock-label { font-size: 9px; color: #aaa; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+  .mock-logo { width: 220px; height: 220px; background: linear-gradient(160deg, var(--navy) 0%, var(--deep) 100%); border-radius: 6px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; }
+  .mock-logo .tag { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--cyan); }
+  .mock-logo .mark { font-family: 'Playfair Display', serif; font-size: 40px; color: white; font-style: italic; }
+  .mock-logo .sub { font-size: 9px; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; }
+
+  .mock-screen { width: 260px; height: 400px; background: #0A1420; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; border: 6px solid #14202E; }
+  .mock-screen .bar { height: 8px; width: 60%; background: rgba(78,205,196,0.4); border-radius: 4px; }
+  .mock-screen .card { background: rgba(255,255,255,0.06); border-radius: 8px; padding: 12px; }
+  .mock-screen .card .t { font-size: 10px; color: var(--cyan); letter-spacing: 1px; }
+  .mock-screen .card .d { font-size: 8px; color: rgba(255,255,255,0.5); margin-top: 4px; line-height: 1.5; }
+
+  .behance-box { background: linear-gradient(135deg, #1769ff 0%, #0047d4 100%); color: white; padding: 40px; border-radius: 4px; margin-top: 30px; }
+  .behance-box h4 { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; opacity: 0.7; }
+  .behance-box .project-title { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 16px; font-weight: 400; }
+  .behance-box p { font-size: 14px; line-height: 1.85; opacity: 0.9; margin-bottom: 12px; }
+  .behance-box .tags { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .behance-box .tag { font-size: 11px; border: 1px solid rgba(255,255,255,0.35); padding: 4px 12px; border-radius: 20px; opacity: 0.8; }
+
+  .divider { height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); margin: 50px 0; }
+  footer { background: var(--navy); color: rgba(255,255,255,0.4); text-align: center; padding: 40px; font-size: 13px; }
+  footer strong { color: var(--cyan); }
+  footer a { color: rgba(255,255,255,0.55); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="agency-header">
+  <div class="agency-tag">Original Concept — Tampa, FL</div>
+  <h1>Anel Henning<br><em>Glidecart</em></h1>
+  <p style="font-size:15px; opacity:0.7; max-width:620px; line-height:1.9;">A self-originated concept: a robotic, sensor-guided grocery cart designed to navigate a store, follow a shopper, and simplify a routine chore. Built end-to-end — naming, visual identity, product-experience concept, and pitch materials — as an original invention project, not client work.</p>
+  <div class="agency-meta">
+    <div class="meta-item"><label>Project Type</label><p>Original product concept &amp; invention pitch</p></div>
+    <div class="meta-item"><label>Discipline</label><p>Brand identity, concept art, UX/product-experience design</p></div>
+    <div class="meta-item"><label>Timeline</label><p>2025 – 2026</p></div>
+    <div class="meta-item"><label>Tools</label><p>Illustrator, Photoshop, Adobe XD, Figma</p></div>
+  </div>
+</div>
+
+<div class="section">
+
+  <!-- FACET 1 -->
+  <div class="piece">
+    <div class="piece-number">01</div>
+    <div class="piece-grid">
+      <div>
+        <div class="piece-subtitle">Brand Identity &amp; Naming</div>
+        <div class="piece-title">Naming the Concept and Building Its Visual System</div>
+        <div class="brief-box" style="margin-top:20px;">
+          <h4>The Concept</h4>
+          <p>Glidecart started as a question: what would it feel like to shop with a cart that already knew where it was going? The name had to say two things at once — quiet, effortless motion ("glide") and the familiar object it was replacing ("cart"). The visual system built on that tension: a rounded, minimal wordmark paired with a cool navy-and-cyan palette meant to read as calm technology, not sci-fi spectacle.</p>
+        </div>
+      </div>
+      <div>
+        <div class="voice-box">
+          <h4>In My Own Words</h4>
+          <p>"I wanted the brand to feel closer to a well-designed appliance than a robot. Cyan against deep navy reads as precise and quiet — the same register as the product experience I was trying to design: helpful, not intrusive."</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="specs-table">
+      <thead><tr><th>Deliverable</th><th>Format</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Wordmark &amp; Icon</td><td>Vector / Scalable</td><td><span class="pill">Primary Identity</span></td></tr>
+        <tr><td>Color System</td><td>Navy / Cyan / Ice palette</td><td><span class="pill">Visual Language</span></td></tr>
+        <tr><td>Concept Renderings</td><td>Illustrator / Photoshop</td><td><span class="pill">Product Visualization</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="mock-row">
+      <div>
+        <div class="mock-label">Wordmark Concept</div>
+        <div class="mock-logo">
+          <div class="tag">Original Concept</div>
+          <div class="mark">Glidecart</div>
+          <div class="sub">Quantum-Guided Retail</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FACET 2 -->
+  <div class="piece">
+    <div class="piece-number">02</div>
+    <div class="piece-grid">
+      <div>
+        <div class="piece-subtitle">Product Experience Concept</div>
+        <div class="piece-title">Designing the In-Store Experience</div>
+        <div class="brief-box" style="margin-top:20px;">
+          <h4>The Concept</h4>
+          <p>The hardest part of designing Glidecart's experience wasn't the cart — it was the interface moment when a shopper decides whether to trust it. The onboarding screen had to explain "follow mode" and "list mode" in under five seconds, and the in-aisle display had to stay legible and calm even in a bright, busy store.</p>
+        </div>
+      </div>
+      <div>
+        <div class="voice-box">
+          <h4>In My Own Words</h4>
+          <p>"Every screen went through the same test: could my mother understand it in one glance? If not, it got simpler. Trust is the whole product here — the interface's job is to earn it quietly."</p>
+        </div>
+      </div>
+    </div>
+
+    <table class="specs-table">
+      <thead><tr><th>Deliverable</th><th>Format</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Onboarding Screen Concepts</td><td>Adobe XD / Figma</td><td><span class="pill">UX Concept</span></td></tr>
+        <tr><td>In-Aisle Display Concept</td><td>Adobe XD / Figma</td><td><span class="pill">Interface Design</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="mock-row">
+      <div>
+        <div class="mock-label">In-Aisle Display Concept</div>
+        <div class="mock-screen">
+          <div class="bar"></div>
+          <div class="card"><div class="t">Following: Anel</div><div class="d">Next stop: Produce, Aisle 2</div></div>
+          <div class="card"><div class="t">List Progress</div><div class="d">4 of 11 items found</div></div>
+          <div class="card"><div class="t">Route</div><div class="d">Optimized for shortest path</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FACET 3 -->
+  <div class="piece">
+    <div class="piece-number">03</div>
+    <div class="piece-grid">
+      <div>
+        <div class="piece-subtitle">Pitch &amp; Presentation Design</div>
+        <div class="piece-title">Building the Case for the Concept</div>
+        <div class="brief-box" style="margin-top:20px;">
+          <h4>The Concept</h4>
+          <p>An invention concept needs a document that can stand on its own in front of someone who has never heard of it. The pitch deck lays out the problem, the product experience, and a plain-language explanation of the sensor-guidance approach — built to be read by a non-technical audience without losing the substance.</p>
+        </div>
+      </div>
+      <div>
+        <div class="voice-box">
+          <h4>In My Own Words</h4>
+          <p>"I write and design for non-technical audiences constantly in my compliance work — this deck applies that same discipline: real substance, explained so anyone can follow it."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="behance-box">
+      <h4>Project Notes</h4>
+      <div class="project-title">Glidecart: Concept Branding &amp; Product Experience Design</div>
+      <p><strong>Original Concept — Self-Directed Project</strong></p>
+      <p>Glidecart is a self-originated invention concept, not client work: a full identity and product-experience design exercise built around a single question, developed alongside an 11-slide investor-style pitch deck.</p>
+      <div class="tags"><span class="tag">Brand Identity</span><span class="tag">Product Concept</span><span class="tag">UX Design</span><span class="tag">Concept Art</span><span class="tag">Pitch Design</span><span class="tag">Original Work</span></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Anel Henning</strong> — Graphic Designer, Tampa FL &nbsp;|&nbsp; behance.net/anellehenning &nbsp;|&nbsp; <a href="logika_studios.html">Logika Studios</a>
+</footer>
+
+</body>
+</html>
