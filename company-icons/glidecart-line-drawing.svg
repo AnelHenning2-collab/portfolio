@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="1000" height="640">
+  <defs>
+    <style>
+      .ln { fill: none; stroke: #0D1B2A; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .ln-thin { fill: none; stroke: #0D1B2A; stroke-width: 1; }
+      .ln-dash { fill: none; stroke: #4ECDC4; stroke-width: 1.5; stroke-dasharray: 6 5; }
+      .lead { fill: none; stroke: #6b7b8c; stroke-width: 1; }
+      .lbl { font-family: 'Inter', Arial, sans-serif; font-size: 12px; letter-spacing: 1.5px; fill: #0D1B2A; text-transform: uppercase; }
+      .lbl-sm { font-family: 'Inter', Arial, sans-serif; font-size: 9px; letter-spacing: 1px; fill: #55606b; }
+      .dot { fill: #0D1B2A; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="640" fill="#F2F7F9"/>
+
+  <!-- Title -->
+  <text x="40" y="42" class="lbl" font-size="15" letter-spacing="3">GLIDECART&#8482; — INTERNAL SYSTEMS CONCEPT</text>
+  <text x="40" y="62" class="lbl-sm">ABSTRACT LINE DRAWING · NOT TO SCALE · CONCEPT EXPLORATION ONLY</text>
+  <line x1="40" y1="76" x2="960" y2="76" class="ln-thin"/>
+
+  <!-- ===================== CUTAWAY BODY (basic shapes only) ===================== -->
+  <!-- Outer cart silhouette: basket (trapezoid-ish via polygon) + housing (rounded rect) + base -->
+  <polygon points="330,140 560,140 610,260 280,260" class="ln"/>           <!-- basket, open trapezoid -->
+  <rect x="300" y="260" width="340" height="220" rx="18" class="ln"/>      <!-- housing -->
+  <rect x="330" y="480" width="280" height="26" rx="6" class="ln"/>        <!-- base skirt -->
+
+  <!-- wheels -->
+  <circle cx="360" cy="560" r="34" class="ln"/>
+  <circle cx="360" cy="560" r="10" class="ln-thin"/>
+  <circle cx="580" cy="560" r="34" class="ln"/>
+  <circle cx="580" cy="560" r="10" class="ln-thin"/>
+  <line x1="394" y1="560" x2="546" y2="560" class="ln-thin"/>
+
+  <!-- cutline (dashed cyan) suggesting a section cut through the housing -->
+  <line x1="300" y1="270" x2="640" y2="270" class="ln-dash"/>
+  <text x="648" y="274" class="lbl-sm">SECTION A–A</text>
+
+  <!-- 1: LIDAR / sensor ring, top of housing -->
+  <circle cx="470" cy="300" r="26" class="ln"/>
+  <circle cx="470" cy="300" r="10" class="ln-thin"/>
+  <line x1="470" y1="274" x2="470" y2="256" class="ln-thin"/>
+  <circle cx="470" cy="300" r="2" class="dot"/>
+
+  <!-- 2: camera / vision module, front housing -->
+  <rect x="420" y="340" width="56" height="30" rx="4" class="ln"/>
+  <circle cx="448" cy="355" r="9" class="ln-thin"/>
+
+  <!-- 3: processing unit (chip icon) -->
+  <rect x="330" y="340" width="46" height="46" class="ln"/>
+  <line x1="330" y1="352" x2="318" y2="352" class="ln-thin"/>
+  <line x1="330" y1="364" x2="318" y2="364" class="ln-thin"/>
+  <line x1="330" y1="376" x2="318" y2="376" class="ln-thin"/>
+  <line x1="376" y1="352" x2="388" y2="352" class="ln-thin"/>
+  <line x1="376" y1="364" x2="388" y2="364" class="ln-thin"/>
+  <line x1="376" y1="376" x2="388" y2="376" class="ln-thin"/>
+
+  <!-- 4: battery pack -->
+  <rect x="500" y="340" width="80" height="46" rx="3" class="ln"/>
+  <rect x="580" y="356" width="8" height="14" class="ln"/>
+  <line x1="514" y1="340" x2="514" y2="386" class="ln-thin"/>
+  <line x1="528" y1="340" x2="528" y2="386" class="ln-thin"/>
+  <line x1="542" y1="340" x2="542" y2="386" class="ln-thin"/>
+
+  <!-- 5: drive motor (simplified gear = circle with tick marks) -->
+  <circle cx="360" cy="450" r="24" class="ln"/>
+  <circle cx="360" cy="450" r="6" class="ln-thin"/>
+  <g class="ln-thin">
+    <line x1="360" y1="426" x2="360" y2="418"/>
+    <line x1="360" y1="474" x2="360" y2="482"/>
+    <line x1="336" y1="450" x2="328" y2="450"/>
+    <line x1="384" y1="450" x2="392" y2="450"/>
+    <line x1="343" y1="433" x2="337" y2="427"/>
+    <line x1="377" y1="433" x2="383" y2="427"/>
+    <line x1="343" y1="467" x2="337" y2="473"/>
+    <line x1="377" y1="467" x2="383" y2="473"/>
+  </g>
+
+  <!-- 6: wireless / connectivity module -->
+  <path d="M 560 420 Q 575 405 590 420" class="ln-thin"/>
+  <path d="M 553 428 Q 575 400 597 428" class="ln-thin"/>
+  <circle cx="575" cy="435" r="3" class="dot"/>
+  <rect x="560" y="440" width="30" height="18" rx="3" class="ln"/>
+
+  <!-- Leader lines + labels -->
+  <line x1="470" y1="256" x2="470" y2="200" class="lead"/>
+  <text x="478" y="196" class="lbl-sm">01 — LIDAR / SENSOR ARRAY</text>
+
+  <line x1="448" y1="340" x2="448" y2="230" class="lead"/>
+  <line x1="448" y1="230" x2="230" y2="230" class="lead"/>
+  <text x="150" y="226" class="lbl-sm" text-anchor="end">02 — VISION MODULE</text>
+
+  <line x1="330" y1="363" x2="200" y2="363" class="lead"/>
+  <text x="150" y="367" class="lbl-sm" text-anchor="end">03 — PROCESSING UNIT</text>
+
+  <line x1="580" y1="363" x2="740" y2="363" class="lead"/>
+  <text x="748" y="367" class="lbl-sm">04 — BATTERY PACK</text>
+
+  <line x1="360" y1="450" x2="200" y2="450" class="lead"/>
+  <text x="150" y="454" class="lbl-sm" text-anchor="end">05 — DRIVE MOTOR (×2)</text>
+
+  <line x1="590" y1="440" x2="740" y2="440" class="lead"/>
+  <text x="748" y="444" class="lbl-sm">06 — WIRELESS / CONNECTIVITY</text>
+
+  <line x1="470" y1="180" x2="470" y2="145" class="lead"/>
+  <text x="478" y="150" class="lbl-sm">BASKET — OPEN CARRY AREA</text>
+
+  <!-- Title block, bottom right -->
+  <rect x="700" y="530" width="260" height="80" class="ln-thin"/>
+  <line x1="700" y1="550" x2="960" y2="550" class="ln-thin"/>
+  <line x1="820" y1="550" x2="820" y2="610" class="ln-thin"/>
+  <text x="708" y="545" class="lbl-sm">GLIDECART — INTERNAL SYSTEMS (ABSTRACT)</text>
+  <text x="708" y="565" class="lbl-sm">DRAWN BY: A. HENNING</text>
+  <text x="708" y="580" class="lbl-sm">STUDIO: LOGIKA STUDIOS</text>
+  <text x="708" y="595" class="lbl-sm">STATUS: CONCEPT / NOT BUILT</text>
+  <text x="828" y="565" class="lbl-sm">SCALE: N/A</text>
+  <text x="828" y="580" class="lbl-sm">REV: 01</text>
+  <text x="828" y="595" class="lbl-sm">2026</text>
+
+</svg>
