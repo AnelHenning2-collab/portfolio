@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Logical Coders GRC</title>
+<meta name="description" content="Interactive overview of the Logical Coders GRC toolkit: frameworks, process, and deliverables with real examples.">
+<style>
+/* Layout: hero, then three clickable sections (frameworks, process, deliverables), outcomes band; a detail drawer opens on click. */
+:root{
+  --navy:#0F2D52; --navy2:#153a68; --teal:#00B7C3; --teald:#0893a0;
+  --bg:#eef2f7; --surface:#ffffff; --ink:#1b2a3a; --muted:#5a6b7d; --line:#d7e0ea;
+  --accent:#0f6fb8; --shadow:0 1px 2px rgba(20,40,60,.06),0 8px 24px rgba(20,40,60,.08);
+  --display:"Fraunces",Georgia,serif; --body:"Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --navy:#0c1f3a; --navy2:#13294a; --bg:#0e1621; --surface:#17222f; --ink:#e7eef5;
+  --muted:#9fb0c0; --line:#26333f; --accent:#4aa3e0; --teal:#2fd0d8;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --navy:#0c1f3a; --navy2:#13294a; --bg:#0e1621; --surface:#17222f; --ink:#e7eef5;
+  --muted:#9fb0c0; --line:#26333f; --accent:#4aa3e0; --teal:#2fd0d8;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.55;margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+/* hero */
+.hero{background:var(--navy);color:#fff;text-align:center;padding:clamp(34px,6vw,60px) 16px;border-bottom:5px solid var(--teal)}
+.hero h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,6vw,3.4rem);letter-spacing:.06em;margin:0}
+.hero p{color:#cfe6ea;font-size:clamp(1rem,2.6vw,1.25rem);max-width:40ch;margin:.5em auto 0}
+.emblem{width:92px;height:104px;margin:22px auto 0}
+.hint{margin-top:18px;display:inline-block;background:rgba(255,255,255,.1);color:#cfe6ea;border-radius:999px;padding:7px 16px;font-size:.82rem;font-weight:600}
+/* sections */
+section{padding:clamp(28px,5vw,48px) 0}
+.sec-h{text-align:center;margin:0 0 6px}
+.sec-h .eye{display:block;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;color:var(--teal)}
+.sec-h h2{font-family:var(--display);font-weight:600;font-size:clamp(1.4rem,3.6vw,2.1rem);margin:.15em 0 0}
+.sec-sub{text-align:center;color:var(--muted);margin:.2em 0 1.6em}
+.flow{display:flex;justify-content:center;color:var(--teal);font-size:1.6rem;margin:4px 0}
+/* grids */
+.grid{display:grid;gap:14px}
+.g-fw{grid-template-columns:1fr}
+.g-dl{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.g-pr{grid-template-columns:1fr;max-width:680px;margin:0 auto}
+.card{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;box-shadow:var(--shadow);cursor:pointer;font:inherit;color:inherit;transition:transform .14s,border-color .14s;width:100%}
+.card:hover,.card:focus-visible{transform:translateY(-2px);border-color:var(--teal);outline:none}
+.card::after{content:"→";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--teal);font-weight:700;opacity:.5}
+.card .t{font-weight:700;font-size:1.05rem;color:var(--navy)}
+:root[data-theme="dark"] .card .t,.card .t{color:var(--ink)}
+.card .t b{color:var(--navy)}
+.card .s{color:var(--muted);font-size:.9rem;margin-top:3px;padding-right:28px}
+.card .accent{position:absolute;left:0;top:14px;bottom:14px;width:6px;border-radius:3px;background:var(--teal)}
+.card.navyacc .accent{background:var(--navy)}
+.prow{display:flex;align-items:center;gap:14px}
+.pnum{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:1rem}
+/* outcomes */
+.outcomes{background:var(--teal);color:#fff;text-align:center}
+.outcomes h2{font-family:var(--display);font-weight:600;font-size:clamp(1.3rem,3.4vw,1.9rem);margin:0 0 18px}
+.ochips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.ochip{background:rgba(255,255,255,.14);border-radius:999px;padding:8px 16px;font-weight:600;font-size:.92rem}
+.callout{margin-top:22px;font-family:var(--display);font-size:clamp(1.2rem,3vw,1.6rem);font-weight:600}
+.callout + p{color:#eafbfc;max-width:60ch;margin:.4em auto 0;font-size:.95rem}
+.credit{margin-top:20px;color:#dffafc;font-size:.85rem}
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(10,20,35,.55);opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(540px,94vw);background:var(--surface);box-shadow:-8px 0 40px rgba(0,0,0,.3);
+  transform:translateX(100%);transition:transform .24s ease;z-index:50;display:flex;flex-direction:column}
+.drawer.on{transform:none}
+.dhead{background:var(--navy);color:#fff;padding:22px 24px;position:relative}
+.dhead .eye{font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.68rem;color:var(--teal)}
+.dhead h3{font-family:var(--display);font-weight:600;font-size:1.5rem;margin:.2em 0 0}
+.dhead .close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.14);border:0;color:#fff;width:34px;height:34px;border-radius:50%;font-size:1.1rem;cursor:pointer}
+.dbody{padding:22px 24px;overflow-y:auto}
+.dbody h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin:18px 0 6px}
+.dbody h4:first-child{margin-top:0}
+.dbody p{margin:0 0 10px;font-size:.98rem}
+.example{background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px;padding:14px 16px;font-size:.92rem}
+.example table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:4px}
+.example th,.example td{border:1px solid var(--line);padding:5px 8px;text-align:left}
+.example th{background:var(--navy);color:#fff;font-size:.78rem}
+.example .x{color:#c0392b;font-weight:600}
+:root[data-theme="dark"] .example .x{color:#ff9b9b}
+.mono{font-family:Consolas,Menlo,monospace;font-size:.82rem;background:#0d1117;color:#d6e2ef;border-radius:8px;padding:12px 14px;white-space:pre-wrap;overflow-x:auto}
+.mono .ok{color:#56d364}.mono .bad{color:#ff7b72}.mono .dim{color:#8b98a5}
+.themebtn{position:fixed;bottom:16px;right:16px;z-index:30;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;width:42px;height:42px;cursor:pointer;box-shadow:var(--shadow);font-size:1.05rem}
+.foot{text-align:center;color:var(--muted);font-size:.82rem;padding:24px 16px}
+</style>
+</head>
+<body style="margin:0">
+
+
+<div class="hero">
+  <h1>LOGICAL CODERS</h1>
+  <p>Transforming complex security frameworks into practical compliance solutions</p>
+  <svg class="emblem" viewBox="0 0 92 104" aria-hidden="true">
+    <polygon points="46,4 86,27 86,77 46,100 6,77 6,27" fill="var(--navy2)" stroke="var(--teal)" stroke-width="3"/>
+    <text x="46" y="50" fill="#fff" font-family="var(--body)" font-size="20" font-weight="700" text-anchor="middle">GRC</text>
+    <text x="46" y="70" fill="var(--teal)" font-family="var(--body)" font-size="10" font-weight="700" letter-spacing="2" text-anchor="middle">ENGINE</text>
+  </svg>
+  <div class="hint">Tap any card below for details and real examples</div>
+</div>
+
+<div class="wrap">
+  <section>
+    <div class="sec-h"><span class="eye">Inputs</span><h2>Industry Frameworks &amp; Standards</h2></div>
+    <p class="sec-sub">The standards Logical Coders translates into usable documentation.</p>
+    <div class="grid g-fw" id="fw"></div>
+  </section>
+  <div class="flow">↓</div>
+  <section>
+    <div class="sec-h"><span class="eye">Process</span><h2>The Logical Coders Process</h2></div>
+    <p class="sec-sub">From requirements to results — Governance · Risk · Compliance.</p>
+    <div class="grid g-pr" id="pr"></div>
+  </section>
+  <div class="flow">↓</div>
+  <section>
+    <div class="sec-h"><span class="eye">Outputs</span><h2>Client Deliverables</h2></div>
+    <p class="sec-sub">Audit-ready documents a small business can actually use.</p>
+    <div class="grid g-dl" id="dl"></div>
+  </section>
+</div>
+
+<section class="outcomes">
+  <div class="wrap">
+    <h2>Compliance Confidence</h2>
+    <div class="ochips">
+      <span class="ochip">✓ Audit Readiness</span><span class="ochip">✓ Risk Visibility</span>
+      <span class="ochip">✓ Governance Oversight</span><span class="ochip">✓ Continuous Compliance</span>
+      <span class="ochip">✓ Security Maturity</span>
+    </div>
+    <div class="callout">From Assessment to Audit Readiness</div>
+    <p>Logical Coders translates cybersecurity frameworks into practical, reusable compliance documentation that demonstrates a documented and defensible security posture.</p>
+    <div class="credit">Anèl Henning · logicalcoders.co</div>
+  </div>
+</section>
+<div class="foot">All examples use fictional Sunshine Dental Group data created for this capstone. No real patient or company information is shown.</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dh">
+  <div class="dhead"><span class="eye" id="deye"></span><h3 id="dh"></h3><button class="close" id="close" aria-label="Close">✕</button></div>
+  <div class="dbody" id="dbody"></div>
+</aside>
+<button class="themebtn" id="themebtn" title="Toggle light/dark" aria-label="Toggle light and dark theme">◐</button>
+
+<script>
+const FW=[
+ {t:"NIST CSF 2.0",s:"Cybersecurity Framework — the organizing structure",
+  d:"The NIST Cybersecurity Framework 2.0 organizes a security program into six functions: Govern, Identify, Protect, Detect, Respond, and Recover. Logical Coders uses it as the backbone so every template maps to a clear function.",
+  ex:"<p>For Sunshine Dental, the <b>Govern</b> function drove the first recommendation: name a security official and assign an owner to each risk before anything else.</p>"},
+ {t:"NIST SP 800-53",s:"Detailed, testable security and privacy controls",
+  d:"Where CSF 2.0 says what outcome to achieve, SP 800-53 gives the specific controls you can implement and test. The toolkit is anchored on three control families.",
+  ex:"<p>Three controls anchor the toolkit:</p><table><tr><th>Control</th><th>Covers</th></tr><tr><td>AC-2</td><td>Account management (joiner/mover/leaver)</td></tr><tr><td>RA-3</td><td>Risk assessment</td></tr><tr><td>AU-6</td><td>Audit log review</td></tr></table>"},
+ {t:"HIPAA Security Rule",s:"Safeguards for electronic protected health information",
+  d:"HIPAA requires administrative, physical, and technical safeguards for ePHI, including access control, audit controls, integrity, authentication, and transmission security. It also sets documentation retention.",
+  ex:"<p>Example requirements the toolkit enforces:</p><table><tr><th>Rule</th><th>What it means</th></tr><tr><td>§ 164.312(b)</td><td>Record and review system activity</td></tr><tr><td>§ 164.316</td><td>Keep security documentation 6 years</td></tr><tr><td>§ 164.502</td><td>Use the minimum necessary information</td></tr></table>"},
+ {t:"SOC 2",s:"Trust Services Criteria for service organizations",
+  d:"SOC 2 is the report many clients ask a vendor to complete. Its criteria overlap heavily with the access-control and audit language already in the toolkit, so the documentation carries over.",
+  ex:"<p>A sample SOC 2 readiness check maps criteria to evidence:</p><table><tr><th>Criterion</th><th>Status</th></tr><tr><td>Logical access (CC6)</td><td class='x'>Gap — MFA incomplete</td></tr><tr><td>Change management (CC8)</td><td>Ready</td></tr><tr><td>Monitoring (CC7)</td><td class='x'>Gap — logging off</td></tr></table>"},
+ {t:"FedRAMP",s:"Cloud security authorization for government",
+  d:"FedRAMP standardizes security assessment for cloud services sold to federal agencies. The toolkit does not build a full FedRAMP package, but its NIST-based control language stays compatible if a client grows into that path.",
+  ex:"<p>Because the toolkit is built on NIST SP 800-53, the same control narratives a client writes today still make sense if they later pursue a FedRAMP authorization — no starting over.</p>"},
+];
+const PR=[
+ {t:"Risk Assessment",s:"Identify, score, own, and treat each risk",
+  d:"List the systems that hold sensitive data, name the threats and weaknesses, and score each risk by likelihood and impact so leaders can see what matters most.",
+  ex:"<p>Risk R-03 at Sunshine Dental: staff use personal devices to reach ePHI with no management or encryption.</p><table><tr><th>L × I</th><th>Inherent</th><th>After fix</th></tr><tr><td>5 × 4</td><td class='x'>20 — Critical</td><td>8 — Medium</td></tr></table>"},
+ {t:"Control Mapping",s:"Match each requirement to a control",
+  d:"Every template is mapped to a specific HIPAA section and a NIST category, so one piece of evidence can answer both HIPAA and NIST questions instead of collecting it twice.",
+  ex:"<table><tr><th>Template</th><th>HIPAA</th><th>NIST</th></tr><tr><td>Account review</td><td>§164.308(a)(3)</td><td>AC-2 / PR.AA</td></tr><tr><td>Audit log summary</td><td>§164.312(b)</td><td>AU-6 / DE.CM</td></tr></table>"},
+ {t:"Gap Analysis",s:"Compare current state to the requirement",
+  d:"Measure where the organization stands against each requirement, rate the gap, and assign an owner and due date to close it.",
+  ex:"<table><tr><th>Requirement</th><th>Gap</th><th>Risk</th></tr><tr><td>MFA on all accounts</td><td class='x'>4 accounts missing</td><td class='x'>Critical</td></tr><tr><td>Audit logging</td><td class='x'>Disabled</td><td>High</td></tr><tr><td>Vendor BAAs</td><td class='x'>None on file</td><td>High</td></tr></table>"},
+ {t:"Documentation Development",s:"Write how each control works",
+  d:"Control narratives explain the trigger, owner, approval, evidence, and framework reference for each control, so a reviewer knows exactly how it operates and what proves it.",
+  ex:"<p>AC-2 Account Management narrative (excerpt):</p><table><tr><th>Field</th><th>Entry</th></tr><tr><td>Trigger</td><td>New hire, role change, or termination</td></tr><tr><td>Owner</td><td>Office Manager</td></tr><tr><td>Evidence</td><td>Disable ticket with timestamp; quarterly script output</td></tr></table>"},
+ {t:"Evidence Validation",s:"Test the control, don't just describe it",
+  d:"Rather than trust a written claim, re-perform the control. A short script compares the HR termination list to active accounts and flags exceptions automatically — repeatable every month.",
+  ex:"<div class='mono'><span class='dim'>$ python ac2_account_review.py</span>\n  E-1015  <span class='ok'>Pass</span>\n  E-1017  <span class='bad'>EXCEPTION — disabled 19 days late</span>\n  FRONTDESK  <span class='bad'>EXCEPTION — shared login</span>\n  4 accounts  <span class='bad'>EXCEPTION — MFA off</span>\nExceptions: 7</div>"},
+];
+const DL=[
+ {t:"Risk Registers",s:"Risk tracking & mitigation",
+  d:"A centralized view of cybersecurity and compliance risks with ratings, business impact, ownership, mitigation plans, and residual-risk tracking.",
+  ex:"<table><tr><th>Risk</th><th>Inherent</th><th>Residual</th></tr><tr><td>Ransomware</td><td class='x'>20 Critical</td><td>10 High</td></tr><tr><td>Lost device</td><td class='x'>20 Critical</td><td>8 Medium</td></tr><tr><td>Phishing</td><td class='x'>15 Critical</td><td>6 Medium</td></tr></table>"},
+ {t:"Control Narratives",s:"Documented control procedures",
+  d:"Detailed explanations of how security controls operate: objective, owner, process, evidence requirements, and NIST control mappings.",
+  ex:"<p>One narrative per control (AC-2, RA-3, AU-6), each naming the trigger, performer, approval, exception handling, and the HIPAA/NIST reference — so the control is testable, not just described.</p>"},
+ {t:"Gap Assessments",s:"Compliance gap analysis",
+  d:"Structured assessments measuring current compliance against a framework: current vs. desired state, control deficiencies, remediation priorities, and maturity scoring.",
+  ex:"<p>Sunshine Dental's assessment produced six prioritized findings, each with a risk level, an owner, and a due date — from 'MFA incomplete (Critical)' to 'no vendor BAAs (High)'.</p>"},
+ {t:"Audit Evidence Packages",s:"Audit-ready documentation",
+  d:"Organized repositories of evidence supporting audits: policies, access reviews, configurations, and logs, collected with a strict evidence-handling rule.",
+  ex:"<table><tr><th>Req ID</th><th>Item</th><th>Accepted</th></tr><tr><td>ER-01</td><td>User list (Jun 30)</td><td>Yes</td></tr><tr><td>ER-02</td><td>Access review sign-off</td><td>Yes — late</td></tr><tr><td>ER-03</td><td>Restore test</td><td class='x'>Open</td></tr></table>"},
+ {t:"Governance Reports",s:"Executive risk reporting",
+  d:"Executive-level reporting that translates technical risks into business decisions: posture, open risks, remediation status, and decisions needing approval.",
+  ex:"<p>Sunshine Dental governance report: overall posture <b>Red, improving</b>. Decisions requested: name a security official, approve risk treatments, fund MFA and device management, and sign vendor BAAs.</p>"},
+ {t:"Compliance Dashboards",s:"Real-time compliance metrics",
+  d:"Visibility into compliance performance: framework coverage, control effectiveness, audit-readiness scores, and outstanding actions.",
+  ex:"<table><tr><th>Area</th><th>Status</th></tr><tr><td>Access management</td><td class='x'>Red</td></tr><tr><td>Audit logging</td><td class='x'>Red</td></tr><tr><td>Backup / recovery</td><td>Yellow</td></tr></table>"},
+];
+
+const scrim=document.getElementById('scrim'),drawer=document.getElementById('drawer');
+const deye=document.getElementById('deye'),dh=document.getElementById('dh'),dbody=document.getElementById('dbody');
+let lastFocus=null;
+function open(eye,item){
+  lastFocus=document.activeElement;
+  deye.textContent=eye; dh.textContent=item.t;
+  dbody.innerHTML=`<h4>What it is</h4><p>${item.d}</p><h4>Example from the project</h4><div class="example">${item.ex}</div>`;
+  scrim.classList.add('on'); drawer.classList.add('on');
+  document.getElementById('close').focus();
+}
+function close(){scrim.classList.remove('on');drawer.classList.remove('on');if(lastFocus)lastFocus.focus();}
+scrim.onclick=close; document.getElementById('close').onclick=close;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+
+function build(id,arr,eye,navyacc){
+  const g=document.getElementById(id);
+  arr.forEach((it,i)=>{
+    const b=document.createElement('button'); b.className='card'+(navyacc?' navyacc':'');
+    if(id==='pr'){
+      b.innerHTML=`<span class="accent"></span><div class="prow"><span class="pnum">${i+1}</span><div><div class="t">${it.t}</div><div class="s">${it.s}</div></div></div>`;
+    }else{
+      b.innerHTML=`<span class="accent"></span><div class="t">${it.t}</div><div class="s">${it.s}</div>`;
+    }
+    b.onclick=()=>open(eye,it); g.appendChild(b);
+  });
+}
+build('fw',FW,'Industry Framework',false);
+build('pr',PR,'Process Step',false);
+build('dl',DL,'Client Deliverable',true);
+
+const tb=document.getElementById('themebtn');
+try{const sv=localStorage.getItem('lc-theme');if(sv)document.documentElement.setAttribute('data-theme',sv);}catch(e){}
+tb.onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');
+  const isDark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;const nx=isDark?'light':'dark';
+  document.documentElement.setAttribute('data-theme',nx);try{localStorage.setItem('lc-theme',nx);}catch(e){}};
+</script>
+
+</body>
+</html>
