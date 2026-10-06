@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IT Auditor — How an Auditor Proves a Control Works — Anèl Henning</title>
+<meta name="description" content="Eleven evidence principles, each sketched, explained, linked to the template that applies it, and tested against a real case.">
+<link rel="icon" href="company-icons/logical-coders-icon-light.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&display=swap">
+<style>
+:root{--navy:#112233;--teal:#1c8a82;--teal-text:#177a73;--teal-tint:#d8eeec;--page:#eef2f7;--ink:#1b2a3a;--muted:#5a6b7d;--line:#d7e0ea;--on-inv:#cfe6ea}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a:focus-visible,button:focus-visible{outline:2px solid var(--teal-text);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;padding:8px 12px;border-radius:3px;z-index:10}
+.skip:focus{left:16px}
+
+/* top bar */
+.lc-top{background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;flex-wrap:wrap}
+.lc-brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
+.lc-brand img{width:36px;height:36px;border-radius:8px}
+.lc-brand b{display:block;font-size:15px}
+.lc-brand span{display:block;font-size:12px;color:var(--on-inv)}
+.lc-back{color:#4fc1b7;font-size:13px;font-weight:600;text-decoration:none;padding:10px 4px}
+.lc-back:hover{text-decoration:underline}
+
+/* layout */
+.lc-wrap{display:flex;flex-wrap:wrap;gap:24px;max-width:1320px;margin:0 auto;padding:24px}
+.lc-side{flex:1 1 260px;max-width:300px;display:flex;flex-direction:column;gap:4px;align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px}
+.lc-intro{padding:0 8px 12px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.lc-intro .eb{font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--teal-text)}
+.lc-intro h1{font-family:"Playfair Display",Georgia,serif;font-size:22px;line-height:1.2;margin:6px 0 6px;color:var(--navy)}
+.lc-intro p{font-size:13px;line-height:1.5;color:var(--muted);margin:0}
+.lc-group{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:12px 8px 4px}
+.lc-nav{display:flex;gap:10px;align-items:center;min-height:44px;padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;transition:background .14s}
+.lc-nav:hover{background:var(--page)}
+.lc-nav[aria-current="page"]{background:var(--teal-tint);font-weight:700}
+.lc-num{font-family:Consolas,Menlo,monospace;font-size:12px;font-weight:700;color:var(--teal-text);min-width:22px}
+.lc-main:focus{outline:none}
+.lc-main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:14px}
+
+/* toolbar */
+.lc-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.lc-where{font-size:14px;color:var(--muted)}
+.lc-where b{color:var(--navy)}
+.lc-btns{display:flex;gap:8px}
+.lc-btn{min-height:44px;min-width:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--navy);font:600 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.lc-btn:hover:not([disabled]){border-color:var(--teal);color:var(--teal-text)}
+.lc-btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.lc-btn.primary:hover:not([disabled]){background:#1d3550;color:#fff}
+.lc-btn[disabled]{opacity:.45;cursor:default}
+.lc-progress{height:4px;background:var(--line);border-radius:999px;overflow:hidden}
+.lc-progress i{display:block;height:100%;background:var(--teal);width:10%;transition:width .24s ease}
+
+/* page stage */
+.lc-fit{width:100%;position:relative;overflow:hidden}
+.lc-paper{width:816px;height:1056px;transform-origin:top left;position:absolute;top:0;left:0;background:#fff;border-radius:6px;box-shadow:0 1px 2px rgba(20,40,60,.06),0 8px 24px rgba(20,40,60,.08);overflow:hidden}
+.lc-card{transition:transform .14s, box-shadow .14s;cursor:pointer}
+.lc-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(20,40,60,.12)}
+.lc-ref{color:#177a73;font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.lc-note{font-size:12.5px;color:var(--muted);line-height:1.5;text-align:center;padding:4px 0 24px}
+.lc-hint{font-size:12px;color:var(--muted)}
+kbd{font-family:Consolas,Menlo,monospace;font-size:11px;border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:0 4px;background:#fff}
+
+@media (max-width: 860px){
+  .lc-wrap{padding:16px;gap:16px}
+  .lc-side{max-width:none;flex-basis:100%;flex-direction:row;overflow-x:auto;padding:10px;gap:6px;align-items:center}
+  .lc-intro,.lc-group{display:none}
+  .lc-nav{flex:0 0 auto;white-space:nowrap;border:1px solid var(--line)}
+  .lc-hint{display:none}
+}
+@media print{
+  .lc-top,.lc-side,.lc-bar,.lc-progress,.lc-note{display:none}
+  .lc-wrap{padding:0}
+  .lc-paper{box-shadow:none;transform:none!important;position:static}
+  .lc-fit{height:auto!important}
+}
+
+/* ---- page styles, scoped per page ---- */
+
+.lc-books{display:flex;flex-wrap:wrap;gap:6px}
+.lc-book{color:#cfe6ea;font-size:13px;font-weight:600;text-decoration:none;padding:10px 12px;border-radius:999px;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center}
+.lc-book:hover{background:rgba(255,255,255,.08);color:#fff}
+.lc-book[aria-current=page]{background:#0095d3;color:#fff}
+.lc-group{text-transform:uppercase}
+#pg-cover .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-cover .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-cover .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-cover .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-cover .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-cover .def b{color:#112233}
+#pg-cover .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-cover .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-cover .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-cover .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-cover .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-cover .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-cover .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-cover .st b{color:#112233}
+#pg-cover .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-cover .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-cover .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-cover .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-cover .dm{font-size:12px;color:#5a6b7d}
+#pg-cover .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-cover .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-cover .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-cover .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-cover .fv{color:#0b2f63;font-weight:600}
+#pg-cover .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-cover .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-cover .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-cover .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-cover .t td.v{color:#0b2f63;font-weight:600}
+#pg-cover .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-cover .ck{white-space:nowrap}
+#pg-cover .on{color:#0b2f63;font-weight:700}
+#pg-cover .off{color:#5a6b7d}
+#pg-cover .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-cover .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-cover .ci .co{margin-left:0}
+#pg-cover .ci b{color:#112233}
+#pg-cover .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-cover .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-cover .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-cover .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-cover .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-cover .foot b{color:#112233;font-weight:700}
+#pg-cover .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-cover .cr{background:#8f1d2c;color:#ffffff}
+#pg-cover .hi{background:#b4470f;color:#ffffff}
+#pg-cover .me{background:#e0b028;color:#112233}
+#pg-cover .lo{background:#b8c4d0;color:#112233}
+#pg-cover .gr{background:#2f7d4f;color:#ffffff}
+#pg-cover .ye{background:#e0b028;color:#112233}
+#pg-cover .re{background:#8f1d2c;color:#ffffff}
+#pg-cover .ex{color:#c0392b;font-weight:700}
+#pg-cover .ok{color:#2f7d4f;font-weight:700}
+#pg-cover .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-cover .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-introduction .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-introduction .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-introduction .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-introduction .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-introduction .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-introduction .def b{color:#112233}
+#pg-introduction .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-introduction .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-introduction .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-introduction .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-introduction .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-introduction .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-introduction .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-introduction .st b{color:#112233}
+#pg-introduction .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-introduction .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-introduction .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-introduction .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-introduction .dm{font-size:12px;color:#5a6b7d}
+#pg-introduction .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-introduction .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-introduction .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-introduction .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-introduction .fv{color:#0b2f63;font-weight:600}
+#pg-introduction .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-introduction .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-introduction .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-introduction .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-introduction .t td.v{color:#0b2f63;font-weight:600}
+#pg-introduction .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-introduction .ck{white-space:nowrap}
+#pg-introduction .on{color:#0b2f63;font-weight:700}
+#pg-introduction .off{color:#5a6b7d}
+#pg-introduction .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-introduction .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-introduction .ci .co{margin-left:0}
+#pg-introduction .ci b{color:#112233}
+#pg-introduction .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-introduction .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-introduction .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-introduction .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-introduction .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-introduction .foot b{color:#112233;font-weight:700}
+#pg-introduction .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-introduction .cr{background:#8f1d2c;color:#ffffff}
+#pg-introduction .hi{background:#b4470f;color:#ffffff}
+#pg-introduction .me{background:#e0b028;color:#112233}
+#pg-introduction .lo{background:#b8c4d0;color:#112233}
+#pg-introduction .gr{background:#2f7d4f;color:#ffffff}
+#pg-introduction .ye{background:#e0b028;color:#112233}
+#pg-introduction .re{background:#8f1d2c;color:#ffffff}
+#pg-introduction .ex{color:#c0392b;font-weight:700}
+#pg-introduction .ok{color:#2f7d4f;font-weight:700}
+#pg-introduction .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-introduction .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-sufficient-evidence-and-methods .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-sufficient-evidence-and-methods .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-sufficient-evidence-and-methods .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-sufficient-evidence-and-methods .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-sufficient-evidence-and-methods .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-sufficient-evidence-and-methods .def b{color:#112233}
+#pg-sufficient-evidence-and-methods .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-sufficient-evidence-and-methods .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-sufficient-evidence-and-methods .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-sufficient-evidence-and-methods .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-sufficient-evidence-and-methods .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-sufficient-evidence-and-methods .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-sufficient-evidence-and-methods .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-sufficient-evidence-and-methods .st b{color:#112233}
+#pg-sufficient-evidence-and-methods .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-sufficient-evidence-and-methods .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-sufficient-evidence-and-methods .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-sufficient-evidence-and-methods .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-sufficient-evidence-and-methods .dm{font-size:12px;color:#5a6b7d}
+#pg-sufficient-evidence-and-methods .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-sufficient-evidence-and-methods .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-sufficient-evidence-and-methods .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-sufficient-evidence-and-methods .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-sufficient-evidence-and-methods .fv{color:#0b2f63;font-weight:600}
+#pg-sufficient-evidence-and-methods .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-sufficient-evidence-and-methods .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-sufficient-evidence-and-methods .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-sufficient-evidence-and-methods .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-sufficient-evidence-and-methods .t td.v{color:#0b2f63;font-weight:600}
+#pg-sufficient-evidence-and-methods .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-sufficient-evidence-and-methods .ck{white-space:nowrap}
+#pg-sufficient-evidence-and-methods .on{color:#0b2f63;font-weight:700}
+#pg-sufficient-evidence-and-methods .off{color:#5a6b7d}
+#pg-sufficient-evidence-and-methods .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-sufficient-evidence-and-methods .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-sufficient-evidence-and-methods .ci .co{margin-left:0}
+#pg-sufficient-evidence-and-methods .ci b{color:#112233}
+#pg-sufficient-evidence-and-methods .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-sufficient-evidence-and-methods .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-sufficient-evidence-and-methods .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-sufficient-evidence-and-methods .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-sufficient-evidence-and-methods .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-sufficient-evidence-and-methods .foot b{color:#112233;font-weight:700}
+#pg-sufficient-evidence-and-methods .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-sufficient-evidence-and-methods .cr{background:#8f1d2c;color:#ffffff}
+#pg-sufficient-evidence-and-methods .hi{background:#b4470f;color:#ffffff}
+#pg-sufficient-evidence-and-methods .me{background:#e0b028;color:#112233}
+#pg-sufficient-evidence-and-methods .lo{background:#b8c4d0;color:#112233}
+#pg-sufficient-evidence-and-methods .gr{background:#2f7d4f;color:#ffffff}
+#pg-sufficient-evidence-and-methods .ye{background:#e0b028;color:#112233}
+#pg-sufficient-evidence-and-methods .re{background:#8f1d2c;color:#ffffff}
+#pg-sufficient-evidence-and-methods .ex{color:#c0392b;font-weight:700}
+#pg-sufficient-evidence-and-methods .ok{color:#2f7d4f;font-weight:700}
+#pg-sufficient-evidence-and-methods .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-sufficient-evidence-and-methods .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-strength-ladder-and-seven-ways .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-strength-ladder-and-seven-ways .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-strength-ladder-and-seven-ways .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-strength-ladder-and-seven-ways .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-strength-ladder-and-seven-ways .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-strength-ladder-and-seven-ways .def b{color:#112233}
+#pg-strength-ladder-and-seven-ways .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-strength-ladder-and-seven-ways .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-strength-ladder-and-seven-ways .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-strength-ladder-and-seven-ways .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-strength-ladder-and-seven-ways .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-strength-ladder-and-seven-ways .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-strength-ladder-and-seven-ways .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-strength-ladder-and-seven-ways .st b{color:#112233}
+#pg-strength-ladder-and-seven-ways .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-strength-ladder-and-seven-ways .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-strength-ladder-and-seven-ways .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-strength-ladder-and-seven-ways .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-strength-ladder-and-seven-ways .dm{font-size:12px;color:#5a6b7d}
+#pg-strength-ladder-and-seven-ways .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-strength-ladder-and-seven-ways .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-strength-ladder-and-seven-ways .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-strength-ladder-and-seven-ways .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-strength-ladder-and-seven-ways .fv{color:#0b2f63;font-weight:600}
+#pg-strength-ladder-and-seven-ways .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-strength-ladder-and-seven-ways .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-strength-ladder-and-seven-ways .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-strength-ladder-and-seven-ways .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-strength-ladder-and-seven-ways .t td.v{color:#0b2f63;font-weight:600}
+#pg-strength-ladder-and-seven-ways .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-strength-ladder-and-seven-ways .ck{white-space:nowrap}
+#pg-strength-ladder-and-seven-ways .on{color:#0b2f63;font-weight:700}
+#pg-strength-ladder-and-seven-ways .off{color:#5a6b7d}
+#pg-strength-ladder-and-seven-ways .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-strength-ladder-and-seven-ways .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-strength-ladder-and-seven-ways .ci .co{margin-left:0}
+#pg-strength-ladder-and-seven-ways .ci b{color:#112233}
+#pg-strength-ladder-and-seven-ways .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-strength-ladder-and-seven-ways .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-strength-ladder-and-seven-ways .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-strength-ladder-and-seven-ways .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-strength-ladder-and-seven-ways .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-strength-ladder-and-seven-ways .foot b{color:#112233;font-weight:700}
+#pg-strength-ladder-and-seven-ways .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-strength-ladder-and-seven-ways .cr{background:#8f1d2c;color:#ffffff}
+#pg-strength-ladder-and-seven-ways .hi{background:#b4470f;color:#ffffff}
+#pg-strength-ladder-and-seven-ways .me{background:#e0b028;color:#112233}
+#pg-strength-ladder-and-seven-ways .lo{background:#b8c4d0;color:#112233}
+#pg-strength-ladder-and-seven-ways .gr{background:#2f7d4f;color:#ffffff}
+#pg-strength-ladder-and-seven-ways .ye{background:#e0b028;color:#112233}
+#pg-strength-ladder-and-seven-ways .re{background:#8f1d2c;color:#ffffff}
+#pg-strength-ladder-and-seven-ways .ex{color:#c0392b;font-weight:700}
+#pg-strength-ladder-and-seven-ways .ok{color:#2f7d4f;font-weight:700}
+#pg-strength-ladder-and-seven-ways .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-strength-ladder-and-seven-ways .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-evidence-collection-journey .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-evidence-collection-journey .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-evidence-collection-journey .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-evidence-collection-journey .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-evidence-collection-journey .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-evidence-collection-journey .def b{color:#112233}
+#pg-evidence-collection-journey .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-evidence-collection-journey .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-evidence-collection-journey .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-evidence-collection-journey .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-evidence-collection-journey .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-evidence-collection-journey .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-evidence-collection-journey .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-evidence-collection-journey .st b{color:#112233}
+#pg-evidence-collection-journey .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-evidence-collection-journey .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-evidence-collection-journey .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-evidence-collection-journey .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-evidence-collection-journey .dm{font-size:12px;color:#5a6b7d}
+#pg-evidence-collection-journey .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-evidence-collection-journey .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-evidence-collection-journey .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-evidence-collection-journey .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-evidence-collection-journey .fv{color:#0b2f63;font-weight:600}
+#pg-evidence-collection-journey .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-evidence-collection-journey .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-evidence-collection-journey .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-evidence-collection-journey .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-evidence-collection-journey .t td.v{color:#0b2f63;font-weight:600}
+#pg-evidence-collection-journey .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-evidence-collection-journey .ck{white-space:nowrap}
+#pg-evidence-collection-journey .on{color:#0b2f63;font-weight:700}
+#pg-evidence-collection-journey .off{color:#5a6b7d}
+#pg-evidence-collection-journey .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-evidence-collection-journey .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-evidence-collection-journey .ci .co{margin-left:0}
+#pg-evidence-collection-journey .ci b{color:#112233}
+#pg-evidence-collection-journey .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-evidence-collection-journey .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-evidence-collection-journey .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-evidence-collection-journey .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-evidence-collection-journey .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-evidence-collection-journey .foot b{color:#112233;font-weight:700}
+#pg-evidence-collection-journey .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-evidence-collection-journey .cr{background:#8f1d2c;color:#ffffff}
+#pg-evidence-collection-journey .hi{background:#b4470f;color:#ffffff}
+#pg-evidence-collection-journey .me{background:#e0b028;color:#112233}
+#pg-evidence-collection-journey .lo{background:#b8c4d0;color:#112233}
+#pg-evidence-collection-journey .gr{background:#2f7d4f;color:#ffffff}
+#pg-evidence-collection-journey .ye{background:#e0b028;color:#112233}
+#pg-evidence-collection-journey .re{background:#8f1d2c;color:#ffffff}
+#pg-evidence-collection-journey .ex{color:#c0392b;font-weight:700}
+#pg-evidence-collection-journey .ok{color:#2f7d4f;font-weight:700}
+#pg-evidence-collection-journey .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-evidence-collection-journey .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-system-report-and-sampling .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-system-report-and-sampling .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-system-report-and-sampling .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-system-report-and-sampling .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-system-report-and-sampling .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-system-report-and-sampling .def b{color:#112233}
+#pg-system-report-and-sampling .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-system-report-and-sampling .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-system-report-and-sampling .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-system-report-and-sampling .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-system-report-and-sampling .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-system-report-and-sampling .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-system-report-and-sampling .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-system-report-and-sampling .st b{color:#112233}
+#pg-system-report-and-sampling .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-system-report-and-sampling .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-system-report-and-sampling .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-system-report-and-sampling .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-system-report-and-sampling .dm{font-size:12px;color:#5a6b7d}
+#pg-system-report-and-sampling .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-system-report-and-sampling .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-system-report-and-sampling .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-system-report-and-sampling .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-system-report-and-sampling .fv{color:#0b2f63;font-weight:600}
+#pg-system-report-and-sampling .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-system-report-and-sampling .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-system-report-and-sampling .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-system-report-and-sampling .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-system-report-and-sampling .t td.v{color:#0b2f63;font-weight:600}
+#pg-system-report-and-sampling .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-system-report-and-sampling .ck{white-space:nowrap}
+#pg-system-report-and-sampling .on{color:#0b2f63;font-weight:700}
+#pg-system-report-and-sampling .off{color:#5a6b7d}
+#pg-system-report-and-sampling .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-system-report-and-sampling .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-system-report-and-sampling .ci .co{margin-left:0}
+#pg-system-report-and-sampling .ci b{color:#112233}
+#pg-system-report-and-sampling .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-system-report-and-sampling .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-system-report-and-sampling .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-system-report-and-sampling .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-system-report-and-sampling .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-system-report-and-sampling .foot b{color:#112233;font-weight:700}
+#pg-system-report-and-sampling .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-system-report-and-sampling .cr{background:#8f1d2c;color:#ffffff}
+#pg-system-report-and-sampling .hi{background:#b4470f;color:#ffffff}
+#pg-system-report-and-sampling .me{background:#e0b028;color:#112233}
+#pg-system-report-and-sampling .lo{background:#b8c4d0;color:#112233}
+#pg-system-report-and-sampling .gr{background:#2f7d4f;color:#ffffff}
+#pg-system-report-and-sampling .ye{background:#e0b028;color:#112233}
+#pg-system-report-and-sampling .re{background:#8f1d2c;color:#ffffff}
+#pg-system-report-and-sampling .ex{color:#c0392b;font-weight:700}
+#pg-system-report-and-sampling .ok{color:#2f7d4f;font-weight:700}
+#pg-system-report-and-sampling .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-system-report-and-sampling .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-protecting-evidence-and-mistakes .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-protecting-evidence-and-mistakes .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-protecting-evidence-and-mistakes .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-protecting-evidence-and-mistakes .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-protecting-evidence-and-mistakes .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-protecting-evidence-and-mistakes .def b{color:#112233}
+#pg-protecting-evidence-and-mistakes .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-protecting-evidence-and-mistakes .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-protecting-evidence-and-mistakes .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-protecting-evidence-and-mistakes .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-protecting-evidence-and-mistakes .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-protecting-evidence-and-mistakes .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-protecting-evidence-and-mistakes .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-protecting-evidence-and-mistakes .st b{color:#112233}
+#pg-protecting-evidence-and-mistakes .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-protecting-evidence-and-mistakes .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-protecting-evidence-and-mistakes .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-protecting-evidence-and-mistakes .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-protecting-evidence-and-mistakes .dm{font-size:12px;color:#5a6b7d}
+#pg-protecting-evidence-and-mistakes .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-protecting-evidence-and-mistakes .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-protecting-evidence-and-mistakes .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-protecting-evidence-and-mistakes .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-protecting-evidence-and-mistakes .fv{color:#0b2f63;font-weight:600}
+#pg-protecting-evidence-and-mistakes .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-protecting-evidence-and-mistakes .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-protecting-evidence-and-mistakes .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-protecting-evidence-and-mistakes .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-protecting-evidence-and-mistakes .t td.v{color:#0b2f63;font-weight:600}
+#pg-protecting-evidence-and-mistakes .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-protecting-evidence-and-mistakes .ck{white-space:nowrap}
+#pg-protecting-evidence-and-mistakes .on{color:#0b2f63;font-weight:700}
+#pg-protecting-evidence-and-mistakes .off{color:#5a6b7d}
+#pg-protecting-evidence-and-mistakes .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-protecting-evidence-and-mistakes .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-protecting-evidence-and-mistakes .ci .co{margin-left:0}
+#pg-protecting-evidence-and-mistakes .ci b{color:#112233}
+#pg-protecting-evidence-and-mistakes .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-protecting-evidence-and-mistakes .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-protecting-evidence-and-mistakes .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-protecting-evidence-and-mistakes .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-protecting-evidence-and-mistakes .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-protecting-evidence-and-mistakes .foot b{color:#112233;font-weight:700}
+#pg-protecting-evidence-and-mistakes .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-protecting-evidence-and-mistakes .cr{background:#8f1d2c;color:#ffffff}
+#pg-protecting-evidence-and-mistakes .hi{background:#b4470f;color:#ffffff}
+#pg-protecting-evidence-and-mistakes .me{background:#e0b028;color:#112233}
+#pg-protecting-evidence-and-mistakes .lo{background:#b8c4d0;color:#112233}
+#pg-protecting-evidence-and-mistakes .gr{background:#2f7d4f;color:#ffffff}
+#pg-protecting-evidence-and-mistakes .ye{background:#e0b028;color:#112233}
+#pg-protecting-evidence-and-mistakes .re{background:#8f1d2c;color:#ffffff}
+#pg-protecting-evidence-and-mistakes .ex{color:#c0392b;font-weight:700}
+#pg-protecting-evidence-and-mistakes .ok{color:#2f7d4f;font-weight:700}
+#pg-protecting-evidence-and-mistakes .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-protecting-evidence-and-mistakes .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-leaver-access-test .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-leaver-access-test .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-leaver-access-test .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-leaver-access-test .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-leaver-access-test .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-leaver-access-test .def b{color:#112233}
+#pg-leaver-access-test .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-leaver-access-test .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-leaver-access-test .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-leaver-access-test .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-leaver-access-test .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-leaver-access-test .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-leaver-access-test .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-leaver-access-test .st b{color:#112233}
+#pg-leaver-access-test .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-leaver-access-test .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-leaver-access-test .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-leaver-access-test .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-leaver-access-test .dm{font-size:12px;color:#5a6b7d}
+#pg-leaver-access-test .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-leaver-access-test .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-leaver-access-test .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-leaver-access-test .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-leaver-access-test .fv{color:#0b2f63;font-weight:600}
+#pg-leaver-access-test .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-leaver-access-test .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-leaver-access-test .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-leaver-access-test .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-leaver-access-test .t td.v{color:#0b2f63;font-weight:600}
+#pg-leaver-access-test .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-leaver-access-test .ck{white-space:nowrap}
+#pg-leaver-access-test .on{color:#0b2f63;font-weight:700}
+#pg-leaver-access-test .off{color:#5a6b7d}
+#pg-leaver-access-test .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-leaver-access-test .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-leaver-access-test .ci .co{margin-left:0}
+#pg-leaver-access-test .ci b{color:#112233}
+#pg-leaver-access-test .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-leaver-access-test .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-leaver-access-test .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-leaver-access-test .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-leaver-access-test .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-leaver-access-test .foot b{color:#112233;font-weight:700}
+#pg-leaver-access-test .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-leaver-access-test .cr{background:#8f1d2c;color:#ffffff}
+#pg-leaver-access-test .hi{background:#b4470f;color:#ffffff}
+#pg-leaver-access-test .me{background:#e0b028;color:#112233}
+#pg-leaver-access-test .lo{background:#b8c4d0;color:#112233}
+#pg-leaver-access-test .gr{background:#2f7d4f;color:#ffffff}
+#pg-leaver-access-test .ye{background:#e0b028;color:#112233}
+#pg-leaver-access-test .re{background:#8f1d2c;color:#ffffff}
+#pg-leaver-access-test .ex{color:#c0392b;font-weight:700}
+#pg-leaver-access-test .ok{color:#2f7d4f;font-weight:700}
+#pg-leaver-access-test .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-leaver-access-test .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-continuous-evidence .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-continuous-evidence .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-continuous-evidence .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-continuous-evidence .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-continuous-evidence .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-continuous-evidence .def b{color:#112233}
+#pg-continuous-evidence .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-continuous-evidence .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-continuous-evidence .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-continuous-evidence .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-continuous-evidence .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-continuous-evidence .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-continuous-evidence .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-continuous-evidence .st b{color:#112233}
+#pg-continuous-evidence .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-continuous-evidence .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-continuous-evidence .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-continuous-evidence .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-continuous-evidence .dm{font-size:12px;color:#5a6b7d}
+#pg-continuous-evidence .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-continuous-evidence .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-continuous-evidence .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-continuous-evidence .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-continuous-evidence .fv{color:#0b2f63;font-weight:600}
+#pg-continuous-evidence .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-continuous-evidence .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-continuous-evidence .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-continuous-evidence .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-continuous-evidence .t td.v{color:#0b2f63;font-weight:600}
+#pg-continuous-evidence .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-continuous-evidence .ck{white-space:nowrap}
+#pg-continuous-evidence .on{color:#0b2f63;font-weight:700}
+#pg-continuous-evidence .off{color:#5a6b7d}
+#pg-continuous-evidence .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-continuous-evidence .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-continuous-evidence .ci .co{margin-left:0}
+#pg-continuous-evidence .ci b{color:#112233}
+#pg-continuous-evidence .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-continuous-evidence .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-continuous-evidence .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-continuous-evidence .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-continuous-evidence .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-continuous-evidence .foot b{color:#112233;font-weight:700}
+#pg-continuous-evidence .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-continuous-evidence .cr{background:#8f1d2c;color:#ffffff}
+#pg-continuous-evidence .hi{background:#b4470f;color:#ffffff}
+#pg-continuous-evidence .me{background:#e0b028;color:#112233}
+#pg-continuous-evidence .lo{background:#b8c4d0;color:#112233}
+#pg-continuous-evidence .gr{background:#2f7d4f;color:#ffffff}
+#pg-continuous-evidence .ye{background:#e0b028;color:#112233}
+#pg-continuous-evidence .re{background:#8f1d2c;color:#ffffff}
+#pg-continuous-evidence .ex{color:#c0392b;font-weight:700}
+#pg-continuous-evidence .ok{color:#2f7d4f;font-weight:700}
+#pg-continuous-evidence .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-continuous-evidence .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-references .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-references .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-references .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-references .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-references .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-references .def b{color:#112233}
+#pg-references .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-references .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-references .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-references .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-references .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-references .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-references .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-references .st b{color:#112233}
+#pg-references .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-references .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-references .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-references .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-references .dm{font-size:12px;color:#5a6b7d}
+#pg-references .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-references .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-references .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-references .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-references .fv{color:#0b2f63;font-weight:600}
+#pg-references .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-references .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-references .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-references .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-references .t td.v{color:#0b2f63;font-weight:600}
+#pg-references .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-references .ck{white-space:nowrap}
+#pg-references .on{color:#0b2f63;font-weight:700}
+#pg-references .off{color:#5a6b7d}
+#pg-references .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-references .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-references .ci .co{margin-left:0}
+#pg-references .ci b{color:#112233}
+#pg-references .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-references .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-references .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-references .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-references .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-references .foot b{color:#112233;font-weight:700}
+#pg-references .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-references .cr{background:#8f1d2c;color:#ffffff}
+#pg-references .hi{background:#b4470f;color:#ffffff}
+#pg-references .me{background:#e0b028;color:#112233}
+#pg-references .lo{background:#b8c4d0;color:#112233}
+#pg-references .gr{background:#2f7d4f;color:#ffffff}
+#pg-references .ye{background:#e0b028;color:#112233}
+#pg-references .re{background:#8f1d2c;color:#ffffff}
+#pg-references .ex{color:#c0392b;font-weight:700}
+#pg-references .ok{color:#2f7d4f;font-weight:700}
+#pg-references .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-references .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+</style>
+</head>
+<body>
+<a class="skip" href="#lc-stage">Skip to page</a>
+<header class="lc-top">
+  <a class="lc-brand" href="logical_coders_grc.html">
+    <img src="company-icons/logical-coders-icon-dark.png" alt="">
+    <div><b>Logical Coders</b><span>IT Auditor book · Anèl Henning</span></div>
+  </a>
+  <nav class="lc-books" aria-label="Portfolio pieces"><a class="lc-book" href="compliance_analyst_book.html">Compliance Analyst book</a><a class="lc-book" href="it_auditor_book.html" aria-current=page>IT Auditor book</a><a class="lc-book" href="grc_white_paper.html">White paper</a><a class="lc-book" href="logical_coders_grc_package.html">GRC package</a></nav>
+  <a class="lc-back" href="portfolio_it_auditor.html">← IT Auditor portfolio</a>
+</header>
+
+<div class="lc-wrap">
+  <nav class="lc-side" aria-label="IT Auditor book pages">
+    <div class="lc-intro">
+      <div class="eb">PORTFOLIO PIECE · 10 PAGES</div>
+      <h1>How an auditor proves a control works</h1>
+      <p>Eleven evidence principles, each sketched, explained, linked to the template that applies it, and tested against a real case.</p>
+    </div>
+    <div class="lc-group">Front matter</div>
+<a class="lc-nav" href="#cover" data-slug="cover"><span class="lc-num">01</span><span>Cover</span></a>
+<a class="lc-nav" href="#introduction" data-slug="introduction"><span class="lc-num">02</span><span>Introduction</span></a>
+<div class="lc-group">Principles</div>
+<a class="lc-nav" href="#sufficient-evidence-and-methods" data-slug="sufficient-evidence-and-methods"><span class="lc-num">03</span><span>Sufficient Evidence And Methods</span></a>
+<a class="lc-nav" href="#strength-ladder-and-seven-ways" data-slug="strength-ladder-and-seven-ways"><span class="lc-num">04</span><span>Strength Ladder And Seven Ways</span></a>
+<a class="lc-nav" href="#evidence-collection-journey" data-slug="evidence-collection-journey"><span class="lc-num">05</span><span>Evidence Collection Journey</span></a>
+<a class="lc-nav" href="#system-report-and-sampling" data-slug="system-report-and-sampling"><span class="lc-num">06</span><span>System Report And Sampling</span></a>
+<a class="lc-nav" href="#protecting-evidence-and-mistakes" data-slug="protecting-evidence-and-mistakes"><span class="lc-num">07</span><span>Protecting Evidence And Mistakes</span></a>
+<div class="lc-group">Worked example</div>
+<a class="lc-nav" href="#leaver-access-test" data-slug="leaver-access-test"><span class="lc-num">08</span><span>Leaver Access Test</span></a>
+<div class="lc-group">Principles</div>
+<a class="lc-nav" href="#continuous-evidence" data-slug="continuous-evidence"><span class="lc-num">09</span><span>Continuous Evidence</span></a>
+<div class="lc-group">Back matter</div>
+<a class="lc-nav" href="#references" data-slug="references"><span class="lc-num">10</span><span>References</span></a>
+  </nav>
+
+  <main class="lc-main" id="lc-stage" tabindex="-1">
+    <div class="lc-bar">
+      <div class="lc-where" aria-live="polite"><b id="lc-num">01 / 10</b> · <span id="lc-label"></span></div>
+      <div class="lc-btns">
+        <button class="lc-btn" id="lc-prev" type="button" aria-label="Previous page">← Prev</button>
+        <button class="lc-btn primary" id="lc-next" type="button" aria-label="Next page">Next →</button>
+      </div>
+    </div>
+    <div class="lc-progress" aria-hidden="true"><i id="lc-bar"></i></div>
+    <section class="lc-page" id="pg-cover" data-slug="cover" data-label="Cover" aria-label="Cover" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; position: relative; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="position: absolute; left: 28px; top: 28px; right: 28px; bottom: 28px; border: 2px solid #00adef"></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 14px; padding-top: 112px; text-align: center; position: relative">
+  <div style="font-size: 48px; font-weight: 300; letter-spacing: 0.22em; color: #112233; padding-left: 0.22em">ANÈL HENNING</div>
+  <div style="font-size: 18px; letter-spacing: 0.32em; color: #112233; padding-left: 0.32em">IT AUDITOR</div>
+  <div style="font-size: 20px; font-style: italic; color: #112233">Seeking evidence 24/7!</div>
+</div>
+<div style="position: relative; margin: 34px 150px 0; height: 380px"><img src="portfolio-books/img/b-cover-auditor.jpg" alt="Auditor inspecting a checklist with a magnifying glass beside a locked evidence box and key" style="width: 100%; height: 100%; object-fit: contain; display: block"></div>
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 22px 96px 0; text-align: center">
+  <div class="kick">The evidence companion to the template package</div>
+  <div style="font-size: 26px; font-weight: 700; color: #0083bb; line-height: 1.2">How an auditor proves a control works</div>
+  <div style="font-size: 14px; line-height: 1.55; color: #33475b; max-width: 520px">Eleven evidence principles, each drawn, explained, tied to the template where it is applied, and tested against a real case.</div>
+</div>
+<div style="position: absolute; left: 0; right: 0; bottom: 64px; display: flex; justify-content: center"><img src="company-icons/logical-coders-wordmark.png" alt="Logical Coders" style="height: 30px"></div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-introduction" data-slug="introduction" data-label="Introduction" aria-label="Introduction" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 34px; display: flex; flex-direction: column; gap: 22px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0"><div class="tab" style="font-size: 22px">i</div>
+  <div style="padding-top: 20px; display: flex; flex-direction: column; gap: 6px"><span class="kick">Before you start</span><h1 class="ttl">Evidence is the product of an audit</h1></div></div>
+<div style="display: flex; gap: 28px; flex-shrink: 0">
+  <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 12px; font-size: 14.5px; line-height: 1.6; color: #1b2a3a">
+    <div>The template package tells an auditor <i>what</i> to document. This book shows <i>how</i> to prove it. Each principle is my own sketch, explained step by step, linked to the Logical Coders template where it is applied, and tested against a real event that shows what happened when it failed.</div>
+    <div>Read it beside the Compliance Analyst book: the blue <span class="tag">Lives in</span> tag on each page points to the template that puts the principle to work.</div>
+  </div>
+  <div style="flex: 0 0 290px; background: #eef4f9; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+    <div style="font-size: 54px; line-height: 0.6; color: #0095d3; font-weight: 700; padding-top: 14px">“</div>
+    <div style="font-size: 15px; line-height: 1.5; font-style: italic; color: #112233">Auditors gather evidence by inspecting documents, observing work, asking questions, recalculating, and re-performing a control themselves.</div>
+    <div style="font-size: 12px; color: #5a6b7d">Paraphrasing PCAOB AS 1105 (n.d.-c)</div>
+  </div>
+</div>
+<div style="flex-shrink: 0"><div class="hl" style="padding-bottom: 6px">Contents</div>
+<table class="t" style="font-size: 12.5px"><thead><tr><th style="width: 34px">No.</th><th>Principle</th><th style="width: 150px">Applied in</th><th style="width: 40px; text-align: right">Page</th></tr></thead><tbody><tr><td class="mono" style="font-weight: 700; color: #00739f">01</td><td><b style="color:#112233">Sufficient and Appropriate Evidence</b><div style="color: #5a6b7d">Relevant, reliable, enough, supported</div></td><td><span class="tag">T03 checklist</span></td><td style="text-align: right; color: #5a6b7d">3</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">02</td><td><b style="color:#112233">Three Assessment Methods</b><div style="color: #5a6b7d">Examine, interview, test</div></td><td><span class="tag">T01 test procedure</span></td><td style="text-align: right; color: #5a6b7d">3</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">03</td><td><b style="color:#112233">Evidence Strength Ladder</b><div style="color: #5a6b7d">Spoken answer → auditor-run</div></td><td><span class="tag">T08 evidence</span></td><td style="text-align: right; color: #5a6b7d">4</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">04</td><td><b style="color:#112233">Seven Ways to Collect Evidence</b><div style="color: #5a6b7d">Inspection through analytics</div></td><td><span class="tag">T03 request list</span></td><td style="text-align: right; color: #5a6b7d">4</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">05</td><td><b style="color:#112233">Evidence Collection Journey</b><div style="color: #5a6b7d">Plan → request → … → protect</div></td><td><span class="tag">All templates</span></td><td style="text-align: right; color: #5a6b7d">5</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">06</td><td><b style="color:#112233">Testing a System Report</b><div style="color: #5a6b7d">Completeness and accuracy</div></td><td><span class="tag">T08, T09</span></td><td style="text-align: right; color: #5a6b7d">6</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">07</td><td><b style="color:#112233">Picking a Fair Sample</b><div style="color: #5a6b7d">240 changes → seed → 25 tested</div></td><td><span class="tag">T08 sample method</span></td><td style="text-align: right; color: #5a6b7d">6</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">08</td><td><b style="color:#112233">Protecting Evidence</b><div style="color: #5a6b7d">Minimum necessary, MFA, no secrets</div></td><td><span class="tag">Evidence rule</span></td><td style="text-align: right; color: #5a6b7d">7</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">09</td><td><b style="color:#112233">Common Evidence Mistakes</b><div style="color: #5a6b7d">Six mistakes and their fixes</div></td><td><span class="tag">T03 checklist</span></td><td style="text-align: right; color: #5a6b7d">7</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">10</td><td><b style="color:#112233">Worked Example: Leaver Access Test</b><div style="color: #5a6b7d">HR list + export → query</div></td><td><span class="tag">T09, T08</span></td><td style="text-align: right; color: #5a6b7d">8</td></tr><tr><td class="mono" style="font-weight: 700; color: #00739f">11</td><td><b style="color:#112233">Continuous Evidence Collection</b><div style="color: #5a6b7d">Collect, timestamp, review, flag</div></td><td><span class="tag">T07, T10</span></td><td style="text-align: right; color: #5a6b7d">9</td></tr></tbody></table></div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · IT AUDITOR</span><span>Logical Coders · <b>02</b></span></div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-sufficient-evidence-and-methods" data-slug="sufficient-evidence-and-methods" data-label="Sufficient Evidence And Methods" aria-label="Sufficient Evidence And Methods" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 14px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0">
+  <div style="display: flex; gap: 18px; align-items: flex-start">
+    <div class="tab">1</div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="ttl" style="font-size: 24px">Sufficient and Appropriate Evidence</h2><span class="tag">Lives in · Template 03 checklist</span></div>
+      <div class="sub" style="font-weight: 500; color: #33475b">The PCAOB rule: relevant, reliable, enough, and a supported conclusion</div>
+    </div>
+  </div>
+  <div class="fig" style="height: 168px"><img src="portfolio-books/img/b-sufficient-appropriate.jpg" alt="Four hands passing blocks labeled relevant, reliable, enough and conclusion around a stacked opinion"></div>
+  <div class="cap"><b>CAPTION</b> Sufficient and Appropriate Evidence (2026)</div>
+  <div style="display: flex; gap: 22px; align-items: flex-start">
+    <div style="flex: 1 1 0; font-size: 13px; line-height: 1.5; color: #1b2a3a">Evidence is <b>appropriate</b> when it is relevant — the right control and the right period — and reliable because it comes from a trusted source. It is <b>sufficient</b> when there is enough of it to match the risk. Only then can it support a conclusion. Evidence received directly from an independent outside source is more reliable than evidence passed through the people being audited (PCAOB, n.d.-c).</div>
+    <div style="flex: 1 1 0; background: #fff7ed; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+      <div class="ck2" style="padding-bottom: 0">When it fails · Satyam, 2009</div>
+      <div class="ct" style="font-size: 13.5px">Auditors accepted bank confirmations passed via management</div>
+      <div class="cx" style="font-size: 12.5px">Satyam’s founder admitted inflating cash and bank balances by about $1 billion. The SEC found the auditors had accepted confirmations through Satyam’s management instead of directly from the banks, giving management the chance to fake them; the firms paid a $6 million penalty (SEC, 2011).</div>
+    </div>
+  </div>
+</div><div style="height: 1px; background: #d9e3ec; flex-shrink: 0"></div>
+<div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0">
+  <div style="display: flex; gap: 18px; align-items: flex-start">
+    <div class="tab">2</div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="ttl" style="font-size: 24px">Three Assessment Methods</h2><span class="tag">Lives in · Template 01 test procedure</span></div>
+      <div class="sub" style="font-weight: 500; color: #33475b">NIST: examine, interview, test</div>
+    </div>
+  </div>
+  <div class="fig" style="height: 168px"><img src="portfolio-books/img/b-three-methods.jpg" alt="Examine, interview and test arranged around a stack showing test as strongest"></div>
+  <div class="cap"><b>CAPTION</b> Three Assessment Methods (2026)</div>
+  <div style="display: flex; gap: 22px; align-items: flex-start">
+    <div style="flex: 1 1 0; font-size: 13px; line-height: 1.5; color: #1b2a3a"><b>Examine</b> reviews documents and settings. <b>Interview</b> asks control owners for context. <b>Test</b> runs the control and is the strongest of the three. Critical systems deserve more depth and coverage — more methods, more items (Joint Task Force, 2022). In the Audit Program, every test-procedure cell names which method is used.</div>
+    <div style="flex: 1 1 0; background: #fff7ed; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+      <div class="ck2" style="padding-bottom: 0">When it fails · First American, 2019</div>
+      <div class="ct" style="font-size: 13.5px">Test results never reached executives</div>
+      <div class="cx" style="font-size: 12.5px">A January 2019 penetration test found a flaw exposing customer documents, but it was not fixed on time. In May a journalist reported the exposure. The SEC found senior executives were never told of the earlier test result; the company paid $487,616 (SEC, 2021). The test worked — the reporting did not.</div>
+    </div>
+  </div>
+</div><div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · IT AUDITOR</span><span>Logical Coders · <b>03</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-strength-ladder-and-seven-ways" data-slug="strength-ladder-and-seven-ways" data-label="Strength Ladder And Seven Ways" aria-label="Strength Ladder And Seven Ways" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 14px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0">
+  <div style="display: flex; gap: 18px; align-items: flex-start">
+    <div class="tab">3</div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="ttl" style="font-size: 24px">Evidence Strength Ladder</h2><span class="tag">Lives in · Template 08 evidence column</span></div>
+      <div class="sub" style="font-weight: 500; color: #33475b">Five steps from a spoken answer up to auditor-run</div>
+    </div>
+  </div>
+  <div class="fig" style="height: 168px"><img src="portfolio-books/img/b-strength-ladder.jpg" alt="Ladder of evidence from spoken answer through copy, owner-typed sheet and system report to auditor-run"></div>
+  <div class="cap"><b>CAPTION</b> Evidence Strength Ladder (2026)</div>
+  <div style="display: flex; gap: 22px; align-items: flex-start">
+    <div style="flex: 1 1 0; font-size: 13px; line-height: 1.5; color: #1b2a3a">Evidence gets stronger as it moves away from memory and toward the system: a <b>spoken answer</b>, a <b>copy or scan</b>, an <b>owner-typed</b> sheet, a <b>system report</b>, and finally a test the <b>auditor runs</b> directly. Asking questions alone never proves a control works (PCAOB, n.d.-a) — which is why my AC-2 test re-performs the review in code.</div>
+    <div style="flex: 1 1 0; background: #fff7ed; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+      <div class="ck2" style="padding-bottom: 0">When it fails · WorldCom, 2002</div>
+      <div class="ct" style="font-size: 13.5px">Auditors traced entries instead of accepting explanations</div>
+      <div class="cx" style="font-size: 12.5px">Cynthia Cooper’s internal audit team found large entries moving operating expenses into capital accounts. When managers offered explanations, the team did not accept them; they traced the entries to supporting records, found none, and uncovered $3.8 billion in misstated expenses (Cooper, 2008).</div>
+    </div>
+  </div>
+</div><div style="height: 1px; background: #d9e3ec; flex-shrink: 0"></div>
+<div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0">
+  <div style="display: flex; gap: 18px; align-items: flex-start">
+    <div class="tab">4</div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="ttl" style="font-size: 24px">Seven Ways to Collect Evidence</h2><span class="tag">Lives in · Template 03 request list</span></div>
+      <div class="sub" style="font-weight: 500; color: #33475b">Inspection through analytics, each with its own icon</div>
+    </div>
+  </div>
+  <div class="fig" style="height: 168px"><img src="portfolio-books/img/b-seven-ways.jpg" alt="Seven evidence procedures around a central evidence hexagon"></div>
+  <div class="cap"><b>CAPTION</b> Seven Ways to Collect Evidence (2026)</div>
+  <div style="display: flex; gap: 22px; align-items: flex-start">
+    <div style="flex: 1 1 0; font-size: 13px; line-height: 1.5; color: #1b2a3a"><b>Inspection</b> reviews records. <b>Observation</b> watches the work happen. <b>Inquiry</b> asks questions. <b>Confirmation</b> checks with an outside party. <b>Recalculation</b> redoes the math. <b>Reperformance</b> runs the control again. <b>Analytics</b> finds patterns across data (PCAOB, n.d.-c). Each evidence request in the Fieldwork Packet states which procedure it supports.</div>
+    <div style="flex: 1 1 0; background: #fff7ed; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+      <div class="ck2" style="padding-bottom: 0">When it fails · Morgan Stanley, 2016</div>
+      <div class="ct" style="font-size: 13.5px">A vendor was trusted without checking its work</div>
+      <div class="cx" style="font-size: 12.5px">Closing two data centers, the firm hired a vendor to destroy devices holding customer data but did not oversee it (OCC, 2020b). Devices were resold with data on about 15 million customers (SEC, 2022). Inspecting destruction certificates against serial numbers — or observing the work — would have closed the gap.</div>
+    </div>
+  </div>
+</div><div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · IT AUDITOR</span><span>Logical Coders · <b>04</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-evidence-collection-journey" data-slug="evidence-collection-journey" data-label="Evidence Collection Journey" aria-label="Evidence Collection Journey" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 16px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0"><div class="tab">5</div>
+  <div style="flex: 1 1 auto; padding-top: 14px; display: flex; flex-direction: column; gap: 4px">
+    <div style="display: flex; justify-content: space-between; align-items: center"><h2 class="ttl" style="font-size: 24px">Evidence Collection Journey</h2><span class="tag">Lives in · Every template</span></div>
+    <div class="sub" style="font-weight: 500; color: #33475b">Plan → Request → Receive → Validate → Test → Document → Protect</div></div></div>
+<div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 6px"><div class="fig" style="height: 350px"><img src="portfolio-books/img/b-collection-journey.jpg" alt="Seven-step evidence collection cycle around a protect, test and request stack"></div>
+<div class="cap"><b>CAPTION</b> Evidence Collection Journey (2026)</div></div>
+<div style="flex-shrink: 0"><div class="hl" style="padding-bottom: 4px">Where each step happens in the package</div><div style="display: grid; grid-template-columns: 34px 120px minmax(0, 1fr) 230px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2">
+      <span style="width: 30px; height: 30px; border-radius: 999px; border: 2px solid #0095d3; color: #112233; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center">1</span>
+      <span style="font-size: 15px; font-weight: 700; color: #112233">Plan</span><span style="font-size: 13px; color: #33475b">Exact item and period</span><span class="tag">Template 02 · Audit Plan</span></div><div style="display: grid; grid-template-columns: 34px 120px minmax(0, 1fr) 230px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2">
+      <span style="width: 30px; height: 30px; border-radius: 999px; border: 2px solid #f08a24; color: #112233; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center">2</span>
+      <span style="font-size: 15px; font-weight: 700; color: #112233">Request</span><span style="font-size: 13px; color: #33475b">Written, with a due date</span><span class="tag">Template 03 · request list</span></div><div style="display: grid; grid-template-columns: 34px 120px minmax(0, 1fr) 230px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2">
+      <span style="width: 30px; height: 30px; border-radius: 999px; border: 2px solid #3daa5c; color: #112233; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center">3</span>
+      <span style="font-size: 15px; font-weight: 700; color: #112233">Receive</span><span style="font-size: 13px; color: #33475b">Through the secure repository</span><span class="tag">Template 03 · received</span></div><div style="display: grid; grid-template-columns: 34px 120px minmax(0, 1fr) 230px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2">
+      <span style="width: 30px; height: 30px; border-radius: 999px; border: 2px solid #0095d3; color: #112233; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center">4</span>
+      <span style="font-size: 15px; font-weight: 700; color: #112233">Validate</span><span style="font-size: 13px; color: #33475b">Complete and accurate</span><span class="tag">Template 03 · acceptance checklist</span></div><div style="display: grid; grid-template-columns: 34px 120px minmax(0, 1fr) 230px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2">
+      <span style="width: 30px; height: 30px; border-radius: 999px; border: 2px solid #6a5acd; color: #112233; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center">5</span>
+      <span style="font-size: 15px; font-weight: 700; color: #112233">Test</span><span style="font-size: 13px; color: #33475b">Sample, pass or fail</span><span class="tag">Template 08 · effectiveness report</span></div><div style="display: grid; grid-template-columns: 34px 120px minmax(0, 1fr) 230px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2">
+      <span style="width: 30px; height: 30px; border-radius: 999px; border: 2px solid #e8578a; color: #112233; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center">6</span>
+      <span style="font-size: 15px; font-weight: 700; color: #112233">Document</span><span style="font-size: 13px; color: #33475b">Workpapers</span><span class="tag">Template 12 · document register</span></div><div style="display: grid; grid-template-columns: 34px 120px minmax(0, 1fr) 230px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2">
+      <span style="width: 30px; height: 30px; border-radius: 999px; border: 2px solid #b4470f; color: #112233; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center">7</span>
+      <span style="font-size: 15px; font-weight: 700; color: #112233">Protect</span><span style="font-size: 13px; color: #33475b">Lock and retain six years</span><span class="tag">Evidence rule · § 164.316</span></div></div>
+<div style="flex-shrink: 0; display: flex; gap: 22px; background: #fff7ed; border-radius: 8px; padding: 14px 16px">
+  <div style="flex: 0 0 150px"><div class="ck2">When it fails</div><div style="font-size: 22px; font-weight: 700; color: #b45309">Step 7</div><div class="dm">Arthur Andersen, 2001</div></div>
+  <div class="cx">The journey only counts if the last step holds. As investigations into Enron began, its audit firm destroyed large amounts of documents. The firm collapsed, and Congress made destroying audit records a crime (Arthur Andersen LLP v. United States, 2005; Sarbanes-Oxley Act, 2002). HIPAA keeps security documentation for six years (§ 164.316).</div>
+</div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · IT AUDITOR</span><span>Logical Coders · <b>05</b></span></div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-system-report-and-sampling" data-slug="system-report-and-sampling" data-label="System Report And Sampling" aria-label="System Report And Sampling" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 14px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0">
+  <div style="display: flex; gap: 18px; align-items: flex-start">
+    <div class="tab">6</div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="ttl" style="font-size: 24px">Testing a System Report</h2><span class="tag">Lives in · Templates 08 and 09</span></div>
+      <div class="sub" style="font-weight: 500; color: #33475b">Check completeness and accuracy before relying on it</div>
+    </div>
+  </div>
+  <div class="fig" style="height: 168px"><img src="portfolio-books/img/b-system-report.jpg" alt="System produces a report that is checked for completeness and accuracy before it is relied on"></div>
+  <div class="cap"><b>CAPTION</b> Testing a System Report Before Trusting It (2026)</div>
+  <div style="display: flex; gap: 22px; align-items: flex-start">
+    <div style="flex: 1 1 0; font-size: 13px; line-height: 1.5; color: #1b2a3a">Before relying on a report from Okta, HR or a SIEM, save the <b>parameters</b> that produced it, then test <b>completeness</b> — is every item included? — and <b>accuracy</b> — do the details match the source? Only then rely on it (PCAOB, n.d.-c). My Account Lifecycle Review starts by reconciling the roster count to the HR system.</div>
+    <div style="flex: 1 1 0; background: #fff7ed; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+      <div class="ck2" style="padding-bottom: 0">When it fails · Equifax, 2017</div>
+      <div class="ct" style="font-size: 13.5px">The scan report missed a system</div>
+      <div class="cx" style="font-size: 12.5px">After the Apache Struts alert, Equifax ran a scan to find affected systems. The scan did not identify the vulnerable one, so the patch was never applied, and attackers stole data on 145 million people (GAO, 2018). Comparing the scan’s system list to the asset inventory would have revealed the missing system.</div>
+    </div>
+  </div>
+</div><div style="height: 1px; background: #d9e3ec; flex-shrink: 0"></div>
+<div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0">
+  <div style="display: flex; gap: 18px; align-items: flex-start">
+    <div class="tab">7</div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="ttl" style="font-size: 24px">Picking a Fair Sample</h2><span class="tag">Lives in · Template 08 sample method</span></div>
+      <div class="sub" style="font-weight: 500; color: #33475b">Population, random seed and sample</div>
+    </div>
+  </div>
+  <div class="fig" style="height: 168px"><img src="portfolio-books/img/b-fair-sample.jpg" alt="All 240 changes, a repeatable random seed, and 25 tested items with one exception"></div>
+  <div class="cap"><b>CAPTION</b> Picking a Fair Sample (2026)</div>
+  <div style="display: flex; gap: 22px; align-items: flex-start">
+    <div style="flex: 1 1 0; font-size: 13px; line-height: 1.5; color: #1b2a3a">Start with the full <b>population</b> — all 240 changes in the period. Use a <b>random seed</b> so the selection is repeatable, then test the <b>sample</b>: 25 items, one exception. If the population is missing items, even a perfect sample can miss the real problem, so auditors first compare the record count to the source system (PCAOB, n.d.-b, n.d.-c).</div>
+    <div style="flex: 1 1 0; background: #fff7ed; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+      <div class="ck2" style="padding-bottom: 0">When it fails · Colonial Pipeline, 2021</div>
+      <div class="ct" style="font-size: 13.5px">An account outside the review population</div>
+      <div class="cx" style="font-size: 12.5px">Attackers entered Colonial’s network through an old VPN account that was no longer used and did not require multi-factor authentication. The pipeline shut down for days, causing fuel shortages on the East Coast (U.S. Senate Committee on Homeland Security and Governmental Affairs, 2021).</div>
+    </div>
+  </div>
+</div><div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · IT AUDITOR</span><span>Logical Coders · <b>06</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-protecting-evidence-and-mistakes" data-slug="protecting-evidence-and-mistakes" data-label="Protecting Evidence And Mistakes" aria-label="Protecting Evidence And Mistakes" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 14px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0">
+  <div style="display: flex; gap: 18px; align-items: flex-start">
+    <div class="tab">8</div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="ttl" style="font-size: 24px">Protecting Evidence</h2><span class="tag">Lives in · Evidence rule · all 12 templates</span></div>
+      <div class="sub" style="font-weight: 500; color: #33475b">Minimum necessary, MFA, no secrets, restricted access</div>
+    </div>
+  </div>
+  <div class="fig" style="height: 168px"><img src="portfolio-books/img/b-protecting-evidence.jpg" alt="Locked evidence cube surrounded by minimum necessary, MFA, no secrets and restricted access"></div>
+  <div class="cap"><b>CAPTION</b> Protecting Evidence and Sensitive Data (2026)</div>
+  <div style="display: flex; gap: 22px; align-items: flex-start">
+    <div style="flex: 1 1 0; font-size: 13px; line-height: 1.5; color: #1b2a3a">Collect the <b>minimum necessary</b> — counts, not patient records. Put <b>MFA</b> on the repository and email. Keep <b>no secrets</b> — no passwords or keys — in workpapers, and <b>restrict access</b> to the audit team (§ 164.502; § 164.312). This is the evidence-handling rule printed on every Logical Coders template.</div>
+    <div style="flex: 1 1 0; background: #fff7ed; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+      <div class="ck2" style="padding-bottom: 0">When it fails · Deloitte, 2017</div>
+      <div class="ct" style="font-size: 13.5px">The auditor’s own email was breached</div>
+      <div class="cx" style="font-size: 12.5px">Attackers entered Deloitte’s email system through an administrator account without two-factor authentication and viewed confidential client emails (Hopkins, 2017). Because audit firms hold sensitive client data, a breach of the auditor’s systems exposes the client too.</div>
+    </div>
+  </div>
+</div><div style="height: 1px; background: #d9e3ec; flex-shrink: 0"></div>
+<div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0">
+  <div style="display: flex; gap: 18px; align-items: flex-start">
+    <div class="tab">9</div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="ttl" style="font-size: 24px">Common Evidence Mistakes</h2><span class="tag">Lives in · Template 03 acceptance checklist</span></div>
+      <div class="sub" style="font-weight: 500; color: #33475b">Six mistakes that weaken evidence, and the fix for each</div>
+    </div>
+  </div>
+  <div class="fig" style="height: 168px"><img src="portfolio-books/img/b-common-mistakes.jpg" alt="Six cards showing evidence mistakes and their fixes"></div>
+  <div class="cap"><b>CAPTION</b> Common Evidence Mistakes and Fixes (2026)</div>
+  <div style="display: flex; gap: 22px; align-items: flex-start">
+    <div style="flex: 1 1 0; font-size: 13px; line-height: 1.5; color: #1b2a3a">An <b>undated screenshot</b> cannot be traced — show the system, date and user. <b>Wrong-period</b> evidence proves nothing, so check dates first. An <b>interview alone</b> must be backed by records. A sample the <b>owner picks</b> can hide problems; the auditor selects it. <b>Full patient records</b> collect too much; request counts or redact. An <b>untested report</b> must be checked first (PCAOB, n.d.-a, n.d.-b).</div>
+    <div style="flex: 1 1 0; background: #fff7ed; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+      <div class="ck2" style="padding-bottom: 0">When it fails · Prevention</div>
+      <div class="ct" style="font-size: 13.5px">Each mistake maps to one acceptance check</div>
+      <div class="cx" style="font-size: 12.5px">The seven-item evidence acceptance checklist in Template 03 exists to catch exactly these six mistakes before evidence is accepted: right system, right period, named performer, complete and traceable, sensitive data minimized, source and date recorded, stored in the approved repository.</div>
+    </div>
+  </div>
+</div><div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · IT AUDITOR</span><span>Logical Coders · <b>07</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-leaver-access-test" data-slug="leaver-access-test" data-label="Leaver Access Test" aria-label="Leaver Access Test" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 16px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0"><div class="tab">10</div>
+  <div style="flex: 1 1 auto; padding-top: 14px; display: flex; flex-direction: column; gap: 4px">
+    <div style="display: flex; justify-content: space-between; align-items: center"><h2 class="ttl" style="font-size: 24px">Worked Example: Leaver Access Test</h2><span class="tag">Lives in · Templates 09 and 08</span></div>
+    <div class="sub" style="font-weight: 500; color: #33475b">HR terminations + account export → query → pass or exception</div></div></div>
+<div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 6px"><div class="fig" style="height: 300px"><img src="portfolio-books/img/b-leaver-test.jpg" alt="HR terminations and account export feed a query that returns two passes and two exceptions"></div>
+<div class="cap"><b>CAPTION</b> Worked Example: Leaver Access Test (2026)</div></div>
+<div style="display: flex; gap: 22px; flex-shrink: 0">
+  <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px; line-height: 1.5">
+    <div class="hl">How the test works</div>
+    <div class="st"><span class="sn">1</span><span><b>Two independent lists.</b> HR says who left; the identity system says who still has access.</span></div>
+    <div class="st"><span class="sn">2</span><span><b>Compare every record</b> — a full population, not a sample.</span></div>
+    <div class="st"><span class="sn">3</span><span><b>Measure the gap</b> between termination and disable date against the 1-day standard.</span></div>
+    <div class="st"><span class="sn">4</span><span><b>Log each exception</b> to the tracker with an owner and due date.</span></div>
+  </div>
+  <div style="flex: 1.2 1 0; display: flex; flex-direction: column; gap: 6px">
+    <div class="hl">The same test in my capstone · Sunshine Dental (fictional)</div>
+<pre style="margin: 0; background: #0d1117; color: #d6e2ef; border-radius: 6px; padding: 12px 14px; font-family: Consolas, Menlo, 'Courier New', monospace; font-size: 12px; line-height: 1.5; white-space: pre"><span style="color:#8b98a5">$ python ac2_account_review.py</span>
+<span style="color:#8b98a5">TEST 1 - Leavers disabled within 1 day</span>
+  E-1015 terminated 2026-04-03 -&gt; <span style="color:#56d364">Pass</span>
+  E-1017 terminated 2026-04-08 -&gt; <span style="color:#ff7b72">EXCEPTION</span>
+         <span style="color:#ff7b72">disabled 19 days late</span>
+<span style="color:#8b98a5">TEST 2 - Shared accounts</span>
+  FRONTDESK -&gt; <span style="color:#ff7b72">EXCEPTION - shared login</span>
+<span style="color:#8b98a5">Records: 8 accounts, 5 roster | Exceptions: 7</span></pre>
+    <div style="font-size: 12px; color: #5a6b7d">Full output and SQL: Compliance Analyst book, Template 09</div>
+  </div>
+</div>
+<div style="flex-shrink: 0; display: flex; gap: 22px; background: #fff7ed; border-radius: 8px; padding: 14px 16px">
+  <div style="flex: 0 0 150px"><div class="ck2">When it fails</div><div style="font-size: 22px; font-weight: 700; color: #b45309">8.2M</div><div class="dm">Cash App customers</div></div>
+  <div class="cx">In April 2022, Block reported that a former employee downloaded reports on about 8.2 million Cash App Investing customers after their employment ended; the access was never removed (Block, Inc., 2022). Removing access at exit is basic account management (NIST, 2020), and a leaver test is designed to catch exactly this account.</div>
+</div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · IT AUDITOR</span><span>Logical Coders · <b>08</b></span></div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-continuous-evidence" data-slug="continuous-evidence" data-label="Continuous Evidence" aria-label="Continuous Evidence" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 18px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0">
+  <div style="display: flex; gap: 18px; align-items: flex-start">
+    <div class="tab">11</div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; padding-top: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 class="ttl" style="font-size: 24px">Continuous Evidence Collection</h2><span class="tag">Lives in · Templates 07 and 10</span></div>
+      <div class="sub" style="font-weight: 500; color: #33475b">Collect, timestamp, auditor review and flag</div>
+    </div>
+  </div>
+  <div class="fig" style="height: 300px"><img src="portfolio-books/img/b-continuous.jpg" alt="Automated collection and comparison with human auditor review and flagged exceptions"></div>
+  <div class="cap"><b>CAPTION</b> Continuous Evidence Collection (2026)</div>
+  <div style="display: flex; gap: 22px; align-items: flex-start">
+    <div style="flex: 1 1 0; font-size: 13px; line-height: 1.5; color: #1b2a3a">Automation <b>collects</b> evidence the same way from the same source and <b>timestamps</b> it. Automation <b>compares</b> it to the rule. The auditor still <b>decides</b>, and exceptions are <b>flagged</b> early instead of found at year end. Continuous monitoring keeps an organization aware of its risks (Dempsey et al., 2011; NIST, 2020).</div>
+    <div style="flex: 1 1 0; background: #fff7ed; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+      <div class="ck2" style="padding-bottom: 0">When it fails · Equifax, 2017</div>
+      <div class="ct" style="font-size: 13.5px">An expired certificate stopped the monitoring</div>
+      <div class="cx" style="font-size: 12.5px">Equifax’s traffic-inspection device had an expired certificate for months, so it was not inspecting traffic while data was stolen. The suspicious traffic was noticed only after renewal in July 2017 (GAO, 2018). Monitoring tools need monitoring too.</div>
+    </div>
+  </div>
+</div>
+<div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; border-top: 2px solid #0095d3; padding-top: 14px">
+  <div class="hl">Three things to take from this book</div>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px">
+    <div style="background: #eef4f9; border-radius: 8px; padding: 14px"><div style="font-size: 26px; font-weight: 700; color: #0083bb">01</div><div style="font-size: 13.5px; font-weight: 700; color: #112233; padding: 4px 0">Prove, don’t ask</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b">Climb the strength ladder: re-perform the control instead of accepting an answer.</div></div>
+    <div style="background: #eef4f9; border-radius: 8px; padding: 14px"><div style="font-size: 26px; font-weight: 700; color: #0083bb">02</div><div style="font-size: 13.5px; font-weight: 700; color: #112233; padding: 4px 0">Trust the population</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b">Test reports for completeness and accuracy before sampling from them.</div></div>
+    <div style="background: #eef4f9; border-radius: 8px; padding: 14px"><div style="font-size: 26px; font-weight: 700; color: #0083bb">03</div><div style="font-size: 13.5px; font-weight: 700; color: #112233; padding: 4px 0">Protect the proof</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b">Collect the minimum, lock it down, and keep it for six years.</div></div>
+  </div>
+</div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · IT AUDITOR</span><span>Logical Coders · <b>09</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-references" data-slug="references" data-label="References" aria-label="References" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 34px; display: flex; flex-direction: column; gap: 18px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+<div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0"><div class="tab" style="font-size: 22px">ii</div>
+  <div style="padding-top: 20px; display: flex; flex-direction: column; gap: 6px"><span class="kick">Sources</span><h1 class="ttl">References</h1></div></div>
+<div style="display: flex; flex-direction: column; gap: 8px; flex-shrink: 0"><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Arthur Andersen LLP v. United States, 544 U.S. 696 (2005).</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Block, Inc. (2022, April 4). <i>Form 8-K: Current report</i>. U.S. Securities and Exchange Commission.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Cooper, C. (2008). <i>Extraordinary circumstances: The journey of a corporate whistleblower</i>. Wiley.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Dempsey, K., Chawla, N. S., Johnson, A., Johnston, R., Jones, A. C., Orebaugh, A., Scholl, M., &amp; Stine, K. (2011). <i>Information security continuous monitoring (ISCM) for federal information systems and organizations</i> (NIST SP 800-137).</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Hopkins, N. (2017, September 25). Deloitte hit by cyber-attack revealing clients’ secret emails. <i>The Guardian</i>.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Joint Task Force. (2022). <i>Assessing security and privacy controls in information systems and organizations</i> (NIST SP 800-53A Rev. 5).</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">National Institute of Standards and Technology. (2020). <i>Security and privacy controls for information systems and organizations</i> (NIST SP 800-53 Rev. 5).</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Office of the Comptroller of the Currency. (2020b, October 8). <i>OCC assesses $60 million civil money penalty against Morgan Stanley</i>.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Public Company Accounting Oversight Board. (n.d.-a). <i>AS 2201: An audit of internal control over financial reporting</i>.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Public Company Accounting Oversight Board. (n.d.-b). <i>AS 2315: Audit sampling</i>.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Public Company Accounting Oversight Board. (n.d.-c). <i>AS 1105: Audit evidence</i>.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Sarbanes-Oxley Act of 2002, Pub. L. No. 107-204, 116 Stat. 745 (2002).</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Security Standards: Documentation, 45 C.F.R. § 164.316 (2024).</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Security Standards: Technical Safeguards, 45 C.F.R. § 164.312 (2024).</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">U.S. Government Accountability Office. (2018). <i>Data protection: Actions taken by Equifax and federal agencies in response to the 2017 breach</i> (GAO-18-559).</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">U.S. Securities and Exchange Commission. (2011, April 5). <i>SEC charges India-based affiliates of PwC for role in Satyam accounting fraud</i>.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">U.S. Securities and Exchange Commission. (2021, June 15). <i>SEC charges issuer with cybersecurity disclosure controls failures</i>.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">U.S. Securities and Exchange Commission. (2022, September 20). <i>Morgan Stanley Smith Barney charged with failing to protect personal identifying information</i>.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">U.S. Senate Committee on Homeland Security and Governmental Affairs. (2021, June 8). <i>Threats to critical infrastructure: Examining the Colonial Pipeline cyber attack</i>.</div><div style="font-size: 12.5px; line-height: 1.45; color: #33475b; padding-left: 18px; text-indent: -18px">Uses and Disclosures of Protected Health Information: General Rules, 45 C.F.R. § 164.502 (2024).</div></div>
+<div style="margin-top: auto; flex-shrink: 0; background: #112233; border-radius: 8px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; gap: 20px">
+  <div style="display: flex; align-items: center; gap: 14px"><img src="company-icons/logical-coders-icon-dark.png" alt="Logical Coders icon" style="width: 44px; height: 44px; border-radius: 8px">
+  <div><div style="font-size: 16px; font-weight: 700; color: #ffffff">Anèl Henning · IT Auditor</div><div style="font-size: 12.5px; color: #cfe6ea">Sample data is fictional. Case studies are drawn from the public sources above.</div></div></div>
+  <div style="font-size: 12.5px; color: #7fd3f7; text-align: right; line-height: 1.5">linkedin.com/in/anel-henning-quantum<br>anelhenning2-collab.github.io/portfolio</div>
+</div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · IT AUDITOR</span><span>Logical Coders · <b>10</b></span></div>
+</div>
+</div></div>
+</section>
+    <div class="lc-note">Illustrations are my own. Sample data is fictional; case studies come from the public sources cited in each piece.<br><span class="lc-hint">Tip: use <kbd>←</kbd> <kbd>→</kbd> to move between pages. Click any card or page reference to jump.</span></div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.lc-page'));
+  var navs = Array.prototype.slice.call(document.querySelectorAll('.lc-nav'));
+  var prev = document.getElementById('lc-prev'), next = document.getElementById('lc-next');
+  var cur = 0;
+
+  function fit(){
+    var p = pages[cur]; if(!p) return;
+    var box = p.querySelector('.lc-fit'), paper = p.querySelector('.lc-paper');
+    var s = Math.min(1.25, box.clientWidth / 816);
+    paper.style.transform = 'scale(' + s + ')';
+    box.style.height = (1056 * s) + 'px';
+  }
+  function show(i, focus){
+    cur = Math.max(0, Math.min(pages.length - 1, i));
+    pages.forEach(function(p, j){ p.hidden = j !== cur; });
+    navs.forEach(function(n, j){ if(j === cur) n.setAttribute('aria-current','page'); else n.removeAttribute('aria-current'); });
+    var n = String(cur + 1).padStart(2,'0');
+    document.getElementById('lc-num').textContent = n + ' / ' + pages.length;
+    document.getElementById('lc-label').textContent = pages[cur].dataset.label;
+    document.getElementById('lc-bar').style.width = ((cur + 1) / pages.length * 100) + '%';
+    prev.disabled = cur === 0; next.disabled = cur === pages.length - 1;
+    document.title = pages[cur].dataset.label + ' — IT Auditor book · Anèl Henning';
+    navs[cur].scrollIntoView({block:'nearest', inline:'nearest'});
+    fit();
+    if(focus) document.getElementById('lc-stage').focus({preventScroll:true});
+  }
+  function fromHash(focus){
+    var slug = location.hash.replace('#','');
+    var i = pages.findIndex(function(p){ return p.dataset.slug === slug; });
+    show(i < 0 ? 0 : i, focus);
+    if(focus) window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function go(i){ location.hash = pages[Math.max(0, Math.min(pages.length - 1, i))].dataset.slug; }
+
+  prev.addEventListener('click', function(){ go(cur - 1); });
+  next.addEventListener('click', function(){ go(cur + 1); });
+  window.addEventListener('hashchange', function(){ fromHash(true); });
+  window.addEventListener('resize', fit);
+  document.addEventListener('keydown', function(e){
+    if(e.altKey || e.ctrlKey || e.metaKey) return;
+    var t = e.target.tagName; if(t === 'INPUT' || t === 'TEXTAREA') return;
+    if(e.key === 'ArrowRight'){ go(cur + 1); e.preventDefault(); }
+    if(e.key === 'ArrowLeft'){ go(cur - 1); e.preventDefault(); }
+  });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  fromHash(false);
+})();
+</script>
+</body>
+</html>

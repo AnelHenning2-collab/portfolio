@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>White Paper — Mapping NIST CSF 2.0 to GRC Risk for Compliance — Anèl Henning</title>
+<meta name="description" content="My capstone thesis: how a small practice proves its security posture with documentation that holds up.">
+<link rel="icon" href="company-icons/logical-coders-icon-light.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&display=swap">
+<style>
+:root{--navy:#112233;--teal:#1c8a82;--teal-text:#177a73;--teal-tint:#d8eeec;--page:#eef2f7;--ink:#1b2a3a;--muted:#5a6b7d;--line:#d7e0ea;--on-inv:#cfe6ea}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a:focus-visible,button:focus-visible{outline:2px solid var(--teal-text);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;padding:8px 12px;border-radius:3px;z-index:10}
+.skip:focus{left:16px}
+
+/* top bar */
+.lc-top{background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;flex-wrap:wrap}
+.lc-brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
+.lc-brand img{width:36px;height:36px;border-radius:8px}
+.lc-brand b{display:block;font-size:15px}
+.lc-brand span{display:block;font-size:12px;color:var(--on-inv)}
+.lc-back{color:#4fc1b7;font-size:13px;font-weight:600;text-decoration:none;padding:10px 4px}
+.lc-back:hover{text-decoration:underline}
+
+/* layout */
+.lc-wrap{display:flex;flex-wrap:wrap;gap:24px;max-width:1320px;margin:0 auto;padding:24px}
+.lc-side{flex:1 1 260px;max-width:300px;display:flex;flex-direction:column;gap:4px;align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px}
+.lc-intro{padding:0 8px 12px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.lc-intro .eb{font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--teal-text)}
+.lc-intro h1{font-family:"Playfair Display",Georgia,serif;font-size:22px;line-height:1.2;margin:6px 0 6px;color:var(--navy)}
+.lc-intro p{font-size:13px;line-height:1.5;color:var(--muted);margin:0}
+.lc-group{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:12px 8px 4px}
+.lc-nav{display:flex;gap:10px;align-items:center;min-height:44px;padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;transition:background .14s}
+.lc-nav:hover{background:var(--page)}
+.lc-nav[aria-current="page"]{background:var(--teal-tint);font-weight:700}
+.lc-num{font-family:Consolas,Menlo,monospace;font-size:12px;font-weight:700;color:var(--teal-text);min-width:22px}
+.lc-main:focus{outline:none}
+.lc-main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:14px}
+
+/* toolbar */
+.lc-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.lc-where{font-size:14px;color:var(--muted)}
+.lc-where b{color:var(--navy)}
+.lc-btns{display:flex;gap:8px}
+.lc-btn{min-height:44px;min-width:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--navy);font:600 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.lc-btn:hover:not([disabled]){border-color:var(--teal);color:var(--teal-text)}
+.lc-btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.lc-btn.primary:hover:not([disabled]){background:#1d3550;color:#fff}
+.lc-btn[disabled]{opacity:.45;cursor:default}
+.lc-progress{height:4px;background:var(--line);border-radius:999px;overflow:hidden}
+.lc-progress i{display:block;height:100%;background:var(--teal);width:10%;transition:width .24s ease}
+
+/* page stage */
+.lc-fit{width:100%;position:relative;overflow:hidden}
+.lc-paper{width:816px;height:1056px;transform-origin:top left;position:absolute;top:0;left:0;background:#fff;border-radius:6px;box-shadow:0 1px 2px rgba(20,40,60,.06),0 8px 24px rgba(20,40,60,.08);overflow:hidden}
+.lc-card{transition:transform .14s, box-shadow .14s;cursor:pointer}
+.lc-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(20,40,60,.12)}
+.lc-ref{color:#177a73;font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.lc-note{font-size:12.5px;color:var(--muted);line-height:1.5;text-align:center;padding:4px 0 24px}
+.lc-hint{font-size:12px;color:var(--muted)}
+kbd{font-family:Consolas,Menlo,monospace;font-size:11px;border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:0 4px;background:#fff}
+
+@media (max-width: 860px){
+  .lc-wrap{padding:16px;gap:16px}
+  .lc-side{max-width:none;flex-basis:100%;flex-direction:row;overflow-x:auto;padding:10px;gap:6px;align-items:center}
+  .lc-intro,.lc-group{display:none}
+  .lc-nav{flex:0 0 auto;white-space:nowrap;border:1px solid var(--line)}
+  .lc-hint{display:none}
+}
+@media print{
+  .lc-top,.lc-side,.lc-bar,.lc-progress,.lc-note{display:none}
+  .lc-wrap{padding:0}
+  .lc-paper{box-shadow:none;transform:none!important;position:static}
+  .lc-fit{height:auto!important}
+}
+
+/* ---- page styles, scoped per page ---- */
+
+.lc-books{display:flex;flex-wrap:wrap;gap:6px}
+.lc-book{color:#cfe6ea;font-size:13px;font-weight:600;text-decoration:none;padding:10px 12px;border-radius:999px;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center}
+.lc-book:hover{background:rgba(255,255,255,.08);color:#fff}
+.lc-book[aria-current=page]{background:#0095d3;color:#fff}
+.lc-group{text-transform:uppercase}
+#pg-cover .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-cover .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-cover .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-cover .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-cover .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-cover .def b{color:#112233}
+#pg-cover .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-cover .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-cover .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-cover .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-cover .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-cover .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-cover .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-cover .st b{color:#112233}
+#pg-cover .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-cover .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-cover .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-cover .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-cover .dm{font-size:12px;color:#5a6b7d}
+#pg-cover .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-cover .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-cover .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-cover .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-cover .fv{color:#0b2f63;font-weight:600}
+#pg-cover .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-cover .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-cover .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-cover .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-cover .t td.v{color:#0b2f63;font-weight:600}
+#pg-cover .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-cover .ck{white-space:nowrap}
+#pg-cover .on{color:#0b2f63;font-weight:700}
+#pg-cover .off{color:#5a6b7d}
+#pg-cover .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-cover .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-cover .ci .co{margin-left:0}
+#pg-cover .ci b{color:#112233}
+#pg-cover .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-cover .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-cover .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-cover .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-cover .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-cover .foot b{color:#112233;font-weight:700}
+#pg-cover .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-cover .cr{background:#8f1d2c;color:#ffffff}
+#pg-cover .hi{background:#b4470f;color:#ffffff}
+#pg-cover .me{background:#e0b028;color:#112233}
+#pg-cover .lo{background:#b8c4d0;color:#112233}
+#pg-cover .gr{background:#2f7d4f;color:#ffffff}
+#pg-cover .ye{background:#e0b028;color:#112233}
+#pg-cover .re{background:#8f1d2c;color:#ffffff}
+#pg-cover .ex{color:#c0392b;font-weight:700}
+#pg-cover .ok{color:#2f7d4f;font-weight:700}
+#pg-cover .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-cover .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-cover .wh{margin:0;font-size:30px;font-weight:700;color:#112233;line-height:1.15;letter-spacing:-0.005em}
+#pg-cover .wl{font-size:15px;line-height:1.6;color:#1b2a3a}
+#pg-cover .wl b{color:#112233}
+#pg-cover .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+#pg-cover .card{border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+#pg-cover .big{font-size:40px;font-weight:800;line-height:1;letter-spacing:-0.02em}
+#pg-cover .lab{font-size:12.5px;line-height:1.4}
+#pg-executive-summary .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-executive-summary .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-executive-summary .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-executive-summary .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-executive-summary .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-executive-summary .def b{color:#112233}
+#pg-executive-summary .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-executive-summary .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-executive-summary .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-executive-summary .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-executive-summary .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-executive-summary .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-executive-summary .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-executive-summary .st b{color:#112233}
+#pg-executive-summary .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-executive-summary .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-executive-summary .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-executive-summary .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-executive-summary .dm{font-size:12px;color:#5a6b7d}
+#pg-executive-summary .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-executive-summary .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-executive-summary .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-executive-summary .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-executive-summary .fv{color:#0b2f63;font-weight:600}
+#pg-executive-summary .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-executive-summary .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-executive-summary .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-executive-summary .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-executive-summary .t td.v{color:#0b2f63;font-weight:600}
+#pg-executive-summary .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-executive-summary .ck{white-space:nowrap}
+#pg-executive-summary .on{color:#0b2f63;font-weight:700}
+#pg-executive-summary .off{color:#5a6b7d}
+#pg-executive-summary .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-executive-summary .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-executive-summary .ci .co{margin-left:0}
+#pg-executive-summary .ci b{color:#112233}
+#pg-executive-summary .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-executive-summary .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-executive-summary .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-executive-summary .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-executive-summary .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-executive-summary .foot b{color:#112233;font-weight:700}
+#pg-executive-summary .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-executive-summary .cr{background:#8f1d2c;color:#ffffff}
+#pg-executive-summary .hi{background:#b4470f;color:#ffffff}
+#pg-executive-summary .me{background:#e0b028;color:#112233}
+#pg-executive-summary .lo{background:#b8c4d0;color:#112233}
+#pg-executive-summary .gr{background:#2f7d4f;color:#ffffff}
+#pg-executive-summary .ye{background:#e0b028;color:#112233}
+#pg-executive-summary .re{background:#8f1d2c;color:#ffffff}
+#pg-executive-summary .ex{color:#c0392b;font-weight:700}
+#pg-executive-summary .ok{color:#2f7d4f;font-weight:700}
+#pg-executive-summary .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-executive-summary .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-executive-summary .wh{margin:0;font-size:30px;font-weight:700;color:#112233;line-height:1.15;letter-spacing:-0.005em}
+#pg-executive-summary .wl{font-size:15px;line-height:1.6;color:#1b2a3a}
+#pg-executive-summary .wl b{color:#112233}
+#pg-executive-summary .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+#pg-executive-summary .card{border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+#pg-executive-summary .big{font-size:40px;font-weight:800;line-height:1;letter-spacing:-0.02em}
+#pg-executive-summary .lab{font-size:12.5px;line-height:1.4}
+#pg-the-problem .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-the-problem .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-the-problem .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-the-problem .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-the-problem .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-the-problem .def b{color:#112233}
+#pg-the-problem .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-the-problem .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-the-problem .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-the-problem .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-the-problem .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-the-problem .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-the-problem .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-the-problem .st b{color:#112233}
+#pg-the-problem .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-the-problem .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-the-problem .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-the-problem .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-the-problem .dm{font-size:12px;color:#5a6b7d}
+#pg-the-problem .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-the-problem .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-the-problem .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-the-problem .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-the-problem .fv{color:#0b2f63;font-weight:600}
+#pg-the-problem .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-the-problem .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-the-problem .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-the-problem .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-the-problem .t td.v{color:#0b2f63;font-weight:600}
+#pg-the-problem .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-the-problem .ck{white-space:nowrap}
+#pg-the-problem .on{color:#0b2f63;font-weight:700}
+#pg-the-problem .off{color:#5a6b7d}
+#pg-the-problem .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-the-problem .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-the-problem .ci .co{margin-left:0}
+#pg-the-problem .ci b{color:#112233}
+#pg-the-problem .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-the-problem .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-the-problem .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-the-problem .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-the-problem .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-the-problem .foot b{color:#112233;font-weight:700}
+#pg-the-problem .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-the-problem .cr{background:#8f1d2c;color:#ffffff}
+#pg-the-problem .hi{background:#b4470f;color:#ffffff}
+#pg-the-problem .me{background:#e0b028;color:#112233}
+#pg-the-problem .lo{background:#b8c4d0;color:#112233}
+#pg-the-problem .gr{background:#2f7d4f;color:#ffffff}
+#pg-the-problem .ye{background:#e0b028;color:#112233}
+#pg-the-problem .re{background:#8f1d2c;color:#ffffff}
+#pg-the-problem .ex{color:#c0392b;font-weight:700}
+#pg-the-problem .ok{color:#2f7d4f;font-weight:700}
+#pg-the-problem .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-the-problem .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-the-problem .wh{margin:0;font-size:30px;font-weight:700;color:#112233;line-height:1.15;letter-spacing:-0.005em}
+#pg-the-problem .wl{font-size:15px;line-height:1.6;color:#1b2a3a}
+#pg-the-problem .wl b{color:#112233}
+#pg-the-problem .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+#pg-the-problem .card{border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+#pg-the-problem .big{font-size:40px;font-weight:800;line-height:1;letter-spacing:-0.02em}
+#pg-the-problem .lab{font-size:12.5px;line-height:1.4}
+#pg-framework-stack .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-framework-stack .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-framework-stack .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-framework-stack .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-framework-stack .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-framework-stack .def b{color:#112233}
+#pg-framework-stack .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-framework-stack .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-framework-stack .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-framework-stack .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-framework-stack .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-framework-stack .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-framework-stack .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-framework-stack .st b{color:#112233}
+#pg-framework-stack .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-framework-stack .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-framework-stack .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-framework-stack .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-framework-stack .dm{font-size:12px;color:#5a6b7d}
+#pg-framework-stack .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-framework-stack .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-framework-stack .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-framework-stack .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-framework-stack .fv{color:#0b2f63;font-weight:600}
+#pg-framework-stack .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-framework-stack .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-framework-stack .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-framework-stack .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-framework-stack .t td.v{color:#0b2f63;font-weight:600}
+#pg-framework-stack .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-framework-stack .ck{white-space:nowrap}
+#pg-framework-stack .on{color:#0b2f63;font-weight:700}
+#pg-framework-stack .off{color:#5a6b7d}
+#pg-framework-stack .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-framework-stack .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-framework-stack .ci .co{margin-left:0}
+#pg-framework-stack .ci b{color:#112233}
+#pg-framework-stack .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-framework-stack .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-framework-stack .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-framework-stack .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-framework-stack .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-framework-stack .foot b{color:#112233;font-weight:700}
+#pg-framework-stack .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-framework-stack .cr{background:#8f1d2c;color:#ffffff}
+#pg-framework-stack .hi{background:#b4470f;color:#ffffff}
+#pg-framework-stack .me{background:#e0b028;color:#112233}
+#pg-framework-stack .lo{background:#b8c4d0;color:#112233}
+#pg-framework-stack .gr{background:#2f7d4f;color:#ffffff}
+#pg-framework-stack .ye{background:#e0b028;color:#112233}
+#pg-framework-stack .re{background:#8f1d2c;color:#ffffff}
+#pg-framework-stack .ex{color:#c0392b;font-weight:700}
+#pg-framework-stack .ok{color:#2f7d4f;font-weight:700}
+#pg-framework-stack .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-framework-stack .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-framework-stack .wh{margin:0;font-size:30px;font-weight:700;color:#112233;line-height:1.15;letter-spacing:-0.005em}
+#pg-framework-stack .wl{font-size:15px;line-height:1.6;color:#1b2a3a}
+#pg-framework-stack .wl b{color:#112233}
+#pg-framework-stack .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+#pg-framework-stack .card{border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+#pg-framework-stack .big{font-size:40px;font-weight:800;line-height:1;letter-spacing:-0.02em}
+#pg-framework-stack .lab{font-size:12.5px;line-height:1.4}
+#pg-the-mapping .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-the-mapping .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-the-mapping .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-the-mapping .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-the-mapping .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-the-mapping .def b{color:#112233}
+#pg-the-mapping .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-the-mapping .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-the-mapping .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-the-mapping .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-the-mapping .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-the-mapping .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-the-mapping .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-the-mapping .st b{color:#112233}
+#pg-the-mapping .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-the-mapping .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-the-mapping .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-the-mapping .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-the-mapping .dm{font-size:12px;color:#5a6b7d}
+#pg-the-mapping .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-the-mapping .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-the-mapping .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-the-mapping .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-the-mapping .fv{color:#0b2f63;font-weight:600}
+#pg-the-mapping .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-the-mapping .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-the-mapping .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-the-mapping .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-the-mapping .t td.v{color:#0b2f63;font-weight:600}
+#pg-the-mapping .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-the-mapping .ck{white-space:nowrap}
+#pg-the-mapping .on{color:#0b2f63;font-weight:700}
+#pg-the-mapping .off{color:#5a6b7d}
+#pg-the-mapping .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-the-mapping .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-the-mapping .ci .co{margin-left:0}
+#pg-the-mapping .ci b{color:#112233}
+#pg-the-mapping .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-the-mapping .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-the-mapping .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-the-mapping .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-the-mapping .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-the-mapping .foot b{color:#112233;font-weight:700}
+#pg-the-mapping .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-the-mapping .cr{background:#8f1d2c;color:#ffffff}
+#pg-the-mapping .hi{background:#b4470f;color:#ffffff}
+#pg-the-mapping .me{background:#e0b028;color:#112233}
+#pg-the-mapping .lo{background:#b8c4d0;color:#112233}
+#pg-the-mapping .gr{background:#2f7d4f;color:#ffffff}
+#pg-the-mapping .ye{background:#e0b028;color:#112233}
+#pg-the-mapping .re{background:#8f1d2c;color:#ffffff}
+#pg-the-mapping .ex{color:#c0392b;font-weight:700}
+#pg-the-mapping .ok{color:#2f7d4f;font-weight:700}
+#pg-the-mapping .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-the-mapping .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-the-mapping .wh{margin:0;font-size:30px;font-weight:700;color:#112233;line-height:1.15;letter-spacing:-0.005em}
+#pg-the-mapping .wl{font-size:15px;line-height:1.6;color:#1b2a3a}
+#pg-the-mapping .wl b{color:#112233}
+#pg-the-mapping .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+#pg-the-mapping .card{border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+#pg-the-mapping .big{font-size:40px;font-weight:800;line-height:1;letter-spacing:-0.02em}
+#pg-the-mapping .lab{font-size:12.5px;line-height:1.4}
+#pg-the-method .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-the-method .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-the-method .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-the-method .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-the-method .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-the-method .def b{color:#112233}
+#pg-the-method .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-the-method .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-the-method .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-the-method .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-the-method .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-the-method .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-the-method .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-the-method .st b{color:#112233}
+#pg-the-method .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-the-method .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-the-method .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-the-method .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-the-method .dm{font-size:12px;color:#5a6b7d}
+#pg-the-method .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-the-method .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-the-method .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-the-method .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-the-method .fv{color:#0b2f63;font-weight:600}
+#pg-the-method .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-the-method .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-the-method .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-the-method .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-the-method .t td.v{color:#0b2f63;font-weight:600}
+#pg-the-method .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-the-method .ck{white-space:nowrap}
+#pg-the-method .on{color:#0b2f63;font-weight:700}
+#pg-the-method .off{color:#5a6b7d}
+#pg-the-method .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-the-method .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-the-method .ci .co{margin-left:0}
+#pg-the-method .ci b{color:#112233}
+#pg-the-method .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-the-method .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-the-method .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-the-method .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-the-method .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-the-method .foot b{color:#112233;font-weight:700}
+#pg-the-method .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-the-method .cr{background:#8f1d2c;color:#ffffff}
+#pg-the-method .hi{background:#b4470f;color:#ffffff}
+#pg-the-method .me{background:#e0b028;color:#112233}
+#pg-the-method .lo{background:#b8c4d0;color:#112233}
+#pg-the-method .gr{background:#2f7d4f;color:#ffffff}
+#pg-the-method .ye{background:#e0b028;color:#112233}
+#pg-the-method .re{background:#8f1d2c;color:#ffffff}
+#pg-the-method .ex{color:#c0392b;font-weight:700}
+#pg-the-method .ok{color:#2f7d4f;font-weight:700}
+#pg-the-method .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-the-method .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-the-method .wh{margin:0;font-size:30px;font-weight:700;color:#112233;line-height:1.15;letter-spacing:-0.005em}
+#pg-the-method .wl{font-size:15px;line-height:1.6;color:#1b2a3a}
+#pg-the-method .wl b{color:#112233}
+#pg-the-method .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+#pg-the-method .card{border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+#pg-the-method .big{font-size:40px;font-weight:800;line-height:1;letter-spacing:-0.02em}
+#pg-the-method .lab{font-size:12.5px;line-height:1.4}
+#pg-case-study .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-case-study .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-case-study .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-case-study .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-case-study .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-case-study .def b{color:#112233}
+#pg-case-study .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-case-study .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-case-study .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-case-study .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-case-study .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-case-study .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-case-study .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-case-study .st b{color:#112233}
+#pg-case-study .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-case-study .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-case-study .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-case-study .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-case-study .dm{font-size:12px;color:#5a6b7d}
+#pg-case-study .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-case-study .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-case-study .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-case-study .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-case-study .fv{color:#0b2f63;font-weight:600}
+#pg-case-study .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-case-study .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-case-study .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-case-study .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-case-study .t td.v{color:#0b2f63;font-weight:600}
+#pg-case-study .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-case-study .ck{white-space:nowrap}
+#pg-case-study .on{color:#0b2f63;font-weight:700}
+#pg-case-study .off{color:#5a6b7d}
+#pg-case-study .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-case-study .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-case-study .ci .co{margin-left:0}
+#pg-case-study .ci b{color:#112233}
+#pg-case-study .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-case-study .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-case-study .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-case-study .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-case-study .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-case-study .foot b{color:#112233;font-weight:700}
+#pg-case-study .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-case-study .cr{background:#8f1d2c;color:#ffffff}
+#pg-case-study .hi{background:#b4470f;color:#ffffff}
+#pg-case-study .me{background:#e0b028;color:#112233}
+#pg-case-study .lo{background:#b8c4d0;color:#112233}
+#pg-case-study .gr{background:#2f7d4f;color:#ffffff}
+#pg-case-study .ye{background:#e0b028;color:#112233}
+#pg-case-study .re{background:#8f1d2c;color:#ffffff}
+#pg-case-study .ex{color:#c0392b;font-weight:700}
+#pg-case-study .ok{color:#2f7d4f;font-weight:700}
+#pg-case-study .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-case-study .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-case-study .wh{margin:0;font-size:30px;font-weight:700;color:#112233;line-height:1.15;letter-spacing:-0.005em}
+#pg-case-study .wl{font-size:15px;line-height:1.6;color:#1b2a3a}
+#pg-case-study .wl b{color:#112233}
+#pg-case-study .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+#pg-case-study .card{border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+#pg-case-study .big{font-size:40px;font-weight:800;line-height:1;letter-spacing:-0.02em}
+#pg-case-study .lab{font-size:12.5px;line-height:1.4}
+#pg-recommendations .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
+#pg-recommendations .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
+#pg-recommendations .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
+#pg-recommendations .sub{font-size:16px;font-weight:600;color:#112233;line-height:1.3}
+#pg-recommendations .def{font-size:13px;line-height:1.5;color:#33475b}
+#pg-recommendations .def b{color:#112233}
+#pg-recommendations .fig{border:1px solid #d9e3ec;border-radius:6px;background:#ffffff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#pg-recommendations .fig img{width:100%;height:100%;object-fit:contain;display:block}
+#pg-recommendations .cap{font-size:12px;font-style:italic;color:#5a6b7d;line-height:1.35}
+#pg-recommendations .cap b{font-style:normal;font-weight:700;letter-spacing:0.06em;color:#33475b}
+#pg-recommendations .hl{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#00739f;text-transform:uppercase}
+#pg-recommendations .st{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.38;color:#1b2a3a}
+#pg-recommendations .sn{flex:0 0 22px;height:22px;box-sizing:border-box;border-radius:999px;border:1.5px solid #0095d3;color:#00739f;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+#pg-recommendations .st b{color:#112233}
+#pg-recommendations .panel{background:#eef4f9;border-radius:8px;padding:12px;display:flex;gap:14px;align-items:flex-start}
+#pg-recommendations .doc{flex:1 1 auto;min-width:0;background:#ffffff;border:1px solid #cfdbe6;border-radius:3px;box-shadow:0 1px 2px rgba(17,34,51,0.06),0 6px 16px rgba(17,34,51,0.08);padding:10px 12px;font-size:12px;line-height:1.3;color:#1b2a3a;display:flex;flex-direction:column;gap:5px}
+#pg-recommendations .dh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid #0095d3;padding-bottom:6px}
+#pg-recommendations .dn{font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#112233;text-transform:uppercase}
+#pg-recommendations .dm{font-size:12px;color:#5a6b7d}
+#pg-recommendations .sec{font-size:12px;font-weight:700;letter-spacing:0.1em;color:#00739f;text-transform:uppercase;padding-top:2px}
+#pg-recommendations .fr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 14px}
+#pg-recommendations .f{display:flex;gap:6px;align-items:baseline;border-bottom:1px dotted #c6d3de;padding:1px 0}
+#pg-recommendations .fl{color:#5a6b7d;flex:0 0 auto}
+#pg-recommendations .fv{color:#0b2f63;font-weight:600}
+#pg-recommendations .co{display:inline-flex;align-items:center;justify-content:center;flex:0 0 20px;width:20px;height:20px;border-radius:999px;background:#007bb0;color:#ffffff;font-size:12px;font-weight:700;line-height:1;margin-left:4px;vertical-align:middle}
+#pg-recommendations .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.3}
+#pg-recommendations .t th{background:#e3edf5;color:#112233;text-align:left;font-weight:700;padding:4px 5px;border-bottom:1px solid #b9cbdb}
+#pg-recommendations .t td{padding:3px 5px;border-bottom:1px solid #dde6ee;vertical-align:top;color:#1b2a3a}
+#pg-recommendations .t td.v{color:#0b2f63;font-weight:600}
+#pg-recommendations .cks{display:flex;flex-wrap:wrap;gap:3px 12px}
+#pg-recommendations .ck{white-space:nowrap}
+#pg-recommendations .on{color:#0b2f63;font-weight:700}
+#pg-recommendations .off{color:#5a6b7d}
+#pg-recommendations .cl{flex:0 0 196px;display:flex;flex-direction:column;gap:9px;padding-top:2px}
+#pg-recommendations .ci{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.4;color:#1b2a3a}
+#pg-recommendations .ci .co{margin-left:0}
+#pg-recommendations .ci b{color:#112233}
+#pg-recommendations .case{display:flex;gap:18px;align-items:flex-start;border-top:2px solid #0095d3;padding-top:10px}
+#pg-recommendations .ck2{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;padding-bottom:4px}
+#pg-recommendations .ct{font-size:14px;font-weight:700;color:#112233;line-height:1.3;padding-bottom:4px}
+#pg-recommendations .cx{font-size:12.5px;line-height:1.42;color:#33475b}
+#pg-recommendations .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d9e3ec;padding-top:10px;font-size:12px;color:#5a6b7d;letter-spacing:0.04em}
+#pg-recommendations .foot b{color:#112233;font-weight:700}
+#pg-recommendations .b{display:inline-block;font-size:12px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+#pg-recommendations .cr{background:#8f1d2c;color:#ffffff}
+#pg-recommendations .hi{background:#b4470f;color:#ffffff}
+#pg-recommendations .me{background:#e0b028;color:#112233}
+#pg-recommendations .lo{background:#b8c4d0;color:#112233}
+#pg-recommendations .gr{background:#2f7d4f;color:#ffffff}
+#pg-recommendations .ye{background:#e0b028;color:#112233}
+#pg-recommendations .re{background:#8f1d2c;color:#ffffff}
+#pg-recommendations .ex{color:#c0392b;font-weight:700}
+#pg-recommendations .ok{color:#2f7d4f;font-weight:700}
+#pg-recommendations .mono{font-family:Consolas,Menlo,'Courier New',monospace}
+#pg-recommendations .tag{display:inline-block;white-space:nowrap;flex:0 0 auto;font-size:12px;font-weight:600;color:#0b4f73;background:#dff1fb;border-radius:3px;padding:2px 8px}
+#pg-recommendations .wh{margin:0;font-size:30px;font-weight:700;color:#112233;line-height:1.15;letter-spacing:-0.005em}
+#pg-recommendations .wl{font-size:15px;line-height:1.6;color:#1b2a3a}
+#pg-recommendations .wl b{color:#112233}
+#pg-recommendations .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+#pg-recommendations .card{border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+#pg-recommendations .big{font-size:40px;font-weight:800;line-height:1;letter-spacing:-0.02em}
+#pg-recommendations .lab{font-size:12.5px;line-height:1.4}
+</style>
+</head>
+<body>
+<a class="skip" href="#lc-stage">Skip to page</a>
+<header class="lc-top">
+  <a class="lc-brand" href="logical_coders_grc.html">
+    <img src="company-icons/logical-coders-icon-dark.png" alt="">
+    <div><b>Logical Coders</b><span>White paper · Anèl Henning</span></div>
+  </a>
+  <nav class="lc-books" aria-label="Portfolio pieces"><a class="lc-book" href="compliance_analyst_book.html">Compliance Analyst book</a><a class="lc-book" href="it_auditor_book.html">IT Auditor book</a><a class="lc-book" href="grc_white_paper.html" aria-current=page>White paper</a><a class="lc-book" href="logical_coders_grc_package.html">GRC package</a></nav>
+  <a class="lc-back" href="portfolio_it_auditor.html">← IT Auditor portfolio</a>
+</header>
+
+<div class="lc-wrap">
+  <nav class="lc-side" aria-label="White paper pages">
+    <div class="lc-intro">
+      <div class="eb">WHITE PAPER · 8 PAGES</div>
+      <h1>Mapping NIST CSF 2.0 to GRC risk</h1>
+      <p>My capstone thesis: how a small practice proves its security posture with documentation that holds up.</p>
+    </div>
+    <div class="lc-group">Overview</div>
+<a class="lc-nav" href="#cover" data-slug="cover"><span class="lc-num">01</span><span>Cover</span></a>
+<a class="lc-nav" href="#executive-summary" data-slug="executive-summary"><span class="lc-num">02</span><span>Executive Summary</span></a>
+<div class="lc-group">Argument</div>
+<a class="lc-nav" href="#the-problem" data-slug="the-problem"><span class="lc-num">03</span><span>The Problem</span></a>
+<a class="lc-nav" href="#framework-stack" data-slug="framework-stack"><span class="lc-num">04</span><span>Framework Stack</span></a>
+<a class="lc-nav" href="#the-mapping" data-slug="the-mapping"><span class="lc-num">05</span><span>The Mapping</span></a>
+<a class="lc-nav" href="#the-method" data-slug="the-method"><span class="lc-num">06</span><span>The Method</span></a>
+<div class="lc-group">Evidence</div>
+<a class="lc-nav" href="#case-study" data-slug="case-study"><span class="lc-num">07</span><span>Case Study</span></a>
+<div class="lc-group">Close</div>
+<a class="lc-nav" href="#recommendations" data-slug="recommendations"><span class="lc-num">08</span><span>Recommendations</span></a>
+  </nav>
+
+  <main class="lc-main" id="lc-stage" tabindex="-1">
+    <div class="lc-bar">
+      <div class="lc-where" aria-live="polite"><b id="lc-num">01 / 10</b> · <span id="lc-label"></span></div>
+      <div class="lc-btns">
+        <button class="lc-btn" id="lc-prev" type="button" aria-label="Previous page">← Prev</button>
+        <button class="lc-btn primary" id="lc-next" type="button" aria-label="Next page">Next →</button>
+      </div>
+    </div>
+    <div class="lc-progress" aria-hidden="true"><i id="lc-bar"></i></div>
+    <section class="lc-page" id="pg-cover" data-slug="cover" data-label="Cover" aria-label="Cover" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; position: relative; background: #0b2f4e; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; overflow: hidden; display: flex; flex-direction: column">
+  <div style="padding: 64px 64px 0; display: flex; justify-content: space-between; align-items: center">
+    <div style="font-size: 13px; font-weight: 700; letter-spacing: 0.18em; color: #7fd3f7">WHITE PAPER · OCTOBER 2026</div>
+    <img src="company-icons/logical-coders-icon-dark.png" alt="Logical Coders icon" style="width: 48px; height: 48px; border-radius: 9px">
+  </div>
+  <div style="padding: 44px 64px 0; display: flex; flex-direction: column; gap: 18px">
+    <h1 style="margin: 0; font-size: 50px; font-weight: 800; line-height: 1.04; color: #ffffff; letter-spacing: -0.01em; text-wrap: balance">Mapping NIST CSF 2.0 to GRC Risk for Compliance</h1>
+    <div style="font-size: 20px; line-height: 1.45; color: #cfe6ea; max-width: 600px">How a small practice proves its security posture with documentation that holds up to a client, an insurer or an auditor.</div>
+  </div>
+  <div style="margin: 36px 64px 0; background: #ffffff; border-radius: 12px; height: 330px; padding: 14px; box-sizing: border-box"><img src="portfolio-books/img/a-risk-to-control.jpg" alt="Hands building a tower of controls, inspecting it and locking evidence away" style="width: 100%; height: 100%; object-fit: contain; display: block"></div>
+  <div style="margin-top: auto; display: flex"><div style="flex: 1 1 0; background: #5b4fc4; color: #ffffff; padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em">GV</span><span style="font-size: 15px; font-weight: 700">Govern</span></div><div style="flex: 1 1 0; background: #0095d3; color: #ffffff; padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em">ID</span><span style="font-size: 15px; font-weight: 700">Identify</span></div><div style="flex: 1 1 0; background: #2f6fd0; color: #ffffff; padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em">PR</span><span style="font-size: 15px; font-weight: 700">Protect</span></div><div style="flex: 1 1 0; background: #f08a24; color: #112233; padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em">DE</span><span style="font-size: 15px; font-weight: 700">Detect</span></div><div style="flex: 1 1 0; background: #e2474b; color: #ffffff; padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em">RS</span><span style="font-size: 15px; font-weight: 700">Respond</span></div><div style="flex: 1 1 0; background: #3daa5c; color: #112233; padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em">RC</span><span style="font-size: 15px; font-weight: 700">Recover</span></div></div>
+  <div style="background: #ffffff; padding: 22px 64px 26px; display: flex; justify-content: space-between; align-items: center">
+    <div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 22px; font-weight: 300; letter-spacing: 0.2em; color: #112233">ANÈL HENNING</div>
+    <div style="font-size: 13px; color: #33475b">MS Cybersecurity Management capstone · Purdue Global · IT 595</div></div>
+    <img src="company-icons/logical-coders-wordmark.png" alt="Logical Coders" style="height: 28px">
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-executive-summary" data-slug="executive-summary" data-label="Executive Summary" aria-label="Executive Summary" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 26px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden"><div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0">
+  <div class="tab" style="background: #0095d3">1</div>
+  <div style="padding-top: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto"><span class="kick">Executive summary</span><h1 class="wh">Frameworks describe outcomes. Small practices need proof.</h1></div></div>
+<div style="display: flex; gap: 28px; flex-shrink: 0">
+  <div style="flex: 1.25 1 0; display: flex; flex-direction: column; gap: 12px" class="wl">
+    <div>Clients, insurers and auditors increasingly ask small organizations to <b>demonstrate</b> that they manage cybersecurity risk. Most have no security staff and no time to turn hundreds of pages of NIST guidance into documents they can keep current.</div>
+    <div>This paper describes a reusable toolkit I built for <b>Logical Coders</b>, a compliance documentation practice. It uses <b>CSF 2.0</b> as the organizing structure and <b>NIST SP 800-53 Rev. 5</b> for the testable controls, narrowed to three families: Access Control, Risk Assessment, and Audit and Accountability.</div>
+    <div>Applied to a fictional 22-person dental practice, the toolkit turned framework language into a scored risk register, three control narratives, a tested access control and a one-page report leadership can sign.</div>
+  </div>
+  <div style="flex: 1 1 0; background: #0b2f4e; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #7fd3f7">THE CLAIM</div>
+    <div style="font-size: 21px; line-height: 1.35; font-weight: 600; color: #ffffff">A small, consistent set of templates — every control tied to a risk, an owner and its evidence — is more defensible than custom documentation rebuilt for each client.</div>
+    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #cfe6ea">
+      <div>✓ Repeatable across clients</div><div>✓ Compatible with SOC 2 and FedRAMP language</div><div>✓ Maintainable without a security team</div></div>
+  </div>
+</div>
+<div style="flex-shrink: 0"><div class="hl" style="padding-bottom: 10px">By the numbers</div><div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px"><div class="card" style="background: #f4f8fb; border-top: 4px solid #0095d3; border-radius: 0 0 10px 10px"><div class="big" style="color: #112233">12</div><div class="lab" style="color: #33475b">audit templates, each with a HIPAA and NIST reference field</div></div><div class="card" style="background: #f4f8fb; border-top: 4px solid #5b4fc4; border-radius: 0 0 10px 10px"><div class="big" style="color: #112233">3</div><div class="lab" style="color: #33475b">control families in scope: AC, RA and AU</div></div><div class="card" style="background: #f4f8fb; border-top: 4px solid #e2474b; border-radius: 0 0 10px 10px"><div class="big" style="color: #112233">7</div><div class="lab" style="color: #33475b">exceptions found by re-performing AC-2 in code</div></div><div class="card" style="background: #f4f8fb; border-top: 4px solid #3daa5c; border-radius: 0 0 10px 10px"><div class="big" style="color: #112233">3 → 0</div><div class="lab" style="color: #33475b">critical risks, projected after treatment</div></div></div></div>
+<div style="flex-shrink: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px">
+  <div><div class="hl" style="color: #33475b; padding-bottom: 6px">Who it is for</div><div class="lab" style="color: #33475b">Small practices with clients, insurers or partners that require a documented security posture.</div></div>
+  <div><div class="hl" style="color: #33475b; padding-bottom: 6px">What it covers</div><div class="lab" style="color: #33475b">CSF 2.0 functions, SP 800-53 AC-2, RA-3 and AU-6, and the HIPAA Security Rule as client criteria.</div></div>
+  <div><div class="hl" style="color: #33475b; padding-bottom: 6px">What it is not</div><div class="lab" style="color: #33475b">A full control catalog or automated compliance — it is documentation a small team can maintain.</div></div>
+</div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · WHITE PAPER</span><span>Logical Coders · <b>02</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-the-problem" data-slug="the-problem" data-label="The Problem" aria-label="The Problem" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 20px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden"><div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0">
+  <div class="tab" style="background: #0095d3">2</div>
+  <div style="padding-top: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto"><span class="kick">The problem</span><h1 class="wh">Long frameworks, short staff, inconsistent documents</h1></div></div>
+<div class="wl" style="flex-shrink: 0">NIST guidance is written for organizations with dedicated security teams. A small practice that copies it piecemeal ends up with documents that disagree with each other — and inconsistent or inaccurate documentation is exactly what falls flat in a SOC 2 examination or a FedRAMP authorization (AICPA &amp; CIMA, n.d.; GSA, n.d.).</div>
+<div style="flex-shrink: 0"><div class="hl" style="padding-bottom: 10px">Three sources of pressure</div><div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px"><div class="card" style="background: #0095d3; color: #ffffff"><div style="font-size: 22px; font-weight: 800">Clients</div><div class="lab">ask vendors for SOC 2-style answers before sharing sensitive data</div></div><div class="card" style="background: #f08a24; color: #112233"><div style="font-size: 22px; font-weight: 800">Insurers</div><div class="lab">send cyber-insurance questionnaires that expect documented controls</div></div><div class="card" style="background: #5b4fc4; color: #ffffff"><div style="font-size: 22px; font-weight: 800">Auditors</div><div class="lab">need evidence that a control operated, not a policy that says it should</div></div></div></div>
+<div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 6px"><div class="fig" style="height: 300px"><img src="portfolio-books/img/a-gap-analysis.jpg" alt="Current process, required standard, identified gap and recommended action"></div>
+<div class="cap"><b>CAPTION</b> From fragmented, reactive practice to a defined standard — the gap this toolkit closes (2026)</div></div>
+<div style="flex-shrink: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px">
+  <div><div class="hl" style="padding-bottom: 6px">What goes wrong today</div><div class="lab" style="color: #33475b; font-size: 13.5px; line-height: 1.55">Risks are listed but never scored. Controls are described but have no owner. Evidence exists but cannot be traced to a requirement. When a client asks for proof, the practice starts over.</div></div>
+  <div><div class="hl" style="padding-bottom: 6px">What the toolkit changes</div><div class="lab" style="color: #33475b; font-size: 13.5px; line-height: 1.55">Every template carries the same document-control block, evidence rule and HIPAA/NIST reference field, so a risk, its control, its evidence and the decision about it always connect.</div></div>
+</div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · WHITE PAPER</span><span>Logical Coders · <b>03</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-framework-stack" data-slug="framework-stack" data-label="Framework Stack" aria-label="Framework Stack" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 18px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden"><div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0">
+  <div class="tab" style="background: #0095d3">3</div>
+  <div style="padding-top: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto"><span class="kick">The framework stack</span><h1 class="wh">Two altitudes: outcomes above, testable controls below</h1></div></div>
+<div class="wl" style="flex-shrink: 0">CSF 2.0 describes the outcomes an organization should achieve; SP 800-53 supplies the specific, testable controls that show those outcomes are actually met (NIST, 2020, 2024). The toolkit uses each at its own altitude.</div>
+<div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 8px"><div class="hl">CSF 2.0 — six functions (NIST, 2024)</div><div style="display: flex; gap: 8px"><div style="flex: 1 1 0; background: #5b4fc4; color: #ffffff; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em">GV</span><span style="font-size: 14px; font-weight: 700">Govern</span></div><div style="flex: 1 1 0; background: #0095d3; color: #ffffff; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em">ID</span><span style="font-size: 14px; font-weight: 700">Identify</span></div><div style="flex: 1 1 0; background: #2f6fd0; color: #ffffff; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em">PR</span><span style="font-size: 14px; font-weight: 700">Protect</span></div><div style="flex: 1 1 0; background: #f08a24; color: #112233; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em">DE</span><span style="font-size: 14px; font-weight: 700">Detect</span></div><div style="flex: 1 1 0; background: #e2474b; color: #ffffff; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em">RS</span><span style="font-size: 14px; font-weight: 700">Respond</span></div><div style="flex: 1 1 0; background: #3daa5c; color: #112233; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em">RC</span><span style="font-size: 14px; font-weight: 700">Recover</span></div></div>
+<div class="lab" style="color: #5a6b7d">Govern is the newest function and the most consequential here: it ties daily security back to who owns which risk.</div></div>
+<div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 8px">
+  <div style="display: grid; grid-template-columns: 170px minmax(0, 1fr) 210px; gap: 18px; align-items: center; background: #0b2f4e; color: #ffffff; border-radius: 10px; padding: 14px 18px">
+      <div><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; opacity: 0.85">OUTCOMES</div><div style="font-size: 17px; font-weight: 800">NIST CSF 2.0</div></div>
+      <div style="font-size: 13px; line-height: 1.45">A shared vocabulary for leadership, staff and auditors — no mandated tools or vendors.</div><div style="font-size: 12.5px; line-height: 1.4; font-weight: 600">Organizes the whole toolkit</div></div>
+  <div style="display: grid; grid-template-columns: 170px minmax(0, 1fr) 210px; gap: 18px; align-items: center; background: #2f6fd0; color: #ffffff; border-radius: 10px; padding: 14px 18px">
+      <div><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; opacity: 0.85">CONTROLS</div><div style="font-size: 17px; font-weight: 800">SP 800-53 Rev. 5</div></div>
+      <div style="font-size: 13px; line-height: 1.45">AC-2 Account Management · RA-3 Risk Assessment · AU-6 Audit Record Review.</div><div style="font-size: 12.5px; line-height: 1.4; font-weight: 600">Anchors narratives and tests</div></div>
+  <div style="display: grid; grid-template-columns: 170px minmax(0, 1fr) 210px; gap: 18px; align-items: center; background: #0095d3; color: #ffffff; border-radius: 10px; padding: 14px 18px">
+      <div><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; opacity: 0.85">ASSESSMENT</div><div style="font-size: 17px; font-weight: 800">SP 800-53A Rev. 5</div></div>
+      <div style="font-size: 13px; line-height: 1.45">Assessment procedures: what evidence to request and what to ask (NIST, 2022).</div><div style="font-size: 12.5px; line-height: 1.4; font-weight: 600">Shapes evidence requests</div></div>
+  <div style="display: grid; grid-template-columns: 170px minmax(0, 1fr) 210px; gap: 18px; align-items: center; background: #dff1fb; color: #112233; border-radius: 10px; padding: 14px 18px">
+      <div><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; opacity: 0.85">CRITERIA</div><div style="font-size: 17px; font-weight: 800">HIPAA Security Rule</div></div>
+      <div style="font-size: 13px; line-height: 1.45">The client’s legal yardstick: §§ 164.308, 164.312, 164.316.</div><div style="font-size: 12.5px; line-height: 1.4; font-weight: 600">Cited in every finding</div></div>
+</div>
+<div style="flex-shrink: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px">
+  <div class="card" style="background: #f4f8fb"><div class="hl">Context</div><div style="font-size: 15px; font-weight: 700; color: #112233">SOC 2 and FedRAMP</div><div class="lab" style="color: #33475b">Not implemented in full, but the same AC, RA and AU language carries over if a client later needs a SOC 2 report or authorization.</div></div>
+  <div class="card" style="background: #f4f8fb"><div class="hl">Design logic</div><div style="font-size: 15px; font-weight: 700; color: #112233">Zero Trust</div><div class="lab" style="color: #33475b">Unique accounts, MFA, least privilege and regular reviews shape the access-control content (Rose et al., 2020).</div></div>
+  <div class="card" style="background: #f4f8fb"><div class="hl">Design logic</div><div style="font-size: 15px; font-weight: 700; color: #112233">Defense in Depth</div><div class="lab" style="color: #33475b">Policies, logging, backups and training are documented as layers that reinforce each other (CISA, 2025).</div></div>
+</div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · WHITE PAPER</span><span>Logical Coders · <b>04</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-the-mapping" data-slug="the-mapping" data-label="The Mapping" aria-label="The Mapping" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 16px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden"><div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0">
+  <div class="tab" style="background: #0095d3">4</div>
+  <div style="padding-top: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto"><span class="kick">The mapping</span><h1 class="wh">From a CSF outcome to the evidence that proves it</h1></div></div>
+<div class="wl" style="flex-shrink: 0">This is the core of the toolkit. Read each row left to right: the outcome NIST describes, the control that achieves it, the HIPAA requirement a client is judged against, the template that documents it, and the evidence an auditor will ask to see.</div>
+<div style="flex-shrink: 0; display: flex; gap: 8px; align-items: center; font-size: 13px; font-weight: 700; color: #112233">
+  <span class="pill" style="background: #0b2f4e; color: #fff">CSF outcome</span>→<span class="pill" style="background: #2f6fd0; color: #fff">800-53 control</span>→<span class="pill" style="background: #dff1fb; color: #112233">HIPAA criterion</span>→<span class="pill" style="background: #0095d3; color: #fff">Template</span>→<span class="pill" style="background: #3daa5c; color: #112233">Evidence</span></div>
+<div style="flex-shrink: 0; border: 1px solid #d9e3ec; border-radius: 10px; overflow: hidden">
+<table class="t" style="font-size: 12.5px"><thead><tr><th style="padding: 0; width: 8px"></th><th style="width: 70px">Function</th><th style="width: 92px">Category</th><th style="width: 46px">Control</th><th style="width: 130px">HIPAA</th><th>Template</th><th style="width: 150px">Evidence</th></tr></thead><tbody><tr><td style="padding: 0; width: 8px; background: #5b4fc4"></td><td style="font-weight: 700; color: #112233">Govern</td><td class="mono">GV.OV · GV.RR · GV.PO</td><td class="mono" style="font-weight: 700">—</td><td>§ 164.308(a)(2), (a)(8); § 164.316</td><td style="font-weight: 600; color: #0b2f63">01 Program · 02 Plan · 11 Governance · 12 Package</td><td>Signed governance report; document register</td></tr><tr><td style="padding: 0; width: 8px; background: #0095d3"></td><td style="font-weight: 700; color: #112233">Identify</td><td class="mono">ID.RA</td><td class="mono" style="font-weight: 700">RA-3</td><td>§ 164.308(a)(1)(ii)(A)–(B)</td><td style="font-weight: 600; color: #0b2f63">05 Risk Register</td><td>Register with approval date and residual scores</td></tr><tr><td style="padding: 0; width: 8px; background: #0095d3"></td><td style="font-weight: 700; color: #112233">Identify</td><td class="mono">ID.IM</td><td class="mono" style="font-weight: 700">RA-3</td><td>§ 164.308(a)(8)</td><td style="font-weight: 600; color: #0b2f63">06 Gap Analysis · 07 Tracker</td><td>Finding statements; dated tracker items</td></tr><tr><td style="padding: 0; width: 8px; background: #2f6fd0"></td><td style="font-weight: 700; color: #112233">Protect</td><td class="mono">PR.AA</td><td class="mono" style="font-weight: 700">AC-2</td><td>§ 164.308(a)(3)(ii)(C); § 164.312(a)(1)</td><td style="font-weight: 600; color: #0b2f63">04 Narrative · 09 Lifecycle · 08 Effectiveness</td><td>Signed request, disable ticket, script output</td></tr><tr><td style="padding: 0; width: 8px; background: #f08a24"></td><td style="font-weight: 700; color: #112233">Detect</td><td class="mono">DE.CM</td><td class="mono" style="font-weight: 700">AU-6</td><td>§ 164.312(b); § 164.308(a)(1)(ii)(D)</td><td style="font-weight: 600; color: #0b2f63">10 Audit Log Summary</td><td>Weekly log-review record; escalation tickets</td></tr></tbody></table></div>
+<div style="flex-shrink: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+  <div class="card" style="background: #fff3f3"><div style="display: flex; gap: 8px"><span class="pill" style="background: #e2474b; color: #fff">Respond</span><span class="pill" style="background: #3daa5c; color: #112233">Recover</span></div><div class="lab" style="color: #33475b">Outside the three-family scope, but surfaced where they affect posture: incident response and backup are rated in the governance report.</div></div>
+  <div class="card" style="background: #f4f8fb"><div class="hl">Why only three families?</div><div class="lab" style="color: #33475b">SP 800-53 has hundreds of controls. A defined subset tied to Identify, Protect and Detect keeps the toolkit finishable, testable and reusable.</div></div>
+</div>
+<div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 6px"><div class="fig" style="height: 230px"><img src="portfolio-books/img/a-system-of-controls.jpg" alt="System of controls from risk identification to conclusion"></div>
+<div class="cap"><b>CAPTION</b> The System of Controls — each mapping row is one path through this tower (2026)</div></div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · WHITE PAPER</span><span>Logical Coders · <b>05</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-the-method" data-slug="the-method" data-label="The Method" aria-label="The Method" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 20px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden"><div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0">
+  <div class="tab" style="background: #0095d3">5</div>
+  <div style="padding-top: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto"><span class="kick">The method</span><h1 class="wh">One package, one evidence rule, four milestones</h1></div></div>
+<div style="flex-shrink: 0; display: flex; gap: 26px">
+  <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 4px"><div class="hl" style="padding-bottom: 4px">Twelve templates in five phases</div><div style="display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2"><span style="width: 14px; height: 14px; border-radius: 999px; background: #0095d3; flex: 0 0 auto"></span><span style="flex: 0 0 90px; font-size: 14px; font-weight: 700; color: #112233">Plan</span><span style="font-size: 13px; color: #33475b">01 Audit Program · 02 Audit Plan</span></div><div style="display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2"><span style="width: 14px; height: 14px; border-radius: 999px; background: #3daa5c; flex: 0 0 auto"></span><span style="flex: 0 0 90px; font-size: 14px; font-weight: 700; color: #112233">Evidence</span><span style="font-size: 13px; color: #33475b">03 Fieldwork · 08 Effectiveness · 10 Log Summary</span></div><div style="display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2"><span style="width: 14px; height: 14px; border-radius: 999px; background: #f08a24; flex: 0 0 auto"></span><span style="flex: 0 0 90px; font-size: 14px; font-weight: 700; color: #112233">Control</span><span style="font-size: 13px; color: #33475b">04 Narrative · 09 Account Lifecycle</span></div><div style="display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2"><span style="width: 14px; height: 14px; border-radius: 999px; background: #e8578a; flex: 0 0 auto"></span><span style="flex: 0 0 90px; font-size: 14px; font-weight: 700; color: #112233">Risk</span><span style="font-size: 13px; color: #33475b">05 Risk Register · 06 Gap Analysis</span></div><div style="display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #e3ebf2"><span style="width: 14px; height: 14px; border-radius: 999px; background: #5b4fc4; flex: 0 0 auto"></span><span style="flex: 0 0 90px; font-size: 14px; font-weight: 700; color: #112233">Decision</span><span style="font-size: 13px; color: #33475b">07 Tracker · 11 Governance · 12 Package</span></div></div>
+  <div style="flex: 0 0 280px; display: flex; flex-direction: column; gap: 12px">
+    <div class="card" style="background: #fff7ed"><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: #b45309">EVIDENCE-HANDLING RULE</div><div class="lab" style="color: #33475b">No ePHI, passwords, private keys, full Social Security numbers or unnecessary screenshots in workpapers. Minimum necessary, redact, restrict, store in an approved repository.</div></div>
+    <div class="card" style="background: #f4f8fb"><div class="hl">Every template carries</div><div class="lab" style="color: #33475b">✓ Plain-language definition<br>✓ Document-control block, 6-year retention<br>✓ HIPAA / NIST reference field<br>✓ Prepared, reviewed, approved sign-off</div></div>
+  </div>
+</div>
+<div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 6px"><div class="fig" style="height: 250px"><img src="portfolio-books/img/a-evidence-journey.jpg" alt="Evidence requested, received, reviewed, protected and stored"></div>
+<div class="cap"><b>CAPTION</b> Audit Evidence Journey — the path every sample exhibit followed (2026)</div></div>
+<div style="flex-shrink: 0"><div class="hl" style="padding-bottom: 10px">Capstone timeline</div><div style="display: flex; gap: 16px; border-top: 3px solid #0095d3; padding-top: 14px"><div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 6px"><div style="display: flex; align-items: center; gap: 8px"><span style="width: 34px; height: 34px; border-radius: 999px; background: #0b2f4e; color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">M1</span><span style="font-size: 12.5px; font-weight: 700; color: #00739f">Sep 16</span></div><div style="font-size: 14px; font-weight: 700; color: #112233">Research foundation</div><div class="lab" style="color: #33475b">CSF 2.0, SP 800-53, Zero Trust, Defense in Depth</div></div><div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 6px"><div style="display: flex; align-items: center; gap: 8px"><span style="width: 34px; height: 34px; border-radius: 999px; background: #0b2f4e; color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">M2</span><span style="font-size: 12.5px; font-weight: 700; color: #00739f">Sep 25</span></div><div style="font-size: 14px; font-weight: 700; color: #112233">Twelve templates</div><div class="lab" style="color: #33475b">Risk register, account review, log summary and tracker samples</div></div><div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 6px"><div style="display: flex; align-items: center; gap: 8px"><span style="width: 34px; height: 34px; border-radius: 999px; background: #0b2f4e; color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">M3</span><span style="font-size: 12.5px; font-weight: 700; color: #00739f">Oct 5</span></div><div style="font-size: 14px; font-weight: 700; color: #112233">Narratives and testing</div><div class="lab" style="color: #33475b">AC-2, RA-3, AU-6 narratives; AC-2 tested in Python and SQL</div></div><div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 6px"><div style="display: flex; align-items: center; gap: 8px"><span style="width: 34px; height: 34px; border-radius: 999px; background: #0b2f4e; color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">M4</span><span style="font-size: 12.5px; font-weight: 700; color: #00739f">Oct 2026</span></div><div style="font-size: 14px; font-weight: 700; color: #112233">Final package</div><div class="lab" style="color: #33475b">All samples, quality review, web portfolio, client guide</div></div></div></div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · WHITE PAPER</span><span>Logical Coders · <b>06</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-case-study" data-slug="case-study" data-label="Case Study" aria-label="Case Study" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 20px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden"><div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0">
+  <div class="tab" style="background: #3daa5c">6</div>
+  <div style="padding-top: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto"><span class="kick">Case study · fictional data</span><h1 class="wh">Sunshine Dental Group: what the toolkit found</h1></div></div>
+<div class="wl" style="flex-shrink: 0">Sunshine Dental Group is a fictional 22-person practice running a cloud EHR, email and a patient portal, supported by an outside IT vendor. I completed every template for it. No real patient or company data is used.</div>
+<div style="flex-shrink: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px">
+  <div class="card" style="background: #f4f8fb; gap: 12px"><div class="hl">Risk register · inherent vs. residual</div><div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 13px; font-weight: 600; color: #112233">R-01 Ransomware · EHR</div>
+      <div style="display: flex; align-items: center; gap: 8px"><div style="height: 14px; width: 240px; background: #8f1d2c; border-radius: 3px"></div><span style="font-size: 12px; font-weight: 700; color: #8f1d2c">20 Critical</span></div>
+      <div style="display: flex; align-items: center; gap: 8px"><div style="height: 14px; width: 120px; background: #b4470f; border-radius: 3px"></div><span style="font-size: 12px; font-weight: 700; color: #33475b">10 High · projected</span></div></div><div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 13px; font-weight: 600; color: #112233">R-03 Lost device</div>
+      <div style="display: flex; align-items: center; gap: 8px"><div style="height: 14px; width: 240px; background: #8f1d2c; border-radius: 3px"></div><span style="font-size: 12px; font-weight: 700; color: #8f1d2c">20 Critical</span></div>
+      <div style="display: flex; align-items: center; gap: 8px"><div style="height: 14px; width: 96px; background: #e0b028; border-radius: 3px"></div><span style="font-size: 12px; font-weight: 700; color: #33475b">8 Medium · projected</span></div></div><div style="display: flex; flex-direction: column; gap: 4px"><div style="font-size: 13px; font-weight: 600; color: #112233">R-04 Phishing · email</div>
+      <div style="display: flex; align-items: center; gap: 8px"><div style="height: 14px; width: 180px; background: #8f1d2c; border-radius: 3px"></div><span style="font-size: 12px; font-weight: 700; color: #8f1d2c">15 Critical</span></div>
+      <div style="display: flex; align-items: center; gap: 8px"><div style="height: 14px; width: 72px; background: #e0b028; border-radius: 3px"></div><span style="font-size: 12px; font-weight: 700; color: #33475b">6 Medium · projected</span></div></div></div>
+  <div class="card" style="background: #f4f8fb; gap: 12px"><div class="hl">AC-2 re-performed in code · exceptions</div><div style="display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 10px; align-items: center"><span style="font-size: 12.5px; color: #33475b">Leavers disabled in 1 day</span><div style="display: flex; align-items: center; gap: 8px"><div style="height: 16px; width: 48px; background: #e2474b; border-radius: 3px"></div><span style="font-size: 13px; font-weight: 700; color: #112233">1</span></div></div><div style="display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 10px; align-items: center"><span style="font-size: 12.5px; color: #33475b">Shared accounts</span><div style="display: flex; align-items: center; gap: 8px"><div style="height: 16px; width: 48px; background: #e2474b; border-radius: 3px"></div><span style="font-size: 13px; font-weight: 700; color: #112233">1</span></div></div><div style="display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 10px; align-items: center"><span style="font-size: 12.5px; color: #33475b">Active accounts without MFA</span><div style="display: flex; align-items: center; gap: 8px"><div style="height: 16px; width: 192px; background: #e2474b; border-radius: 3px"></div><span style="font-size: 13px; font-weight: 700; color: #112233">4</span></div></div><div style="display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 10px; align-items: center"><span style="font-size: 12.5px; color: #33475b">Not reviewed in 12 months</span><div style="display: flex; align-items: center; gap: 8px"><div style="height: 16px; width: 48px; background: #e2474b; border-radius: 3px"></div><span style="font-size: 13px; font-weight: 700; color: #112233">1</span></div></div>
+    <div style="display: flex; gap: 10px; align-items: baseline; border-top: 1px solid #d9e3ec; padding-top: 10px"><span class="big" style="color: #e2474b; font-size: 34px">7</span><span class="lab" style="color: #33475b">exceptions across 8 accounts and 5 roster entries, including a terminated user active for 19 days</span></div></div>
+</div>
+<div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 8px"><div class="hl">Control health in the governance report</div><div style="display: flex; flex-wrap: wrap; gap: 8px"><span class="pill" style="background: #8f1d2c; color: #fff">Access management · Red</span><span class="pill" style="background: #8f1d2c; color: #fff">Audit logging · Red</span><span class="pill" style="background: #8f1d2c; color: #fff">MFA · Red</span><span class="pill" style="background: #e0b028; color: #112233">Backup · Yellow</span><span class="pill" style="background: #e0b028; color: #112233">Incident response · Yellow</span></div></div>
+<div style="flex-shrink: 0; display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px">
+  <div class="card" style="background: #0b2f4e; color: #ffffff; gap: 10px"><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #7fd3f7">OVERALL HIPAA POSTURE</div>
+    <div style="display: flex; align-items: center; gap: 12px"><span class="pill" style="background: #8f1d2c; color: #fff; font-size: 16px; padding: 6px 16px">Red</span><span style="font-size: 18px; font-weight: 700">improving</span></div>
+    <div class="lab" style="color: #cfe6ea">Decisions requested of the Dentist-Owner: name a security official, approve the risk treatments, fund MDM and MFA, and sign vendor Business Associate Agreements.</div></div>
+  <div class="card" style="background: #eefaf1"><div class="hl" style="color: #2f7d4f">90-day remediation plan</div><div class="big" style="color: #112233; font-size: 34px">5 items</div><div class="lab" style="color: #33475b">all due within 30 days — one Critical (MFA), four High — each with an owner in the Audit Tracker.</div></div>
+</div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · WHITE PAPER</span><span>Logical Coders · <b>07</b></span></div></div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-recommendations" data-slug="recommendations" data-label="Recommendations" aria-label="Recommendations" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 0 56px 28px; display: flex; flex-direction: column; gap: 20px; background: #ffffff; font-family: 'Aptos', 'Albert Sans', 'Segoe UI', system-ui, sans-serif; color: #1b2a3a; overflow: hidden"><div style="display: flex; gap: 18px; align-items: flex-start; flex-shrink: 0">
+  <div class="tab" style="background: #5b4fc4">7</div>
+  <div style="padding-top: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto"><span class="kick">Recommendations</span><h1 class="wh">Six moves any small practice can make this quarter</h1></div></div>
+<div style="flex-shrink: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 26px"><div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: 0 0 30px; height: 30px; border-radius: 999px; background: #5b4fc4; color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">1</span><div><div style="font-size: 14px; font-weight: 700; color: #112233">Start with Govern</div><div class="lab" style="color: #33475b">Name a security official and an owner for every risk before buying tools.</div></div></div><div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: 0 0 30px; height: 30px; border-radius: 999px; background: #0095d3; color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">2</span><div><div style="font-size: 14px; font-weight: 700; color: #112233">Score before you spend</div><div class="lab" style="color: #33475b">Rate likelihood × impact so the first dollars go to Critical risks.</div></div></div><div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: 0 0 30px; height: 30px; border-radius: 999px; background: #2f6fd0; color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">3</span><div><div style="font-size: 14px; font-weight: 700; color: #112233">Write narratives that name evidence</div><div class="lab" style="color: #33475b">A control is not documented until it says what proves it ran.</div></div></div><div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: 0 0 30px; height: 30px; border-radius: 999px; background: #f08a24; color: #112233; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">4</span><div><div style="font-size: 14px; font-weight: 700; color: #112233">Re-perform, don’t ask</div><div class="lab" style="color: #33475b">Run the access-control script monthly; review logs weekly.</div></div></div><div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: 0 0 30px; height: 30px; border-radius: 999px; background: #e2474b; color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">5</span><div><div style="font-size: 14px; font-weight: 700; color: #112233">Report on one page</div><div class="lab" style="color: #33475b">Give leadership posture, top risks and the decisions needed.</div></div></div><div style="display: flex; gap: 12px; align-items: flex-start"><span style="flex: 0 0 30px; height: 30px; border-radius: 999px; background: #3daa5c; color: #112233; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center">6</span><div><div style="font-size: 14px; font-weight: 700; color: #112233">Repeat the cycle</div><div class="lab" style="color: #33475b">Review on a schedule so the program improves each round.</div></div></div></div>
+<div style="flex-shrink: 0; background: #0b2f4e; border-radius: 12px; padding: 22px 24px; display: flex; flex-direction: column; gap: 10px">
+  <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #7fd3f7">CONCLUSION</div>
+  <div style="font-size: 17px; line-height: 1.55; color: #ffffff">CSF 2.0 supplies the structure, SP 800-53 supplies the controls, and HIPAA supplies the criteria. The toolkit’s contribution is the connection: every risk has a control, every control has an owner and evidence, and every finding reaches someone who can decide. That connection is what makes a small practice’s documentation hold up.</div>
+</div>
+<div style="flex-shrink: 0"><div class="hl" style="padding-bottom: 8px">References</div><div style="display: flex; flex-direction: column; gap: 5px"><div style="font-size: 12px; line-height: 1.4; color: #33475b; padding-left: 16px; text-indent: -16px">American Institute of CPAs &amp; Chartered Institute of Management Accountants. (n.d.). <i>SOC 2 – SOC for service organizations: Trust services criteria</i>.</div><div style="font-size: 12px; line-height: 1.4; color: #33475b; padding-left: 16px; text-indent: -16px">Cybersecurity and Infrastructure Security Agency. (2025, September 10). <i>Cyber essentials</i>.</div><div style="font-size: 12px; line-height: 1.4; color: #33475b; padding-left: 16px; text-indent: -16px">Kindervag, J. (2010). <i>No more chewy centers: Introducing the zero trust model of information security</i>. Forrester Research.</div><div style="font-size: 12px; line-height: 1.4; color: #33475b; padding-left: 16px; text-indent: -16px">National Institute of Standards and Technology. (2020). <i>Security and privacy controls for information systems and organizations</i> (SP 800-53 Rev. 5).</div><div style="font-size: 12px; line-height: 1.4; color: #33475b; padding-left: 16px; text-indent: -16px">National Institute of Standards and Technology. (2022). <i>Assessing security and privacy controls in information systems and organizations</i> (SP 800-53A Rev. 5).</div><div style="font-size: 12px; line-height: 1.4; color: #33475b; padding-left: 16px; text-indent: -16px">National Institute of Standards and Technology. (2024). <i>The NIST Cybersecurity Framework (CSF) 2.0</i> (CSWP 29).</div><div style="font-size: 12px; line-height: 1.4; color: #33475b; padding-left: 16px; text-indent: -16px">Rose, S., Borchert, O., Mitchell, S., &amp; Connelly, S. (2020). <i>Zero trust architecture</i> (NIST SP 800-207).</div><div style="font-size: 12px; line-height: 1.4; color: #33475b; padding-left: 16px; text-indent: -16px">Security Standards: Administrative Safeguards, Technical Safeguards and Documentation, 45 C.F.R. §§ 164.308, 164.312, 164.316 (2024).</div><div style="font-size: 12px; line-height: 1.4; color: #33475b; padding-left: 16px; text-indent: -16px">U.S. General Services Administration. (n.d.). <i>FedRAMP: Federal Risk and Authorization Management Program</i>.</div></div></div>
+<div style="flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; border-top: 1px solid #d9e3ec; padding-top: 12px">
+  <div style="display: flex; align-items: center; gap: 12px"><img src="company-icons/logical-coders-icon-light.png" alt="Logical Coders icon" style="width: 40px; height: 40px"><div><div style="font-size: 14px; font-weight: 700; color: #112233">Anèl Henning · Logical Coders</div><div style="font-size: 12px; color: #5a6b7d">Case data is fictional. Companion pieces: Compliance Analyst and IT Auditor books.</div></div></div>
+  <div style="font-size: 12px; color: #00739f; text-align: right; line-height: 1.5; white-space: nowrap; flex: 0 0 auto">linkedin.com/in/anel-henning-quantum<br>anelhenning2-collab.github.io/portfolio</div>
+</div>
+<div style="display: flex; flex-shrink: 0"><div style="flex: 1 1 0; height: 10px; background: #5b4fc4"></div><div style="flex: 1 1 0; height: 10px; background: #0095d3"></div><div style="flex: 1 1 0; height: 10px; background: #2f6fd0"></div><div style="flex: 1 1 0; height: 10px; background: #f08a24"></div><div style="flex: 1 1 0; height: 10px; background: #e2474b"></div><div style="flex: 1 1 0; height: 10px; background: #3daa5c"></div></div>
+<div class="foot" style="margin-top: auto; flex-shrink: 0"><span><b>ANÈL HENNING</b> · WHITE PAPER</span><span>Logical Coders · <b>08</b></span></div></div>
+</div></div>
+</section>
+    <div class="lc-note">Illustrations are my own. Sample data is fictional; case studies come from the public sources cited in each piece.<br><span class="lc-hint">Tip: use <kbd>←</kbd> <kbd>→</kbd> to move between pages. Click any card or page reference to jump.</span></div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.lc-page'));
+  var navs = Array.prototype.slice.call(document.querySelectorAll('.lc-nav'));
+  var prev = document.getElementById('lc-prev'), next = document.getElementById('lc-next');
+  var cur = 0;
+
+  function fit(){
+    var p = pages[cur]; if(!p) return;
+    var box = p.querySelector('.lc-fit'), paper = p.querySelector('.lc-paper');
+    var s = Math.min(1.25, box.clientWidth / 816);
+    paper.style.transform = 'scale(' + s + ')';
+    box.style.height = (1056 * s) + 'px';
+  }
+  function show(i, focus){
+    cur = Math.max(0, Math.min(pages.length - 1, i));
+    pages.forEach(function(p, j){ p.hidden = j !== cur; });
+    navs.forEach(function(n, j){ if(j === cur) n.setAttribute('aria-current','page'); else n.removeAttribute('aria-current'); });
+    var n = String(cur + 1).padStart(2,'0');
+    document.getElementById('lc-num').textContent = n + ' / ' + pages.length;
+    document.getElementById('lc-label').textContent = pages[cur].dataset.label;
+    document.getElementById('lc-bar').style.width = ((cur + 1) / pages.length * 100) + '%';
+    prev.disabled = cur === 0; next.disabled = cur === pages.length - 1;
+    document.title = pages[cur].dataset.label + ' — White paper · Anèl Henning';
+    navs[cur].scrollIntoView({block:'nearest', inline:'nearest'});
+    fit();
+    if(focus) document.getElementById('lc-stage').focus({preventScroll:true});
+  }
+  function fromHash(focus){
+    var slug = location.hash.replace('#','');
+    var i = pages.findIndex(function(p){ return p.dataset.slug === slug; });
+    show(i < 0 ? 0 : i, focus);
+    if(focus) window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function go(i){ location.hash = pages[Math.max(0, Math.min(pages.length - 1, i))].dataset.slug; }
+
+  prev.addEventListener('click', function(){ go(cur - 1); });
+  next.addEventListener('click', function(){ go(cur + 1); });
+  window.addEventListener('hashchange', function(){ fromHash(true); });
+  window.addEventListener('resize', fit);
+  document.addEventListener('keydown', function(e){
+    if(e.altKey || e.ctrlKey || e.metaKey) return;
+    var t = e.target.tagName; if(t === 'INPUT' || t === 'TEXTAREA') return;
+    if(e.key === 'ArrowRight'){ go(cur + 1); e.preventDefault(); }
+    if(e.key === 'ArrowLeft'){ go(cur - 1); e.preventDefault(); }
+  });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  fromHash(false);
+})();
+</script>
+</body>
+</html>
