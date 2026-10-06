@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HIPAA GRC Compliance Package — Logical Coders</title>
+<meta name="description" content="Clickable walkthrough of a 12-template HIPAA GRC compliance package built by Anél Henning for Logical Coders, using fictional Sunshine Dental Group data.">
+<link rel="icon" href="company-icons/logical-coders-icon-light.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&display=swap">
+<style>
+:root{--navy:#112233;--teal:#1c8a82;--teal-text:#177a73;--teal-tint:#d8eeec;--page:#eef2f7;--ink:#1b2a3a;--muted:#5a6b7d;--line:#d7e0ea;--on-inv:#cfe6ea}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a:focus-visible,button:focus-visible{outline:2px solid var(--teal-text);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;padding:8px 12px;border-radius:3px;z-index:10}
+.skip:focus{left:16px}
+
+/* top bar */
+.lc-top{background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;flex-wrap:wrap}
+.lc-brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
+.lc-brand img{width:36px;height:36px;border-radius:8px}
+.lc-brand b{display:block;font-size:15px}
+.lc-brand span{display:block;font-size:12px;color:var(--on-inv)}
+.lc-back{color:#4fc1b7;font-size:13px;font-weight:600;text-decoration:none;padding:10px 4px}
+.lc-back:hover{text-decoration:underline}
+
+/* layout */
+.lc-wrap{display:flex;flex-wrap:wrap;gap:24px;max-width:1320px;margin:0 auto;padding:24px}
+.lc-side{flex:1 1 260px;max-width:300px;display:flex;flex-direction:column;gap:4px;align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px}
+.lc-intro{padding:0 8px 12px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.lc-intro .eb{font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--teal-text)}
+.lc-intro h1{font-family:"Playfair Display",Georgia,serif;font-size:22px;line-height:1.2;margin:6px 0 6px;color:var(--navy)}
+.lc-intro p{font-size:13px;line-height:1.5;color:var(--muted);margin:0}
+.lc-group{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:12px 8px 4px}
+.lc-nav{display:flex;gap:10px;align-items:center;min-height:44px;padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;transition:background .14s}
+.lc-nav:hover{background:var(--page)}
+.lc-nav[aria-current="page"]{background:var(--teal-tint);font-weight:700}
+.lc-num{font-family:Consolas,Menlo,monospace;font-size:12px;font-weight:700;color:var(--teal-text);min-width:22px}
+.lc-main:focus{outline:none}
+.lc-main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:14px}
+
+/* toolbar */
+.lc-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.lc-where{font-size:14px;color:var(--muted)}
+.lc-where b{color:var(--navy)}
+.lc-btns{display:flex;gap:8px}
+.lc-btn{min-height:44px;min-width:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--navy);font:600 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.lc-btn:hover:not([disabled]){border-color:var(--teal);color:var(--teal-text)}
+.lc-btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.lc-btn.primary:hover:not([disabled]){background:#1d3550;color:#fff}
+.lc-btn[disabled]{opacity:.45;cursor:default}
+.lc-progress{height:4px;background:var(--line);border-radius:999px;overflow:hidden}
+.lc-progress i{display:block;height:100%;background:var(--teal);width:10%;transition:width .24s ease}
+
+/* page stage */
+.lc-fit{width:100%;position:relative;overflow:hidden}
+.lc-paper{width:816px;height:1056px;transform-origin:top left;position:absolute;top:0;left:0;background:#fff;border-radius:6px;box-shadow:0 1px 2px rgba(20,40,60,.06),0 8px 24px rgba(20,40,60,.08);overflow:hidden}
+.lc-card{transition:transform .14s, box-shadow .14s;cursor:pointer}
+.lc-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(20,40,60,.12)}
+.lc-ref{color:#177a73;font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.lc-note{font-size:12.5px;color:var(--muted);line-height:1.5;text-align:center;padding:4px 0 24px}
+.lc-hint{font-size:12px;color:var(--muted)}
+kbd{font-family:Consolas,Menlo,monospace;font-size:11px;border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:0 4px;background:#fff}
+
+@media (max-width: 860px){
+  .lc-wrap{padding:16px;gap:16px}
+  .lc-side{max-width:none;flex-basis:100%;flex-direction:row;overflow-x:auto;padding:10px;gap:6px;align-items:center}
+  .lc-intro,.lc-group{display:none}
+  .lc-nav{flex:0 0 auto;white-space:nowrap;border:1px solid var(--line)}
+  .lc-hint{display:none}
+}
+@media print{
+  .lc-top,.lc-side,.lc-bar,.lc-progress,.lc-note{display:none}
+  .lc-wrap{padding:0}
+  .lc-paper{box-shadow:none;transform:none!important;position:static}
+  .lc-fit{height:auto!important}
+}
+
+/* ---- page styles, scoped per page ---- */
+
+#pg-inventory .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.4}
+#pg-inventory .t th{background:#112233;color:#ffffff;text-align:left;font-weight:600;padding:9px 10px;font-size:12px}
+#pg-inventory .t td{padding:8px 10px;border-bottom:1px solid #d7e0ea;vertical-align:top}
+#pg-inventory .t tr:nth-child(even) td{background:#f6f8fb}
+#pg-inventory .mono{font-family:Consolas,Menlo,monospace}
+#pg-risk-register .g{display:grid;grid-template-columns:28px repeat(5,minmax(0,1fr));gap:4px}
+#pg-risk-register .c{height:52px;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12px;font-weight:600}
+#pg-risk-register .lo{background:#b8c4d0;color:#112233}
+#pg-risk-register .me{background:#e0b028;color:#112233}
+#pg-risk-register .hi{background:#b4470f;color:#ffffff}
+#pg-risk-register .cr{background:#8f1d2c;color:#ffffff}
+#pg-risk-register .ax{font-size:12px;color:#5a6b7d;display:flex;align-items:center;justify-content:center;font-weight:600}
+#pg-risk-register .pin{font-family:Consolas,Menlo,monospace;font-size:11px;font-weight:700;background:#ffffff;color:#112233;border-radius:999px;padding:1px 6px}
+#pg-risk-register .res{font-family:Consolas,Menlo,monospace;font-size:11px;font-weight:700;background:transparent;color:#ffffff;border:1.5px dashed #ffffff;border-radius:999px;padding:0 5px}
+#pg-risk-register .res.dk{color:#112233;border-color:#112233}
+#pg-risk-register .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.4}
+#pg-risk-register .t th{background:#112233;color:#ffffff;text-align:left;font-weight:600;padding:9px 8px;font-size:12px}
+#pg-risk-register .t td{padding:9px 8px;border-bottom:1px solid #d7e0ea;vertical-align:top}
+#pg-risk-register .b{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
+#pg-risk-register .mono{font-family:Consolas,Menlo,monospace}
+#pg-control-narratives .card{border:1px solid #d7e0ea;border-radius:14px;overflow:hidden}
+#pg-control-narratives .hd{background:#112233;color:#ffffff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+#pg-control-narratives .fl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 22px;padding:14px 18px 16px}
+#pg-control-narratives .k{font-size:11.5px;font-weight:700;letter-spacing:0.1em;color:#177a73;padding-bottom:3px}
+#pg-control-narratives .v{font-size:12.5px;line-height:1.45;color:#1b2a3a}
+#pg-control-narratives .chip{font-family:Consolas,Menlo,monospace;font-size:12px;font-weight:700;background:#d8eeec;color:#112233;padding:4px 10px;border-radius:999px}
+#pg-control-narratives .mono{font-family:Consolas,Menlo,monospace}
+#pg-account-lifecycle .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.4}
+#pg-account-lifecycle .t th{background:#112233;color:#ffffff;text-align:left;font-weight:600;padding:9px 10px;font-size:12px}
+#pg-account-lifecycle .t td{padding:8px 10px;border-bottom:1px solid #d7e0ea;vertical-align:top}
+#pg-account-lifecycle .rv{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:3px;background:#eef2f7;color:#112233}
+#pg-account-lifecycle .ok{font-weight:700;color:#2f7d4f}
+#pg-account-lifecycle .ex{font-weight:700;color:#c0392b}
+#pg-account-lifecycle .mono{font-family:Consolas,Menlo,monospace}
+#pg-account-lifecycle .stat{background:#eef2f7;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+#pg-account-lifecycle .n{font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:700;color:#112233;line-height:1.1}
+#pg-account-lifecycle .l{font-size:12px;color:#5a6b7d}
+#pg-access-control-test .code{margin:0;background:#0d1117;color:#d6e2ef;border-radius:8px;padding:14px 16px;font-family:Consolas,Menlo,monospace;font-size:12px;line-height:1.55;white-space:pre}
+#pg-access-control-test .dim{color:#8b98a5}
+#pg-access-control-test .okc{color:#56d364}
+#pg-access-control-test .bad{color:#ff7b72}
+#pg-access-control-test .mono{font-family:Consolas,Menlo,monospace}
+#pg-access-control-test .stat{background:#eef2f7;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+#pg-access-control-test .n{font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:700;color:#112233;line-height:1.1}
+#pg-access-control-test .l{font-size:12px;color:#5a6b7d}
+#pg-access-control-test .cap{font-size:12px;color:#5a6b7d;padding-top:6px}
+#pg-access-control-test .k{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#177a73;padding-bottom:6px}
+#pg-audit-log-summary .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.4}
+#pg-audit-log-summary .t th{background:#112233;color:#ffffff;text-align:left;font-weight:600;padding:9px 10px;font-size:12px}
+#pg-audit-log-summary .t td{padding:9px 10px;border-bottom:1px solid #d7e0ea;vertical-align:top}
+#pg-audit-log-summary .red{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:#8f1d2c;color:#ffffff}
+#pg-audit-log-summary .mono{font-family:Consolas,Menlo,monospace}
+#pg-audit-log-summary .m{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-right:1px solid #d7e0ea}
+#pg-audit-log-summary .mk{font-size:11.5px;font-weight:700;letter-spacing:0.08em;color:#5a6b7d}
+#pg-audit-log-summary .mv{font-size:12.5px;font-weight:600;color:#1b2a3a}
+#pg-audit-log-summary .ck{display:flex;gap:10px;font-size:12.5px;line-height:1.4}
+#pg-audit-log-summary .ck span{color:#1c8a82;font-weight:700}
+#pg-audit-tracker .t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.4}
+#pg-audit-tracker .t th{background:#112233;color:#ffffff;text-align:left;font-weight:600;padding:9px 8px;font-size:12px}
+#pg-audit-tracker .t td{padding:10px 8px;border-bottom:1px solid #d7e0ea;vertical-align:top}
+#pg-audit-tracker .b{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+#pg-audit-tracker .cr{background:#8f1d2c;color:#ffffff}
+#pg-audit-tracker .hi{background:#b4470f;color:#ffffff}
+#pg-audit-tracker .st{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap;border:1px solid #b8c4d0;color:#1b2a3a}
+#pg-audit-tracker .ip{background:#d8eeec;border-color:#d8eeec;color:#1b2a3a}
+#pg-audit-tracker .mono{font-family:Consolas,Menlo,monospace}
+#pg-audit-tracker .mk{position:absolute;top:0;display:flex;flex-direction:column;align-items:center;gap:4px;transform:translateX(-50%);white-space:nowrap}
+#pg-audit-tracker .dot{width:12px;height:12px;border-radius:999px;border:2px solid #ffffff}
+#pg-governance-report .k{font-size:12px;font-weight:700;letter-spacing:0.12em;color:#177a73;padding-bottom:8px}
+#pg-governance-report .hc{border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px}
+#pg-governance-report .hr{background:#8f1d2c;color:#ffffff}
+#pg-governance-report .hy{background:#e0b028;color:#112233}
+#pg-governance-report .hn{font-size:12.5px;font-weight:600;line-height:1.3}
+#pg-governance-report .hw{font-size:12px;font-weight:700;letter-spacing:0.08em}
+#pg-governance-report .li{display:flex;gap:10px;font-size:12.5px;line-height:1.45;padding:7px 0;border-bottom:1px solid #d7e0ea}
+#pg-governance-report .mono{font-family:Consolas,Menlo,monospace}
+#pg-client-guide .st{display:flex;gap:14px;align-items:flex-start}
+#pg-client-guide .disc{flex:0 0 34px;height:34px;border-radius:999px;background:#1c8a82;color:#ffffff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center}
+#pg-client-guide .sn{font-size:15px;font-weight:700;color:#112233;padding-top:6px}
+#pg-client-guide .sd{font-size:12.5px;line-height:1.5;color:#1b2a3a;padding-top:3px}
+#pg-client-guide .ar{color:#1c8a82;font-size:14px;font-weight:700;padding-left:11px;line-height:1}
+#pg-client-guide .qi{display:flex;flex-direction:column;gap:3px;padding:9px 0;border-bottom:1px solid #d7e0ea}
+#pg-client-guide .mono{font-family:Consolas,Menlo,monospace}
+</style>
+</head>
+<body>
+<a class="skip" href="#lc-stage">Skip to page</a>
+<header class="lc-top">
+  <a class="lc-brand" href="logical_coders_grc.html">
+    <img src="company-icons/logical-coders-icon-dark.png" alt="">
+    <div><b>Logical Coders</b><span>HIPAA GRC Compliance Package · Clickable walkthrough</span></div>
+  </a>
+  <a class="lc-back" href="portfolio_it_auditor.html">← Back to IT Auditor portfolio</a>
+</header>
+
+<div class="lc-wrap">
+  <nav class="lc-side" aria-label="Package pages">
+    <div class="lc-intro">
+      <div class="eb">CAPSTONE DELIVERABLE</div>
+      <h1>Sunshine Dental Group Package</h1>
+      <p>Twelve audit templates, completed samples and a tested access control — risk, then control, then evidence, then decision.</p>
+    </div>
+    <div class="lc-group">Overview</div>
+<a class="lc-nav" href="#cover" data-slug="cover"><span class="lc-num">01</span><span>Package Cover</span></a>
+<a class="lc-nav" href="#inventory" data-slug="inventory"><span class="lc-num">02</span><span>Template Inventory & Crosswalk</span></a>
+<div class="lc-group">Risk</div>
+<a class="lc-nav" href="#risk-register" data-slug="risk-register"><span class="lc-num">03</span><span>Risk Register Assessment</span></a>
+<div class="lc-group">Control</div>
+<a class="lc-nav" href="#control-narratives" data-slug="control-narratives"><span class="lc-num">04</span><span>Control Narratives</span></a>
+<div class="lc-group">Evidence</div>
+<a class="lc-nav" href="#account-lifecycle" data-slug="account-lifecycle"><span class="lc-num">05</span><span>Account Lifecycle Review</span></a>
+<a class="lc-nav" href="#access-control-test" data-slug="access-control-test"><span class="lc-num">06</span><span>Access-Control Test</span></a>
+<a class="lc-nav" href="#audit-log-summary" data-slug="audit-log-summary"><span class="lc-num">07</span><span>Audit Log Summary</span></a>
+<div class="lc-group">Decision</div>
+<a class="lc-nav" href="#audit-tracker" data-slug="audit-tracker"><span class="lc-num">08</span><span>Audit Tracker</span></a>
+<a class="lc-nav" href="#governance-report" data-slug="governance-report"><span class="lc-num">09</span><span>HIPAA Governance Report</span></a>
+<div class="lc-group">Guide</div>
+<a class="lc-nav" href="#client-guide" data-slug="client-guide"><span class="lc-num">10</span><span>Client One-Page Guide</span></a>
+  </nav>
+
+  <main class="lc-main" id="lc-stage" tabindex="-1">
+    <div class="lc-bar">
+      <div class="lc-where" aria-live="polite"><b id="lc-num">01 / 10</b> · <span id="lc-label">Package Cover</span></div>
+      <div class="lc-btns">
+        <button class="lc-btn" id="lc-prev" type="button" aria-label="Previous page">← Prev</button>
+        <button class="lc-btn primary" id="lc-next" type="button" aria-label="Next page">Next →</button>
+      </div>
+    </div>
+    <div class="lc-progress" aria-hidden="true"><i id="lc-bar"></i></div>
+    <section class="lc-page" id="pg-cover" data-slug="cover" data-label="Package Cover" aria-label="Package Cover" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="background: #112233; flex-shrink: 0; padding: 48px 64px 44px; display: flex; flex-direction: column; gap: 28px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div style="display: flex; align-items: center; gap: 14px">
+        <img src="company-icons/logical-coders-icon-dark.png" alt="Logical Coders icon" style="width: 52px; height: 52px; border-radius: 10px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 18px; font-weight: 700; color: #ffffff; letter-spacing: 0.01em">Logical Coders</div>
+          <div style="font-size: 12px; color: #cfe6ea">Compliance Documentation Practice</div>
+        </div>
+      </div>
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #cfe6ea; border: 1px solid #4fc1b7; padding: 7px 14px; border-radius: 999px">VERSION 1.0 · FINAL</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px; padding-top: 24px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #4fc1b7">CLIENT DELIVERABLE PACKAGE</div>
+      <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: 54px; line-height: 1.02; color: #ffffff; text-wrap: balance">HIPAA GRC Compliance Package</h1>
+      <div style="font-size: 19px; line-height: 1.5; color: #cfe6ea; max-width: 560px">Twelve audit templates, completed sample exhibits and a tested access control, prepared for Sunshine Dental Group.</div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px">
+      <div style="font-size: 12px; font-weight: 600; color: #112233; background: #d8eeec; padding: 6px 12px; border-radius: 999px">NIST CSF 2.0</div>
+      <div style="font-size: 12px; font-weight: 600; color: #112233; background: #d8eeec; padding: 6px 12px; border-radius: 999px">NIST SP 800-53 Rev. 5</div>
+      <div style="font-size: 12px; font-weight: 600; color: #112233; background: #d8eeec; padding: 6px 12px; border-radius: 999px">HIPAA Security Rule</div>
+    </div>
+  </div>
+
+  <div style="padding: 36px 64px 0; display: flex; flex-direction: column; gap: 14px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">HOW THE PACKAGE READS</div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px">
+      <a class="lc-card" href="#risk-register" style="display: flex; flex-direction: column; gap: 8px; border-top: 3px solid #1c8a82; padding-top: 12px; text-decoration: none; color: inherit">
+        <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 700; color: #1c8a82">01</div>
+        <div style="font-size: 15px; font-weight: 700">Risk</div>
+        <div style="font-size: 12px; line-height: 1.45; color: #5a6b7d">Score threats to ePHI, inherent and residual.</div></a>
+      <a class="lc-card" href="#control-narratives" style="display: flex; flex-direction: column; gap: 8px; border-top: 3px solid #1c8a82; padding-top: 12px; text-decoration: none; color: inherit">
+        <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 700; color: #1c8a82">02</div>
+        <div style="font-size: 15px; font-weight: 700">Control</div>
+        <div style="font-size: 12px; line-height: 1.45; color: #5a6b7d">Document how each safeguard works and who owns it.</div></a>
+      <a class="lc-card" href="#account-lifecycle" style="display: flex; flex-direction: column; gap: 8px; border-top: 3px solid #1c8a82; padding-top: 12px; text-decoration: none; color: inherit">
+        <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 700; color: #1c8a82">03</div>
+        <div style="font-size: 15px; font-weight: 700">Evidence</div>
+        <div style="font-size: 12px; line-height: 1.45; color: #5a6b7d">Test the control and keep proof it operates.</div></a>
+      <a class="lc-card" href="#governance-report" style="display: flex; flex-direction: column; gap: 8px; border-top: 3px solid #112233; padding-top: 12px; text-decoration: none; color: inherit">
+        <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 700; color: #112233">04</div>
+        <div style="font-size: 15px; font-weight: 700">Decision</div>
+        <div style="font-size: 12px; line-height: 1.45; color: #5a6b7d">Report posture so leadership can act.</div></a>
+    </div>
+  </div>
+
+  <div style="padding: 30px 64px 0; display: flex; flex-direction: column; gap: 12px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">IN THIS PACKAGE</div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <a class="lc-card" href="#inventory" style="display: flex; gap: 12px; align-items: baseline; background: #eef2f7; border-radius: 10px; padding: 12px 14px; text-decoration: none; color: inherit">
+        <div style="font-family: Consolas, Menlo, monospace; font-size: 12px; font-weight: 700; color: #177a73; min-width: 38px">1–12</div>
+        <div style="font-size: 13px; line-height: 1.4"><strong>Twelve audit templates</strong> — program and plan through governance report</div></a>
+      <a class="lc-card" href="#risk-register" style="display: flex; gap: 12px; align-items: baseline; background: #eef2f7; border-radius: 10px; padding: 12px 14px; text-decoration: none; color: inherit">
+        <div style="font-family: Consolas, Menlo, monospace; font-size: 12px; font-weight: 700; color: #177a73; min-width: 38px">13</div>
+        <div style="font-size: 13px; line-height: 1.4"><strong>Completed samples</strong> — every template filled with fictional client data</div></a>
+      <a class="lc-card" href="#control-narratives" style="display: flex; gap: 12px; align-items: baseline; background: #eef2f7; border-radius: 10px; padding: 12px 14px; text-decoration: none; color: inherit">
+        <div style="font-family: Consolas, Menlo, monospace; font-size: 12px; font-weight: 700; color: #177a73; min-width: 38px">14</div>
+        <div style="font-size: 13px; line-height: 1.4"><strong>Control narratives</strong> — AC-2, RA-3 and AU-6, end to end</div></a>
+      <a class="lc-card" href="#access-control-test" style="display: flex; gap: 12px; align-items: baseline; background: #eef2f7; border-radius: 10px; padding: 12px 14px; text-decoration: none; color: inherit">
+        <div style="font-family: Consolas, Menlo, monospace; font-size: 12px; font-weight: 700; color: #177a73; min-width: 38px">15</div>
+        <div style="font-size: 13px; line-height: 1.4"><strong>Access-control test</strong> — Python and SQL, run monthly</div></a>
+      <a class="lc-card" href="portfolio_it_auditor.html" style="display: flex; gap: 12px; align-items: baseline; background: #eef2f7; border-radius: 10px; padding: 12px 14px; text-decoration: none; color: inherit">
+        <div style="font-family: Consolas, Menlo, monospace; font-size: 12px; font-weight: 700; color: #177a73; min-width: 38px">16</div>
+        <div style="font-size: 13px; line-height: 1.4"><strong>Interactive portfolio</strong> — a clickable walkthrough of the work</div></a>
+      <a class="lc-card" href="#client-guide" style="display: flex; gap: 12px; align-items: baseline; background: #eef2f7; border-radius: 10px; padding: 12px 14px; text-decoration: none; color: inherit">
+        <div style="font-family: Consolas, Menlo, monospace; font-size: 12px; font-weight: 700; color: #177a73; min-width: 38px">17</div>
+        <div style="font-size: 13px; line-height: 1.4"><strong>Client one-page guide</strong> — how to use and adapt the package</div></a>
+    </div>
+  </div>
+
+  <div style="margin: auto 64px 0; flex-shrink: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border: 1px solid #d7e0ea; border-radius: 10px; overflow: hidden">
+    <div style="padding: 10px 12px; border-right: 1px solid #d7e0ea"><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #5a6b7d">PREPARED BY</div><div style="font-size: 13px; font-weight: 600; padding-top: 4px">Anél Henning</div></div>
+    <div style="padding: 10px 12px; border-right: 1px solid #d7e0ea"><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #5a6b7d">APPROVER</div><div style="font-size: 13px; font-weight: 600; padding-top: 4px">Dentist-Owner</div></div>
+    <div style="padding: 10px 12px; border-right: 1px solid #d7e0ea"><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #5a6b7d">CLASS</div><div style="font-size: 13px; font-weight: 600; padding-top: 4px">Confidential</div></div>
+    <div style="padding: 10px 12px; border-right: 1px solid #d7e0ea"><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #5a6b7d">STORAGE</div><div style="font-size: 13px; font-weight: 600; padding-top: 4px">[REPOSITORY]</div></div>
+    <div style="padding: 10px 12px"><div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #5a6b7d">RETENTION</div><div style="font-size: 13px; font-weight: 600; padding-top: 4px">Six years</div></div>
+  </div>
+
+  <div style="padding: 16px 64px 36px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; gap: 24px">
+    <div style="font-size: 12px; line-height: 1.45; color: #5a6b7d; max-width: 520px">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 16px; color: #112233">Structure You Can Prove.</div>
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-inventory" data-slug="inventory" data-label="Template Inventory & Crosswalk" aria-label="Template Inventory & Crosswalk" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 48px 64px 40px; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1c8a82">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="company-icons/logical-coders-icon-light.png" alt="Logical Coders icon" style="width: 30px; height: 30px">
+      <div style="font-size: 14px; font-weight: 700; color: #112233">Logical Coders</div>
+    </div>
+    <div style="font-size: 12px; color: #5a6b7d">Sunshine Dental Group · HIPAA GRC Package</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 28px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">INVENTORY</div>
+    <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1.15; color: #112233">Template Inventory &amp; Framework Crosswalk</h1>
+    <div style="font-size: 14px; line-height: 1.5; color: #5a6b7d; max-width: 600px">Each of the twelve templates maps to the HIPAA Security Rule section it satisfies and the NIST CSF 2.0 category it supports.</div>
+  </div>
+
+  <div style="padding-top: 20px; border-radius: 10px; overflow: hidden">
+    <table class="t">
+      <thead><tr><th style="width: 30px">No.</th><th style="width: 168px">Template</th><th style="width: 34px">Page</th><th>HIPAA Security Rule</th><th style="width: 150px">NIST CSF 2.0</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">01</td><td><strong>Audit Program</strong></td><td class="mono">5</td><td>§ 164.308(a)(8), periodic program review</td><td><span class="mono">GV.OV</span> leadership oversight</td></tr>
+        <tr><td class="mono">02</td><td><strong>Audit Plan</strong></td><td class="mono">6</td><td>§ 164.308(a)(8), periodic program review</td><td><span class="mono">GV.OV</span> leadership oversight</td></tr>
+        <tr><td class="mono">03</td><td><strong>Fieldwork Support Packet</strong></td><td class="mono">7</td><td>§ 164.316(b), keeping written records</td><td><span class="mono">GV.PO</span> policies</td></tr>
+        <tr><td class="mono">04</td><td><strong>Control Narrative</strong></td><td class="mono">8</td><td>Chosen per control; checkboxes point to § 164.312(a)–(e)</td><td><span class="mono">PR</span> Protect categories</td></tr>
+        <tr><td class="mono">05</td><td><strong>Risk Register Assessment</strong></td><td class="mono">9</td><td>§ 164.308(a)(1)(ii)(A)–(B), studying and reducing risk</td><td><span class="mono">ID.RA</span> assessing risk</td></tr>
+        <tr><td class="mono">06</td><td><strong>Gap Analysis Report</strong></td><td class="mono">10</td><td>§ 164.308(a)(8), periodic program review</td><td><span class="mono">ID.IM</span> improvement</td></tr>
+        <tr><td class="mono">07</td><td><strong>Audit Tracker</strong></td><td class="mono">11</td><td>§ 164.308(a)(1)(ii)(B), reducing risk</td><td><span class="mono">ID.IM</span> improvement</td></tr>
+        <tr><td class="mono">08</td><td><strong>Operational Effectiveness Report</strong></td><td class="mono">12</td><td>§ 164.308(a)(8), periodic program review</td><td><span class="mono">GV.OV</span> leadership oversight</td></tr>
+        <tr><td class="mono">09</td><td><strong>Account Lifecycle Review</strong></td><td class="mono">13</td><td>§ 164.308(a)(3)(ii)(C) removing access; § 164.308(a)(4) approving ePHI use; § 164.312(a)(1) technical access limits</td><td><span class="mono">PR.AA</span> identity &amp; access</td></tr>
+        <tr><td class="mono">10</td><td><strong>Audit Log Summary</strong></td><td class="mono">14</td><td>§ 164.312(b) recording activity; § 164.308(a)(1)(ii)(D) reviewing it</td><td><span class="mono">DE.CM</span> ongoing monitoring</td></tr>
+        <tr><td class="mono">11</td><td><strong>HIPAA Governance Report</strong></td><td class="mono">15</td><td>§ 164.308(a)(2), naming a security official</td><td><span class="mono">GV.RR</span> roles; <span class="mono">GV.OV</span> oversight</td></tr>
+        <tr><td class="mono">12</td><td><strong>Compliance Document Package</strong></td><td class="mono">16</td><td>§ 164.316(b)(2), keeping records for six years</td><td><span class="mono">GV.PO</span> policies</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: 22px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px">
+    <div style="background: #eef2f7; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 700; color: #1c8a82">12/12</div><div style="font-size: 12px; color: #5a6b7d">Definition</div></div>
+    <div style="background: #eef2f7; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 700; color: #1c8a82">12/12</div><div style="font-size: 12px; color: #5a6b7d">Document control</div></div>
+    <div style="background: #eef2f7; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 700; color: #1c8a82">12/12</div><div style="font-size: 12px; color: #5a6b7d">Evidence rule</div></div>
+    <div style="background: #eef2f7; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 700; color: #1c8a82">12/12</div><div style="font-size: 12px; color: #5a6b7d">HIPAA / NIST field</div></div>
+    <div style="background: #eef2f7; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><div style="font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 700; color: #1c8a82">12/12</div><div style="font-size: 12px; color: #5a6b7d">Sign-off field</div></div>
+  </div>
+  <div style="font-size: 12px; color: #5a6b7d; padding-top: 8px">Final quality review: the seven missing HIPAA/NIST fields and the Template 3 sign-off found in Milestone 2 were closed in Milestone 4.</div>
+
+  <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #d7e0ea">
+    <div style="font-size: 12px; color: #5a6b7d">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-size: 12px; font-weight: 600; color: #112233">02 / 10</div>
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-risk-register" data-slug="risk-register" data-label="Risk Register Assessment" aria-label="Risk Register Assessment" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 48px 64px 40px; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1c8a82">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="company-icons/logical-coders-icon-light.png" alt="Logical Coders icon" style="width: 30px; height: 30px">
+      <div style="font-size: 14px; font-weight: 700; color: #112233">Logical Coders</div>
+    </div>
+    <div style="font-size: 12px; color: #5a6b7d">Template 05 · <span class="mono">ID.RA</span> · § 164.308(a)(1)(ii)(A)–(B)</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 28px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">RISK</div>
+    <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1.15; color: #112233">Risk Register Assessment</h1>
+    <div style="font-size: 14px; line-height: 1.5; color: #5a6b7d; max-width: 620px">Three threats to ePHI scored on a five-by-five grid, with the projected residual score once each treatment is in place.</div>
+  </div>
+
+  <div style="display: flex; gap: 28px; padding-top: 22px; align-items: flex-start">
+    <div style="flex: 0 0 380px; display: flex; flex-direction: column; gap: 4px">
+      <div class="g">
+        <div class="ax">5</div><div class="c me">5</div><div class="c hi">10</div><div class="c cr">15<span class="pin">R-04</span></div><div class="c cr">20<span class="pin">R-03</span></div><div class="c cr">25</div>
+        <div class="ax">4</div><div class="c lo">4</div><div class="c me">8</div><div class="c hi">12</div><div class="c cr">16</div><div class="c cr">20<span class="pin">R-01</span></div>
+        <div class="ax">3</div><div class="c lo">3</div><div class="c me">6</div><div class="c me">9</div><div class="c hi">12</div><div class="c cr">15</div>
+        <div class="ax">2</div><div class="c lo">2</div><div class="c lo">4</div><div class="c me">6<span class="res dk">R-04</span></div><div class="c me">8<span class="res dk">R-03</span></div><div class="c hi">10<span class="res">R-01</span></div>
+        <div class="ax">1</div><div class="c lo">1</div><div class="c lo">2</div><div class="c lo">3</div><div class="c lo">4</div><div class="c me">5</div>
+        <div></div><div class="ax">1</div><div class="ax">2</div><div class="ax">3</div><div class="ax">4</div><div class="ax">5</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 12px; color: #5a6b7d; padding: 2px 0 0 32px"><span>Likelihood ↑</span><span>Impact →</span></div>
+    </div>
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; flex-direction: column; gap: 8px; background: #eef2f7; border-radius: 10px; padding: 14px 16px">
+        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: #5a6b7d">SCORE BANDS</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px"><span class="b cr">15–25</span>Critical</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px"><span class="b hi">10–14</span>High</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px"><span class="b me">5–9</span>Medium</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12px"><span class="b lo">1–4</span>Low</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #1b2a3a">
+        <div style="display: flex; align-items: center; gap: 8px"><span class="pin" style="background: #112233; color: #ffffff">R-01</span>Inherent score</div>
+        <div style="display: flex; align-items: center; gap: 8px"><span class="res dk">R-01</span>Projected residual</div>
+      </div>
+      <div style="border-top: 3px solid #1c8a82; padding-top: 10px">
+        <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 30px; font-weight: 700; color: #112233">3 → 0</div>
+        <div style="font-size: 12px; line-height: 1.45; color: #5a6b7d">Critical risks before and after treatment</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding-top: 24px">
+    <table class="t">
+      <thead><tr><th style="width: 70px">Risk</th><th>Threat &amp; vulnerability</th><th style="width: 92px">Existing</th><th style="width: 80px">Inherent</th><th style="width: 170px">Treatment · owner · target</th><th style="width: 84px">Residual</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div class="mono" style="font-weight: 700">R-01</div><div style="color: #5a6b7d">EHR system</div></td>
+          <td><strong>Ransomware.</strong> Patching and backup testing incomplete.</td>
+          <td>Cloud EHR vendor backups</td>
+          <td><span class="b cr">4 × 5 = 20</span><div style="font-size: 11.5px; padding-top: 3px">Critical</div></td>
+          <td>Mitigate: patch all systems, test encrypted backup restore. <span style="color: #5a6b7d">IT Vendor · Day 30</span></td>
+          <td><span class="b hi">2 × 5 = 10</span><div style="font-size: 11.5px; padding-top: 3px">High</div></td>
+        </tr>
+        <tr>
+          <td><div class="mono" style="font-weight: 700">R-03</div><div style="color: #5a6b7d">Mobile devices</div></td>
+          <td><strong>Lost or stolen device.</strong> Personal devices access ePHI without MDM or encryption.</td>
+          <td>None</td>
+          <td><span class="b cr">5 × 4 = 20</span><div style="font-size: 11.5px; padding-top: 3px">Critical</div></td>
+          <td>Mitigate: enroll in MDM, require encryption. <span style="color: #5a6b7d">Office Manager · Day 30</span></td>
+          <td><span class="b me">2 × 4 = 8</span><div style="font-size: 11.5px; padding-top: 3px">Medium</div></td>
+        </tr>
+        <tr>
+          <td><div class="mono" style="font-weight: 700">R-04</div><div style="color: #5a6b7d">Email system</div></td>
+          <td><strong>Phishing.</strong> No awareness training in 3+ years; MFA not complete.</td>
+          <td>Spam filter</td>
+          <td><span class="b cr">5 × 3 = 15</span><div style="font-size: 11.5px; padding-top: 3px">Critical</div></td>
+          <td>Mitigate: enable MFA, train all 22 staff. <span style="color: #5a6b7d">Office Manager · Day 45</span></td>
+          <td><span class="b me">2 × 3 = 6</span><div style="font-size: 11.5px; padding-top: 3px">Medium</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #d7e0ea">
+    <div style="font-size: 12px; color: #5a6b7d">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-size: 12px; font-weight: 600; color: #112233">03 / 10</div>
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-control-narratives" data-slug="control-narratives" data-label="Control Narratives" aria-label="Control Narratives" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 48px 64px 40px; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1c8a82">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="company-icons/logical-coders-icon-light.png" alt="Logical Coders icon" style="width: 30px; height: 30px">
+      <div style="font-size: 14px; font-weight: 700; color: #112233">Logical Coders</div>
+    </div>
+    <div style="font-size: 12px; color: #5a6b7d">Template 04 · NIST SP 800-53 Rev. 5</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 28px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">CONTROL</div>
+    <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1.15; color: #112233">Control Narratives</h1>
+    <div style="font-size: 14px; line-height: 1.5; color: #5a6b7d; max-width: 620px">How each control works, who owns it, and what evidence proves it operates.</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 16px; padding-top: 22px">
+    <div class="card">
+      <div class="hd">
+        <div style="display: flex; align-items: baseline; gap: 12px"><span class="mono" style="font-size: 15px; font-weight: 700; color: #4fc1b7">AC-2</span><span style="font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: 600">Account Management</span></div>
+        <span class="chip">PR.AA</span>
+      </div>
+      <div class="fl">
+        <div style="grid-column: 1 / -1"><div class="k">OBJECTIVE</div><div class="v">Only approved staff have EHR and email accounts; access is removed at termination or role change.</div></div>
+        <div><div class="k">TRIGGER / FREQUENCY</div><div class="v">New hire, role change or termination; full review quarterly</div></div>
+        <div><div class="k">PERFORMER / REVIEWER</div><div class="v">Office Manager / Dentist-Owner</div></div>
+        <div><div class="k">EVIDENCE CREATED</div><div class="v">Signed access request, disable ticket with timestamp, quarterly script output (<a class="lc-ref" href="#access-control-test">p. 06</a>)</div></div>
+        <div><div class="k">HIPAA</div><div class="v">§ 164.308(a)(3)(ii)(C), § 164.312(a)(1)</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hd">
+        <div style="display: flex; align-items: baseline; gap: 12px"><span class="mono" style="font-size: 15px; font-weight: 700; color: #4fc1b7">RA-3</span><span style="font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: 600">Risk Assessment</span></div>
+        <span class="chip">ID.RA</span>
+      </div>
+      <div class="fl">
+        <div style="grid-column: 1 / -1"><div class="k">OBJECTIVE</div><div class="v">Risks to ePHI are identified, scored, owned and treated annually and after major change.</div></div>
+        <div><div class="k">TRIGGER / FREQUENCY</div><div class="v">Annual schedule, new system or incident</div></div>
+        <div><div class="k">PERFORMER / REVIEWER</div><div class="v">IT vendor with Office Manager / Dentist-Owner approves</div></div>
+        <div><div class="k">EVIDENCE CREATED</div><div class="v">Risk register with approval date and residual scores (<a class="lc-ref" href="#risk-register">p. 03</a>)</div></div>
+        <div><div class="k">HIPAA</div><div class="v">§ 164.308(a)(1)(ii)(A)–(B)</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hd">
+        <div style="display: flex; align-items: baseline; gap: 12px"><span class="mono" style="font-size: 15px; font-weight: 700; color: #4fc1b7">AU-6</span><span style="font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: 600">Audit Record Review</span></div>
+        <span class="chip">DE.CM</span>
+      </div>
+      <div class="fl">
+        <div style="grid-column: 1 / -1"><div class="k">OBJECTIVE</div><div class="v">EHR activity logs are reviewed weekly so improper access is found and escalated.</div></div>
+        <div><div class="k">TRIGGER / FREQUENCY</div><div class="v">Weekly</div></div>
+        <div><div class="k">PERFORMER / REVIEWER</div><div class="v">Office Manager / IT vendor</div></div>
+        <div><div class="k">EVIDENCE CREATED</div><div class="v">Weekly log-review record with reviewer and date; escalation tickets</div></div>
+        <div><div class="k">HIPAA</div><div class="v">§ 164.312(b), § 164.308(a)(1)(ii)(D)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #d7e0ea">
+    <div style="font-size: 12px; color: #5a6b7d">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-size: 12px; font-weight: 600; color: #112233">04 / 10</div>
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-account-lifecycle" data-slug="account-lifecycle" data-label="Account Lifecycle Review" aria-label="Account Lifecycle Review" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 48px 64px 40px; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1c8a82">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="company-icons/logical-coders-icon-light.png" alt="Logical Coders icon" style="width: 30px; height: 30px">
+      <div style="font-size: 14px; font-weight: 700; color: #112233">Logical Coders</div>
+    </div>
+    <div style="font-size: 12px; color: #5a6b7d">Template 09 · <span class="mono">PR.AA</span> · <span class="mono">AC-2</span></div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 28px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">EVIDENCE</div>
+    <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1.15; color: #112233">Account Lifecycle Review</h1>
+    <div style="font-size: 14px; line-height: 1.5; color: #5a6b7d; max-width: 620px">Joiner, mover, leaver and privileged-access tests across the EHR and email systems.</div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding-top: 20px">
+    <div class="stat"><div class="n">8</div><div class="l">Accounts reviewed</div></div>
+    <div class="stat"><div class="n">6</div><div class="l">Passed</div></div>
+    <div class="stat"><div class="n" style="color: #c0392b">2</div><div class="l">Exceptions, both high-risk</div></div>
+    <div class="stat"><div class="n">19 days</div><div class="l">Longest time to disable</div></div>
+  </div>
+
+  <div style="padding-top: 18px">
+    <table class="t">
+      <thead><tr><th style="width: 84px">Review</th><th style="width: 92px">Account</th><th>Test performed</th><th style="width: 190px">Result</th></tr></thead>
+      <tbody>
+        <tr><td><span class="rv">Joiner</span></td><td class="mono">E-1021</td><td>Access approved before start date; role appropriate; MFA enabled</td><td><span class="ok">✓ Pass</span></td></tr>
+        <tr><td><span class="rv">Joiner</span></td><td class="mono">E-1022</td><td>Access approved before start date; role appropriate; MFA enabled</td><td><span class="ok">✓ Pass</span> <span style="color: #5a6b7d">(MFA pending rollout)</span></td></tr>
+        <tr><td><span class="rv">Mover</span></td><td class="mono">E-1008</td><td>Front desk to billing: billing access added, scheduling removed</td><td><span class="ok">✓ Pass</span></td></tr>
+        <tr><td><span class="rv">Leaver</span></td><td class="mono">E-1015</td><td>Terminated April 3; EHR account disabled April 3</td><td><span class="ok">✓ Pass</span> <span style="color: #5a6b7d">(same day)</span></td></tr>
+        <tr><td><span class="rv">Leaver</span></td><td class="mono">E-1017</td><td>Terminated April 8; EHR account disabled April 27</td><td><span class="ex">EXCEPTION</span> — access not removed timely</td></tr>
+        <tr><td><span class="rv">Privileged</span></td><td class="mono">ADMIN-01</td><td>Administrator account approved and reviewed within 12 months</td><td><span class="ok">✓ Pass</span></td></tr>
+        <tr><td><span class="rv">Privileged</span></td><td class="mono">FRONTDESK</td><td>Shared login used by several front-desk staff</td><td><span class="ex">EXCEPTION</span> — shared credentials, no individual accountability</td></tr>
+        <tr><td><span class="rv">Privileged</span></td><td class="mono">VENDOR-IT</td><td>IT vendor remote account; Business Associate Agreement on file?</td><td><span class="ok">✓ Pass</span> with note — BAA not on file (<span class="mono">G-01</span>)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: 20px; border: 1px solid #d7e0ea; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <div style="font-size: 14px; font-weight: 700"><span class="mono">E-1017</span> leaver timeline</div>
+      <div style="font-size: 12px; color: #5a6b7d">Policy: disable within 1 day</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; align-items: center; height: 14px">
+        <div style="width: 14px; height: 14px; border-radius: 999px; background: #112233; flex: 0 0 14px"></div>
+        <div style="flex: 0 0 5%; height: 6px; background: #1c8a82"></div>
+        <div style="flex: 1 1 auto; height: 6px; background: #c0392b"></div>
+        <div style="width: 14px; height: 14px; border-radius: 999px; background: #c0392b; flex: 0 0 14px"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 12px">
+        <div><strong>Apr 8</strong> <span style="color: #5a6b7d">Terminated</span></div>
+        <div style="color: #c0392b; font-weight: 600">18 days over policy</div>
+        <div><strong>Apr 27</strong> <span style="color: #5a6b7d">Disabled</span></div>
+      </div>
+    </div>
+    <div style="font-size: 12px; line-height: 1.45; color: #1b2a3a">The account stayed active for <strong>19 days</strong> past termination, 18 days beyond policy. Corrective actions: same-day disable step added to the termination checklist (<span class="mono">G-04</span>); individual front-desk accounts replace the shared login (<span class="mono">G-05</span>).</div>
+  </div>
+
+  <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #d7e0ea">
+    <div style="font-size: 12px; color: #5a6b7d">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-size: 12px; font-weight: 600; color: #112233">05 / 10</div>
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-access-control-test" data-slug="access-control-test" data-label="Access-Control Test" aria-label="Access-Control Test" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 48px 64px 40px; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1c8a82">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="company-icons/logical-coders-icon-light.png" alt="Logical Coders icon" style="width: 30px; height: 30px">
+      <div style="font-size: 14px; font-weight: 700; color: #112233">Logical Coders</div>
+    </div>
+    <div style="font-size: 12px; color: #5a6b7d">Component 15 · <span class="mono">AC-2</span> / <span class="mono">IA-2</span> re-performance</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 28px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">EVIDENCE</div>
+    <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1.15; color: #112233">Access-Control Test in Code</h1>
+    <div style="font-size: 14px; line-height: 1.5; color: #5a6b7d; max-width: 640px">A reusable Python script and SQL query that compare the staff roster to EHR accounts each month and flag every exception.</div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding-top: 20px">
+    <div class="stat"><div class="n">4</div><div class="l">Tests run</div></div>
+    <div class="stat"><div class="n">8</div><div class="l">Accounts tested</div></div>
+    <div class="stat"><div class="n">5</div><div class="l">Roster entries</div></div>
+    <div class="stat"><div class="n" style="color: #c0392b">7</div><div class="l">Exceptions flagged</div></div>
+  </div>
+
+  <div style="padding-top: 18px">
+    <div class="k">SCRIPT OUTPUT</div>
+<pre class="code"><span class="dim">TEST 1 - Leavers disabled within 1 day</span>
+  E-1015 terminated 2026-04-03  -&gt; <span class="okc">Pass</span>
+  E-1017 terminated 2026-04-08  -&gt; <span class="bad">EXCEPTION - disabled 19 days late</span>
+<span class="dim">TEST 2 - Shared or unassigned accounts</span>
+  FRONTDESK                     -&gt; <span class="bad">EXCEPTION - shared login, no individual accountability</span>
+<span class="dim">TEST 3 - Active accounts without MFA</span>
+  e1008 (User)                  -&gt; <span class="bad">EXCEPTION - MFA not enabled</span>
+  e1022 (User)                  -&gt; <span class="bad">EXCEPTION - MFA not enabled</span>
+  FRONTDESK (Shared)            -&gt; <span class="bad">EXCEPTION - MFA not enabled</span>
+  VENDOR-IT (Vendor)            -&gt; <span class="bad">EXCEPTION - MFA not enabled</span>
+<span class="dim">TEST 4 - Access not reviewed in 12 months</span>
+  FRONTDESK last review 2025-03-01 -&gt; <span class="bad">EXCEPTION - review overdue</span>
+
+Records tested: 8 accounts, 5 roster entries | Exceptions: 7</pre>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding-top: 16px">
+    <div>
+      <div class="k">SQL · LEAVER TEST</div>
+<pre class="code" style="font-size: 11.5px"><span class="dim">-- terminated staff disabled late or not at all</span>
+SELECT r.employee_id, r.termination_date,
+       a.status, a.disabled_date,
+       days_to_disable
+FROM staff_roster r
+LEFT JOIN ehr_accounts a
+  ON a.employee_id = r.employee_id
+WHERE r.status = 'Terminated'
+  AND (a.status = 'Active'
+   OR days_to_disable &gt; 1);
+
+<span class="bad">('E-1017', '2026-04-08', 'Disabled',
+ '2026-04-27', 19)</span></pre>
+    </div>
+    <div>
+      <div class="k">SQL · MFA TEST</div>
+<pre class="code" style="font-size: 11.5px"><span class="dim">-- active accounts with no MFA,
+-- including shared and vendor</span>
+SELECT account, account_type,
+       mfa_enabled
+FROM ehr_accounts
+WHERE status = 'Active'
+  AND mfa_enabled &lt;&gt; 'Yes'
+ORDER BY account_type;
+
+<span class="bad">('FRONTDESK', 'Shared',  'No')
+('e1008',     'User',    'No')
+('e1022',     'User',    'No')
+('VENDOR-IT', 'Vendor',  'No')</span></pre>
+    </div>
+  </div>
+  <div class="cap"><span class="mono">days_to_disable</span> is computed with <span class="mono">julianday(disabled_date) − julianday(termination_date)</span>. Output contains account IDs only — no ePHI, passwords or keys.</div>
+
+  <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #d7e0ea">
+    <div style="font-size: 12px; color: #5a6b7d">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-size: 12px; font-weight: 600; color: #112233">06 / 10</div>
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-audit-log-summary" data-slug="audit-log-summary" data-label="Audit Log Summary" aria-label="Audit Log Summary" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 48px 64px 40px; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1c8a82">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="company-icons/logical-coders-icon-light.png" alt="Logical Coders icon" style="width: 30px; height: 30px">
+      <div style="font-size: 14px; font-weight: 700; color: #112233">Logical Coders</div>
+    </div>
+    <div style="font-size: 12px; color: #5a6b7d">Template 10 · <span class="mono">DE.CM</span> · <span class="mono">AU-6</span> · § 164.312(b)</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 28px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">EVIDENCE</div>
+    <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1.15; color: #112233">Audit Log Summary</h1>
+    <div style="font-size: 14px; line-height: 1.5; color: #5a6b7d; max-width: 620px">Whether the EHR records, reviews, keeps and escalates system activity the way the HIPAA audit controls standard requires.</div>
+  </div>
+
+  <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid #d7e0ea; border-radius: 10px; overflow: hidden">
+    <div class="m"><div class="mk">SYSTEM</div><div class="mv">Cloud EHR</div></div>
+    <div class="m"><div class="mk">OWNER</div><div class="mv">IT Vendor</div></div>
+    <div class="m"><div class="mk">PERIOD</div><div class="mv">May 2026</div></div>
+    <div class="m"><div class="mk">HOLDS ePHI</div><div class="mv">Yes</div></div>
+    <div class="m" style="border-right: none"><div class="mk">LOG SOURCES</div><div class="mv">Application, IAM/SSO</div></div>
+  </div>
+
+  <div style="padding-top: 16px">
+    <table class="t">
+      <thead><tr><th style="width: 92px">Review area</th><th>Expected requirement</th><th style="width: 150px">Observed status</th><th style="width: 70px">Health</th><th style="width: 160px">Recommendation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Log creation</strong></td><td>EHR records login, ePHI access, exports and account changes</td><td>Audit logging not enabled</td><td><span class="red">Red</span></td><td>Enable logging for all ePHI systems</td></tr>
+        <tr><td><strong>Log review</strong></td><td>Logs reviewed on a set schedule by a named reviewer</td><td>No review performed; no reviewer assigned</td><td><span class="red">Red</span></td><td>Assign a reviewer; review weekly</td></tr>
+        <tr><td><strong>Log retention</strong></td><td>Logs kept per written policy</td><td>No retention period defined</td><td><span class="red">Red</span></td><td>Define retention in policy</td></tr>
+        <tr><td><strong>Escalation</strong></td><td>Suspicious activity escalated to a named contact</td><td>No escalation procedure</td><td><span class="red">Red</span></td><td>Add escalation steps to the incident response plan</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: 16px; background: #112233; border-radius: 10px; padding: 16px 18px; display: flex; gap: 20px; align-items: center">
+    <div style="display: flex; flex-direction: column; gap: 2px; flex: 0 0 auto">
+      <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; color: #cfe6ea">CONCLUSION</div>
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-size: 26px; font-weight: 700; color: #ffffff">Ineffective</div>
+    </div>
+    <div style="font-size: 12.5px; line-height: 1.5; color: #cfe6ea">None of the eight key event types could be tested because no logs were generated. The gap does not meet § 164.312(b) and is tracked as <span class="mono" style="color: #ffffff; font-weight: 700">G-03</span>.</div>
+  </div>
+
+  <div style="margin-top: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+    <div style="background: #eef2f7; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: #177a73">EVIDENCE-HANDLING RULE</div>
+      <div style="font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.45; color: #112233">"Do not place ePHI, passwords, private keys, full Social Security numbers, or screenshots in audit workpapers."</div>
+      <div style="font-size: 12.5px; line-height: 1.5; color: #1b2a3a">Use the minimum necessary information, redact when possible, restrict access, and store evidence in an approved access-controlled repository.</div>
+      <div style="font-size: 12px; color: #5a6b7d">Printed in the document-control block of all 12 templates.</div>
+    </div>
+    <div style="border: 1px solid #d7e0ea; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: #177a73">EVIDENCE ACCEPTANCE CHECKLIST</div>
+      <div class="ck"><span>✓</span>Identifies the relevant system or process</div>
+      <div class="ck"><span>✓</span>Falls within the audit period</div>
+      <div class="ck"><span>✓</span>Names the performer, reviewer or approver</div>
+      <div class="ck"><span>✓</span>Complete, readable and traceable</div>
+      <div class="ck"><span>✓</span>Sensitive information minimized or redacted</div>
+      <div class="ck"><span>✓</span>Source and collection date recorded</div>
+      <div class="ck"><span>✓</span>Stored in the approved repository</div>
+    </div>
+  </div>
+
+  <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #d7e0ea">
+    <div style="font-size: 12px; color: #5a6b7d">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-size: 12px; font-weight: 600; color: #112233">07 / 10</div>
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-audit-tracker" data-slug="audit-tracker" data-label="Audit Tracker" aria-label="Audit Tracker" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 48px 64px 40px; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1c8a82">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="company-icons/logical-coders-icon-light.png" alt="Logical Coders icon" style="width: 30px; height: 30px">
+      <div style="font-size: 14px; font-weight: 700; color: #112233">Logical Coders</div>
+    </div>
+    <div style="font-size: 12px; color: #5a6b7d">Template 07 · <span class="mono">ID.IM</span> · § 164.308(a)(1)(ii)(B)</div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding-top: 28px">
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">DECISION</div>
+      <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1.15; color: #112233">Audit Tracker</h1>
+      <div style="font-size: 14px; line-height: 1.5; color: #5a6b7d; max-width: 480px">Five remediation items from the gap analysis, each with an owner, a due date and a next action.</div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex: 0 0 auto">
+      <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; color: #5a6b7d">OVERALL STATUS</div>
+      <div style="font-size: 14px; font-weight: 700; color: #112233; background: #e0b028; padding: 6px 14px; border-radius: 999px">At risk</div>
+      <div style="font-size: 12px; color: #5a6b7d">Day 1 of 90-day plan</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px; border: 1px solid #d7e0ea; border-radius: 10px; padding: 16px 18px 14px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: #177a73; padding-bottom: 14px">DUE DATES ACROSS THE 90-DAY PLAN</div>
+    <div style="position: relative; height: 86px">
+      <div style="position: absolute; left: 0; right: 0; top: 5px; height: 4px; background: #d7e0ea; border-radius: 999px"></div>
+      <div style="position: absolute; left: 0; width: 33.3%; top: 5px; height: 4px; background: #1c8a82; border-radius: 999px"></div>
+      <div class="mk" style="left: 7.8%"><div class="dot" style="background: #b4470f"></div><div class="mono" style="font-size: 11.5px; font-weight: 700">G-01</div><div style="font-size: 11.5px; color: #5a6b7d">Day 7</div></div>
+      <div class="mk" style="left: 15.6%"><div class="dot" style="background: #8f1d2c"></div><div class="mono" style="font-size: 11.5px; font-weight: 700">G-02</div><div style="font-size: 11.5px; color: #5a6b7d">Day 14</div></div>
+      <div class="mk" style="left: 23.3%"><div class="dot" style="background: #b4470f"></div><div class="mono" style="font-size: 11.5px; font-weight: 700; text-align: center">G-04<br>G-05</div><div style="font-size: 11.5px; color: #5a6b7d">Day 21</div></div>
+      <div class="mk" style="left: 33.3%"><div class="dot" style="background: #b4470f"></div><div class="mono" style="font-size: 11.5px; font-weight: 700">G-03</div><div style="font-size: 11.5px; color: #5a6b7d">Day 30</div></div>
+      <div class="mk" style="left: 100%; transform: translateX(-100%); align-items: flex-end"><div class="dot" style="background: #112233"></div><div style="font-size: 11.5px; font-weight: 700">Day 90</div><div style="font-size: 11.5px; color: #5a6b7d">Plan ends</div></div>
+    </div>
+    <div style="font-size: 12px; color: #5a6b7d; padding-top: 4px">Every item is due inside the first 30 days, so the high-risk work lands early.</div>
+  </div>
+
+  <div style="padding-top: 18px">
+    <table class="t">
+      <thead><tr><th style="width: 46px">ID</th><th>Description</th><th style="width: 66px">Risk</th><th style="width: 92px">Owner</th><th style="width: 46px">Due</th><th style="width: 86px">Status</th><th style="width: 150px">Next action</th></tr></thead>
+      <tbody>
+        <tr><td class="mono" style="font-weight: 700">G-01</td><td>No Business Associate Agreements on file</td><td><span class="b hi">High</span></td><td>Dentist-Owner</td><td>Day 7</td><td><span class="st">Not started</span></td><td>Collect and sign BAAs with IT vendors and cloud providers</td></tr>
+        <tr><td class="mono" style="font-weight: 700">G-02</td><td>MFA not enabled on EHR, email and portal</td><td><span class="b cr">Critical</span></td><td>IT Vendor</td><td>Day 14</td><td><span class="st ip">In progress</span></td><td>Enable MFA; retest with sample logins</td></tr>
+        <tr><td class="mono" style="font-weight: 700">G-03</td><td>Audit logging not enabled on EHR (<a class="lc-ref" href="#audit-log-summary">p. 07</a>)</td><td><span class="b hi">High</span></td><td>IT Vendor</td><td>Day 30</td><td><span class="st">Not started</span></td><td>Enable logging; assign weekly reviewer</td></tr>
+        <tr><td class="mono" style="font-weight: 700">G-04</td><td>Terminated user disabled 19 days late (<a class="lc-ref" href="#account-lifecycle">p. 05</a>)</td><td><span class="b hi">High</span></td><td>Office Manager</td><td>Day 21</td><td><span class="st">Not started</span></td><td>Add same-day disable step to termination checklist</td></tr>
+        <tr><td class="mono" style="font-weight: 700">G-05</td><td>Shared front-desk login (<a class="lc-ref" href="#account-lifecycle">p. 05</a>)</td><td><span class="b hi">High</span></td><td>Office Manager</td><td>Day 21</td><td><span class="st">Not started</span></td><td>Create individual accounts; disable shared login</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top: 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+    <div style="background: #eef2f7; border-radius: 10px; padding: 12px 14px"><div style="font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 700; color: #112233">5</div><div style="font-size: 12px; color: #5a6b7d">Open items</div></div>
+    <div style="background: #eef2f7; border-radius: 10px; padding: 12px 14px"><div style="font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 700; color: #112233">1 Critical · 4 High</div><div style="font-size: 12px; color: #5a6b7d">Risk mix</div></div>
+    <div style="background: #eef2f7; border-radius: 10px; padding: 12px 14px"><div style="font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 700; color: #112233">1 of 5</div><div style="font-size: 12px; color: #5a6b7d">Items in progress</div></div>
+  </div>
+
+  <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #d7e0ea">
+    <div style="font-size: 12px; color: #5a6b7d">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-size: 12px; font-weight: 600; color: #112233">08 / 10</div>
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-governance-report" data-slug="governance-report" data-label="HIPAA Governance Report" aria-label="HIPAA Governance Report" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="background: #112233; padding: 40px 64px 30px; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <img src="company-icons/logical-coders-icon-dark.png" alt="Logical Coders icon" style="width: 30px; height: 30px; border-radius: 6px">
+        <div style="font-size: 14px; font-weight: 700; color: #ffffff">Logical Coders</div>
+      </div>
+      <div style="font-size: 12px; color: #cfe6ea">Template 11 · <span class="mono">GV.RR</span> · <span class="mono">GV.OV</span> · § 164.308(a)(2)</div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #4fc1b7">DECISION · EXECUTIVE SUMMARY</div>
+        <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 36px; line-height: 1.12; color: #ffffff">HIPAA Governance Report</h1>
+        <div style="font-size: 14px; color: #cfe6ea">Prepared for the Dentist-Owner, approving executive</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end; flex: 0 0 auto">
+        <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; color: #cfe6ea">OVERALL HIPAA POSTURE</div>
+        <div style="display: flex; align-items: center; gap: 8px"><div style="font-size: 16px; font-weight: 700; background: #8f1d2c; color: #ffffff; padding: 7px 16px; border-radius: 999px; border: 1px solid #ff9b9b">Red</div><div style="font-size: 14px; font-weight: 600; color: #ffffff">improving ↑</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 24px 64px 0; display: flex; flex-direction: column; gap: 22px">
+    <div>
+      <div class="k">TOP RISKS</div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+        <div style="border: 1px solid #d7e0ea; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px"><div style="display: flex; justify-content: space-between; align-items: center"><span class="mono" style="font-size: 12px; font-weight: 700; color: #5a6b7d">R-01</span><span style="font-size: 11.5px; font-weight: 700; background: #8f1d2c; color: #ffffff; padding: 2px 8px; border-radius: 999px">20 Critical</span></div><div style="font-size: 15px; font-weight: 700">Ransomware</div><div style="font-size: 12px; color: #5a6b7d">EHR system</div></div>
+        <div style="border: 1px solid #d7e0ea; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px"><div style="display: flex; justify-content: space-between; align-items: center"><span class="mono" style="font-size: 12px; font-weight: 700; color: #5a6b7d">R-03</span><span style="font-size: 11.5px; font-weight: 700; background: #8f1d2c; color: #ffffff; padding: 2px 8px; border-radius: 999px">20 Critical</span></div><div style="font-size: 15px; font-weight: 700">Lost or stolen devices</div><div style="font-size: 12px; color: #5a6b7d">Mobile devices</div></div>
+        <div style="border: 1px solid #d7e0ea; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px"><div style="display: flex; justify-content: space-between; align-items: center"><span class="mono" style="font-size: 12px; font-weight: 700; color: #5a6b7d">R-04</span><span style="font-size: 11.5px; font-weight: 700; background: #8f1d2c; color: #ffffff; padding: 2px 8px; border-radius: 999px">15 Critical</span></div><div style="font-size: 15px; font-weight: 700">Phishing</div><div style="font-size: 12px; color: #5a6b7d">Email system</div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="k">CONTROL HEALTH</div>
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px">
+        <div class="hc hr"><div class="hw">RED</div><div class="hn">Access management</div></div>
+        <div class="hc hr"><div class="hw">RED</div><div class="hn">Audit logging</div></div>
+        <div class="hc hr"><div class="hw">RED</div><div class="hn">MFA</div></div>
+        <div class="hc hy"><div class="hw">YELLOW</div><div class="hn">Backup</div></div>
+        <div class="hc hy"><div class="hw">YELLOW</div><div class="hn">Incident response</div></div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+      <div>
+        <div class="k">KEY FINDINGS</div>
+        <div class="li"><span style="color: #c0392b; font-weight: 700">✕</span>Terminated user active 19 days</div>
+        <div class="li"><span style="color: #c0392b; font-weight: 700">✕</span>Shared front-desk login</div>
+        <div class="li"><span style="color: #c0392b; font-weight: 700">✕</span>MFA missing on 4 accounts</div>
+        <div class="li"><span style="color: #c0392b; font-weight: 700">✕</span>EHR audit logging off</div>
+        <div class="li"><span style="color: #c0392b; font-weight: 700">✕</span>No Business Associate Agreements on file</div>
+      </div>
+      <div>
+        <div class="k">DECISIONS REQUESTED</div>
+        <div class="li"><span style="color: #1c8a82; font-weight: 700">→</span>Name a security official</div>
+        <div class="li"><span style="color: #1c8a82; font-weight: 700">→</span>Approve the risk treatments</div>
+        <div class="li"><span style="color: #1c8a82; font-weight: 700">→</span>Fund MDM and MFA</div>
+        <div class="li"><span style="color: #1c8a82; font-weight: 700">→</span>Sign vendor BAAs</div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+      <div style="border: 1px solid #d7e0ea; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 18px">
+        <div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; color: #5a6b7d">PREPARED BY</div>
+        <div style="border-bottom: 1px solid #1b2a3a; padding-bottom: 4px; font-size: 14px; font-weight: 600">Anél Henning</div>
+        <div style="font-size: 12px; color: #5a6b7d">Compliance Documentation Coordinator · Date: [DATE]</div>
+      </div>
+      <div style="border: 1px solid #d7e0ea; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; justify-content: space-between"><div style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; color: #5a6b7d">APPROVED BY</div><div style="font-size: 11.5px; font-weight: 600; background: #d8eeec; padding: 2px 8px; border-radius: 999px">Pending</div></div>
+        <div style="border-bottom: 1px solid #1b2a3a; padding-bottom: 4px; font-size: 14px; color: #5a6b7d">&#160;</div>
+        <div style="font-size: 12px; color: #5a6b7d">Dentist-Owner · Date: [DATE]</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin: auto 64px 0; padding: 12px 0 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #d7e0ea">
+    <div style="font-size: 12px; color: #5a6b7d">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-size: 12px; font-weight: 600; color: #112233">09 / 10</div>
+  </div>
+</div>
+</div></div>
+</section>
+<section class="lc-page" id="pg-client-guide" data-slug="client-guide" data-label="Client One-Page Guide" aria-label="Client One-Page Guide" hidden>
+<div class="lc-fit"><div class="lc-paper">
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 48px 64px 40px; display: flex; flex-direction: column; background: #ffffff; font-family: Inter, system-ui, sans-serif; color: #1b2a3a; overflow: hidden">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 2px solid #1c8a82">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <img src="company-icons/logical-coders-icon-light.png" alt="Logical Coders icon" style="width: 30px; height: 30px">
+      <div style="font-size: 14px; font-weight: 700; color: #112233">Logical Coders</div>
+    </div>
+    <div style="font-size: 12px; color: #5a6b7d">Component 17 · Client guide</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 28px">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: #177a73">GUIDE</div>
+    <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1.15; color: #112233">How to Use This Package</h1>
+    <div style="font-size: 14px; line-height: 1.5; color: #5a6b7d; max-width: 620px">Seven steps that take a small practice from naming an owner to a program that improves every cycle.</div>
+  </div>
+
+  <div style="display: flex; gap: 32px; padding-top: 24px; align-items: flex-start">
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 8px">
+      <div class="st"><div class="disc">1</div><div><div class="sn">Start with governance</div><div class="sd">Name a security official and an owner for each risk.</div></div></div>
+      <div class="ar">↓</div>
+      <div class="st"><div class="disc">2</div><div><div class="sn">Run the risk register</div><div class="sd">List systems that hold ePHI, score each risk, choose a treatment, and assign an owner and due date.</div></div></div>
+      <div class="ar">↓</div>
+      <div class="st"><div class="disc">3</div><div><div class="sn">Document controls</div><div class="sd">Use the control narratives to record how each control works and what evidence proves it.</div></div></div>
+      <div class="ar">↓</div>
+      <div class="st"><div class="disc">4</div><div><div class="sn">Collect evidence the safe way</div><div class="sd">Minimum necessary information, redact when possible, restrict access, and store in an approved repository.</div></div></div>
+      <div class="ar">↓</div>
+      <div class="st"><div class="disc">5</div><div><div class="sn">Test and monitor</div><div class="sd">Run the access-control script each month and review logs weekly; record any exception in the tracker.</div></div></div>
+      <div class="ar">↓</div>
+      <div class="st"><div class="disc">6</div><div><div class="sn">Report to leadership</div><div class="sd">Use the governance report to show posture, findings and the decisions needed.</div></div></div>
+      <div class="ar">↓</div>
+      <div class="st"><div class="disc" style="background: #112233">7</div><div><div class="sn">Repeat</div><div class="sd">Review the program on a schedule so it improves each cycle.</div></div></div>
+    </div>
+
+    <div style="flex: 0 0 236px; background: #eef2f7; border-radius: 14px; padding: 18px 18px 8px; display: flex; flex-direction: column">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: #177a73; padding-bottom: 4px">QUALITY REVIEW</div>
+      <div style="font-size: 12px; color: #5a6b7d; padding-bottom: 6px">Every open item closed before delivery</div>
+      <div class="qi"><div style="font-size: 12.5px; font-weight: 600">✓ HIPAA/NIST field</div><div style="font-size: 12px; color: #5a6b7d">Added to all 12 templates</div></div>
+      <div class="qi"><div style="font-size: 12.5px; font-weight: 600">✓ Template 3 sign-off</div><div style="font-size: 12px; color: #5a6b7d">Reviewer sign-off added</div></div>
+      <div class="qi"><div style="font-size: 12.5px; font-weight: 600">✓ Sample exhibits</div><div style="font-size: 12px; color: #5a6b7d">All templates completed</div></div>
+      <div class="qi"><div style="font-size: 12.5px; font-weight: 600">✓ Access exceptions</div><div style="font-size: 12px; color: #5a6b7d">Tested in code (<a class="lc-ref" href="#access-control-test">p. 06</a>)</div></div>
+      <div class="qi" style="border-bottom: none"><div style="font-size: 12.5px; font-weight: 600">✓ Client-ready</div><div style="font-size: 12px; color: #5a6b7d">Portfolio and this guide</div></div>
+    </div>
+  </div>
+
+  <div style="margin-top: auto; background: #112233; border-radius: 14px; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; gap: 20px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <img src="company-icons/logical-coders-icon-dark.png" alt="Logical Coders icon" style="width: 40px; height: 40px; border-radius: 8px">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <div style="font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 18px; color: #ffffff">Documentation That Holds Up.</div>
+        <div style="font-size: 12px; color: #cfe6ea">Anél Henning · Logical Coders · Tampa, FL</div>
+      </div>
+    </div>
+    <div style="font-size: 13px; font-weight: 600; color: #4fc1b7">logicalcoders@outlook.com</div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px">
+    <div style="font-size: 12px; color: #5a6b7d">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.</div>
+    <div style="font-size: 12px; font-weight: 600; color: #112233">10 / 10</div>
+  </div>
+</div>
+</div></div>
+</section>
+    <div class="lc-note">All examples use fictional Sunshine Dental Group data. No real patient or company information is shown.<br><span class="lc-hint">Tip: use <kbd>←</kbd> <kbd>→</kbd> to move between pages. Click any card or page reference to jump.</span></div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.lc-page'));
+  var navs = Array.prototype.slice.call(document.querySelectorAll('.lc-nav'));
+  var prev = document.getElementById('lc-prev'), next = document.getElementById('lc-next');
+  var cur = 0;
+
+  function fit(){
+    var p = pages[cur]; if(!p) return;
+    var box = p.querySelector('.lc-fit'), paper = p.querySelector('.lc-paper');
+    var s = Math.min(1.25, box.clientWidth / 816);
+    paper.style.transform = 'scale(' + s + ')';
+    box.style.height = (1056 * s) + 'px';
+  }
+  function show(i, focus){
+    cur = Math.max(0, Math.min(pages.length - 1, i));
+    pages.forEach(function(p, j){ p.hidden = j !== cur; });
+    navs.forEach(function(n, j){ if(j === cur) n.setAttribute('aria-current','page'); else n.removeAttribute('aria-current'); });
+    var n = String(cur + 1).padStart(2,'0');
+    document.getElementById('lc-num').textContent = n + ' / ' + pages.length;
+    document.getElementById('lc-label').textContent = pages[cur].dataset.label;
+    document.getElementById('lc-bar').style.width = ((cur + 1) / pages.length * 100) + '%';
+    prev.disabled = cur === 0; next.disabled = cur === pages.length - 1;
+    document.title = pages[cur].dataset.label + ' — Logical Coders HIPAA GRC Package';
+    navs[cur].scrollIntoView({block:'nearest', inline:'nearest'});
+    fit();
+    if(focus) document.getElementById('lc-stage').focus({preventScroll:true});
+  }
+  function fromHash(focus){
+    var slug = location.hash.replace('#','');
+    var i = pages.findIndex(function(p){ return p.dataset.slug === slug; });
+    show(i < 0 ? 0 : i, focus);
+    if(focus) window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function go(i){ location.hash = pages[Math.max(0, Math.min(pages.length - 1, i))].dataset.slug; }
+
+  prev.addEventListener('click', function(){ go(cur - 1); });
+  next.addEventListener('click', function(){ go(cur + 1); });
+  window.addEventListener('hashchange', function(){ fromHash(true); });
+  window.addEventListener('resize', fit);
+  document.addEventListener('keydown', function(e){
+    if(e.altKey || e.ctrlKey || e.metaKey) return;
+    var t = e.target.tagName; if(t === 'INPUT' || t === 'TEXTAREA') return;
+    if(e.key === 'ArrowRight'){ go(cur + 1); e.preventDefault(); }
+    if(e.key === 'ArrowLeft'){ go(cur - 1); e.preventDefault(); }
+  });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  fromHash(false);
+})();
+</script>
+</body>
+</html>
