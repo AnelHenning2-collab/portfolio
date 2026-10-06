@@ -86,6 +86,8 @@ kbd{font-family:Consolas,Menlo,monospace;font-size:11px;border:1px solid var(--l
 .lc-book:hover{background:rgba(255,255,255,.08);color:#fff}
 .lc-book[aria-current=page]{background:#0095d3;color:#fff}
 .lc-group{text-transform:uppercase}
+.lc-dl{text-decoration:none;border-color:#0095d3;color:#00739f}
+@media (max-width: 860px){.lc-dl-s{display:none}}
 #pg-cover .tab{width:54px;height:58px;background:#0095d3;color:#ffffff;font-size:32px;font-weight:700;line-height:1;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9px;box-sizing:border-box;flex:0 0 auto}
 #pg-cover .kick{font-size:12px;font-weight:700;letter-spacing:0.14em;color:#00739f;text-transform:uppercase}
 #pg-cover .ttl{margin:0;font-size:27px;font-weight:700;letter-spacing:0.03em;color:#0083bb;text-transform:uppercase;line-height:1.12}
@@ -620,6 +622,7 @@ kbd{font-family:Consolas,Menlo,monospace;font-size:11px;border:1px solid var(--l
     <div class="lc-bar">
       <div class="lc-where" aria-live="polite"><b id="lc-num">01 / 10</b> · <span id="lc-label"></span></div>
       <div class="lc-btns">
+        <a class="lc-btn lc-dl" href="pdf/Anel-Henning_GRC-White-Paper.pdf" download>Download PDF <span class="lc-dl-s">· 8.5×11, color</span></a>
         <button class="lc-btn" id="lc-prev" type="button" aria-label="Previous page">← Prev</button>
         <button class="lc-btn primary" id="lc-next" type="button" aria-label="Next page">Next →</button>
       </div>
