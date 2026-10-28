@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logical Coders GRC — Product Walkthrough</title>
+<meta name="description" content="Screen-by-screen walkthrough of the Logical Coders GRC app: how a medical or dental office gathers and submits evidence and tracks its review, and how Logical Coders reviews, tests and delivers the finished service. Fictional data.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#112233; --ink:#1B2A3A; --teal:#177A73; --muted:#5A6B7D; --rule:#D7E0EA; --tint:#EEF2F7; --page:#F6F8FB; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: Inter, system-ui, sans-serif; color: var(--ink); background: var(--page); line-height: 1.55; font-size: 15px; }
+  a { color: var(--teal); }
+  h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; color: var(--navy); line-height: 1.2; margin: 0 0 10px; }
+  .top { background: var(--navy); color: #fff; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .top a { color: #4FC1B7; font-weight: 600; text-decoration: none; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 48px; }
+  .eb { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+  .lead { font-size: 17px; color: var(--muted); max-width: 760px; }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0 8px; }
+  .btn { display: inline-flex; align-items: center; min-height: 42px; padding: 8px 16px; border-radius: 10px; border: 1px solid var(--rule); background: #fff; font-weight: 600; text-decoration: none; color: var(--navy); }
+  .btn.primary { background: var(--navy); border-color: var(--navy); color: #fff; }
+  section.part { margin-top: 40px; }
+  .part > h2 { font-size: 28px; }
+  .step { display: grid; grid-template-columns: 300px 1fr; gap: 24px; background: #fff; border: 1px solid var(--rule); border-radius: 14px; padding: 20px; margin: 16px 0; align-items: start; }
+  .step .n { width: 34px; height: 34px; border-radius: 999px; border: 2px solid var(--teal); color: var(--teal); display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 8px; }
+  .step h3 { font-size: 19px; }
+  .step p { margin: 0 0 8px; }
+  .step ul { margin: 0; padding-left: 18px; font-size: 14px; }
+  .step figure { margin: 0; }
+  .step img { width: 100%; display: block; border: 1px solid var(--rule); border-radius: 8px; }
+  .step figcaption { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0 4px; font-size: 13.5px; }
+  .flow span { border: 1px solid var(--teal); color: var(--navy); border-radius: 999px; padding: 4px 12px; background: #fff; }
+  .flow i { color: var(--muted); font-style: normal; }
+  .note { font-size: 13px; color: var(--muted); }
+  footer { text-align: center; font-size: 12.5px; color: var(--muted); padding: 0 24px 32px; }
+  @media (max-width: 820px) { .wrap { padding: 24px 16px 40px; } .step { grid-template-columns: 1fr; } .top { padding: 12px 16px; } }
+  @media print { .top, .jump { display: none; } body { background: #fff; } .step { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="top"><b>Logical Coders GRC · Product walkthrough</b><span><a href="index.html">Open the live app</a> · <a href="../../logical_coders_showcase.html">Showcase</a></span></div>
+<main class="wrap">
+  <div class="eb">HIPAA security review · from sign-in to completed service</div>
+  <h1>How a medical office and Logical Coders work together in one app</h1>
+  <p class="lead">The practice gathers what we ask for, submits it and tracks the review. Logical Coders checks every file, runs the 12 templates and automated tests, and delivers the finished report. Every screen below is the working app, using fictional Sunshine Dental Group data.</p>
+  <div class="flow"><span>Sign in</span><i>→</i><span>Practice profile</span><i>→</i><span>Upload evidence</span><i>→</i><span>Submit</span><i>→</i><span>Received</span><i>→</i><span>Under review</span><i>→</i><span>Findings ready</span><i>→</i><span>Complete</span></div>
+  <div class="jump"><a class="btn primary" href="#practice">Part 1: the medical office</a><a class="btn" href="#auditor">Part 2: Logical Coders</a><a class="btn" href="#done">Part 3: the finished service</a></div>
+
+  <section class="part" id="practice">
+    <div class="eb">Part 1 · For medical and dental office staff</div>
+    <h2>Gather the evidence, submit it, track it</h2>
+
+    <div class="step"><div><div class="n">1</div><h3>Choose your portal and sign in</h3><p>Office staff use the <b>Practice portal</b>. Logical Coders auditors use the staff portal. Each sees only their own screens.</p><ul><li>Work email and password</li><li>No shared logins: every person has an account</li></ul></div><figure><img src="walkthrough/01-signin.jpg" alt="Sign-in screen with a Practice portal for medical and dental staff and a Logical Coders staff portal"><figcaption>Two portals, one app.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">2</div><h3>Confirm it's you with a 6-digit code</h3><p>Every sign-in asks for a code from an authenticator app. This second step is the same safeguard the audit checks for at the practice.</p></div><figure><img src="walkthrough/02-mfa.jpg" alt="Two-step sign-in screen asking for a 6-digit code"><figcaption>Multi-factor sign-in on every login.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">3</div><h3>See your four steps</h3><p>The home screen shows exactly what to do next: profile, evidence, submit, track. The current step is highlighted.</p></div><figure><img src="walkthrough/03-client-home.jpg" alt="Practice home screen with four steps: practice profile, upload evidence, review and submit, track progress"><figcaption>A clear path for a busy office manager.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">4</div><h3>Tell us about the practice</h3><p>Staff count, offices, who manages the computers, and which systems hold patient information. This decides which safeguards we test. No patient data is asked for.</p></div><figure><img src="walkthrough/04-profile.jpg" alt="Practice profile form with staff count, offices, IT provider and systems that hold patient information"><figcaption>Step 1: about five minutes.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">5</div><h3>Upload each item, or mark it not applicable</h3><p>Each request says what is needed, when it's due, and which template and control it supports. A warning reminds staff never to upload patient records or passwords.</p></div><figure><img src="walkthrough/05-checklist.jpg" alt="Evidence checklist with five requests, three uploaded, each with Upload file and Not applicable buttons"><figcaption>Step 2: 3 of 5 ready.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">6</div><h3>Check the package and submit</h3><p>A summary shows every item and file. The office confirms the files are accurate and contain no patient records, then sends the package to Logical Coders.</p></div><figure><img src="walkthrough/06-submit.jpg" alt="Review and submit screen with a confirmation checkbox and a Submit to Logical Coders button"><figcaption>Step 3: submit with one click.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">7</div><h3>Track the review</h3><p>A timeline shows where the review stands, and an activity log records every step with a date. The office never has to call and ask "where are we?"</p></div><figure><img src="walkthrough/07-client-submitted.jpg" alt="Track progress screen showing status Submitted on a five-step timeline with an activity log"><figcaption>Step 4: status Submitted.</figcaption></figure></div>
+  </section>
+
+  <section class="part" id="auditor">
+    <div class="eb">Part 2 · For Logical Coders</div>
+    <h2>Review, test and deliver</h2>
+
+    <div class="step"><div><div class="n">8</div><h3>See every client in one list</h3><p>After signing in (with the same 6-digit check), the auditor sees all engagements. New submissions are flagged.</p></div><figure><img src="walkthrough/08-engagements.jpg" alt="Engagements list with Sunshine Dental Group marked New submission"><figcaption>Sunshine Dental Group: new submission.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">9</div><h3>Check each file and accept or return it</h3><p>The auditor confirms receipt, runs the seven acceptance checks on each file, and accepts it or returns it with a note. The office sees the note right away.</p></div><figure><img src="walkthrough/09-review.jpg" alt="Submission review with files accepted and one returned because it was from the wrong year"><figcaption>One file returned: it was from 2025.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">10</div><h3>Run the automated account review</h3><p>The staff list is compared with system accounts using fixed rules. It finds the same 7 exceptions every time, including a former employee who kept access for 19 days.</p></div><figure><img src="walkthrough/10-account-review.jpg" alt="Account lifecycle review showing 4 tests, 8 accounts, 5 roster entries and 7 exceptions"><figcaption>Rule-based, repeatable, no AI guessing.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">11</div><h3>Score the risks</h3><p>Each threat to patient data is scored by likelihood and impact, before and after the fix, on a 5×5 heat map.</p></div><figure><img src="walkthrough/11-risk-register.jpg" alt="Risk register with a five-by-five heat map showing R-01, R-03 and R-04 as Critical"><figcaption>Three Critical risks before treatment.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">12</div><h3>Publish findings, then close the engagement</h3><p>The governance report is built from the register and tracker. The auditor publishes findings to the practice, then delivers the final package and closes the engagement.</p></div><figure><img src="walkthrough/12-delivery.jpg" alt="Report and delivery screen with a Deliver final package and close engagement button above the governance report"><figcaption>Findings ready, final step next.</figcaption></figure></div>
+  </section>
+
+  <section class="part" id="done">
+    <div class="eb">Part 3 · The completed product</div>
+    <h2>What the practice has at the end</h2>
+
+    <div class="step"><div><div class="n">13</div><h3>Status: Complete</h3><p>The timeline is finished and the activity log tells the whole story, from submission to delivery.</p></div><figure><img src="walkthrough/13-client-complete.jpg" alt="Track progress screen showing status Complete and the full activity history"><figcaption>Every step dated and recorded.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">14</div><h3>A one-page report leaders can act on</h3><p>Overall posture, top risks before and after treatment, open findings, and the decisions the owner needs to make. Ready to print or save as PDF.</p></div><figure><img src="walkthrough/14-client-report.jpg" alt="HIPAA governance report with posture, top risks and key findings"><figcaption>Posture improved to Yellow; 3 of 5 findings closed.</figcaption></figure></div>
+
+    <div class="step"><div><div class="n">15</div><h3>A to-do list in plain language</h3><p>The practice sees only the fixes it owns, in plain words, with due dates. Ticking one off updates the tracker Logical Coders sees.</p></div><figure><img src="walkthrough/15-client-todo.jpg" alt="Practice to-do list with fixes checked off"><figcaption>Fixes tracked until they're done.</figcaption></figure></div>
+  </section>
+
+  <p class="note" style="margin-top:28px">Prototype. All data is fictional; nothing leaves the browser. In production, sign-in, file storage and messages would run on a secure, access-controlled service under a Business Associate Agreement.</p>
+  <div class="jump"><a class="btn primary" href="index.html">Try the live app</a><a class="btn" href="index.html?stage=client-start#/client/home">Start as the practice</a><a class="btn" href="index.html?stage=auditor-inbox#/auditor/engagements">Start as Logical Coders</a></div>
+</main>
+<footer>Logical Coders · Tampa, FL · logicalcoders@outlook.com · Fictional demo data</footer>
+</body>
+</html>
