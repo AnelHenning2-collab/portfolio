@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TransitionTrack</title>
+<meta name="description" content="TransitionTrack by Logical Coders: track a career or life transition the way a project manager tracks a launch. Data stays on your device.">
+<meta name="theme-color" content="#C24A28">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --coral:#F6845F; --coral-ink:#C24A28; --coral-tint:#FDEBE4; --navy:#112233; --ink:#1B2A3A; --teal:#177A73; --muted:#5A6B7D; --rule:#D7E0EA; --tint:#F4F6F9; --paper:#fff; --good:#2F7D4F; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: #EDEFF3; font-size: 15px; line-height: 1.5; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--coral-ink); outline-offset: 2px; }
+  h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; color: var(--navy); margin: 0 0 8px; line-height: 1.2; }
+  h1 { font-size: 26px; } h2 { font-size: 19px; } h3 { font-size: 16px; }
+  .app { max-width: 480px; min-height: 100vh; margin: 0 auto; background: var(--paper); display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(17,34,51,.08); }
+  .bar { position: sticky; top: 0; z-index: 2; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .bar .back { border: 0; background: none; font-size: 22px; line-height: 1; padding: 4px 8px; cursor: pointer; color: var(--coral-ink); min-width: 40px; min-height: 40px; }
+  .bar b { font-size: 16px; }
+  main { flex: 1; padding: 16px 16px 96px; display: flex; flex-direction: column; gap: 14px; }
+  nav.tabs { position: sticky; bottom: 0; background: var(--paper); border-top: 1px solid var(--rule); display: grid; grid-template-columns: repeat(5, 1fr); padding-bottom: env(safe-area-inset-bottom); }
+  nav.tabs a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 0 10px; font-size: 11.5px; color: var(--muted); text-decoration: none; min-height: 52px; }
+  nav.tabs a svg { width: 22px; height: 22px; }
+  nav.tabs a[aria-current="page"] { color: var(--coral-ink); font-weight: 700; }
+  .card { border: 1px solid var(--rule); border-radius: 14px; padding: 14px; background: var(--paper); }
+  .muted { color: var(--muted); } .small { font-size: 13px; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .tile { border: 1px solid var(--rule); border-radius: 16px; background: var(--coral-tint); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-decoration: none; color: var(--navy); font-weight: 600; font-size: 13px; }
+  .tile svg { width: 36px; height: 36px; color: var(--coral-ink); }
+  .rings { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ring { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; font-size: 13px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 8px 16px; border-radius: 12px; border: 1px solid var(--rule); background: var(--paper); font-weight: 600; cursor: pointer; text-decoration: none; color: var(--navy); }
+  .btn.primary { background: var(--coral-ink); border-color: var(--coral-ink); color: #fff; }
+  .btn.small { min-height: 34px; padding: 4px 10px; font-size: 13px; border-radius: 9px; }
+  .btn.danger { color: #8F1D2C; border-color: #E8C3C3; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+  label.f { display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: 13px; }
+  input[type=text], input[type=date], input[type=number], input[type=url], select, textarea { border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; background: var(--paper); font-weight: 400; width: 100%; }
+  textarea { min-height: 80px; resize: vertical; }
+  input[type=range] { accent-color: var(--coral-ink); width: 100%; }
+  .item { border: 1px solid var(--rule); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .item .top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+  .tag { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--tint); color: var(--ink); white-space: nowrap; }
+  .tag.c { background: var(--coral-tint); color: var(--coral-ink); }
+  .tag.g { background: #DCEFE3; color: var(--good); }
+  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
+  .seg button { border: 0; background: var(--paper); padding: 10px 6px; cursor: pointer; font-weight: 600; font-size: 13.5px; min-height: 42px; }
+  .seg button[aria-pressed="true"] { background: var(--coral-ink); color: #fff; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .menu a { display: flex; justify-content: space-between; align-items: center; padding: 14px 4px; border-bottom: 1px solid var(--rule); text-decoration: none; color: var(--ink); font-weight: 600; min-height: 48px; }
+  .menu a span { color: var(--muted); font-weight: 400; font-size: 13px; }
+  .flash { min-height: 200px; border-radius: 16px; background: var(--coral-tint); display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px; font-size: 18px; font-weight: 600; cursor: pointer; border: 1px solid var(--rule); }
+  .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; font-size: 12px; }
+  .week div { border: 1px solid var(--rule); border-radius: 8px; min-height: 64px; padding: 3px; min-width: 0; }
+  .week .d { font-weight: 700; color: var(--muted); font-size: 11px; white-space: nowrap; }
+  .week .today { border-color: var(--coral-ink); }
+  .dot { display: block; font-size: 11px; background: var(--coral-tint); color: var(--coral-ink); border-radius: 6px; padding: 1px 4px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .splash { min-height: 100vh; background: var(--coral-ink); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 32px 24px; text-align: center; }
+  .splash h1 { color: #fff; font-size: 40px; font-family: Inter, sans-serif; font-weight: 300; }
+  .splash .btn { width: 100%; max-width: 300px; border-radius: 999px; }
+  .splash .btn.ghost { background: transparent; color: #fff; border: 2px solid #fff; }
+  .splash .btn.white { background: #fff; color: var(--coral-ink); border-color: #fff; }
+  .splash a { color: #fff; font-size: 13px; }
+  .note { font-size: 12px; color: var(--muted); }
+  .empty { color: var(--muted); font-size: 14px; text-align: center; padding: 18px 8px; border: 1px dashed var(--rule); border-radius: 12px; }
+  .sr { position: absolute; left: -9999px; }
+  .demo { background: #FFF4D6; color: #6B4E00; font-size: 12px; padding: 6px 12px; text-align: center; }
+  details summary { cursor: pointer; font-weight: 700; color: var(--coral-ink); min-height: 40px; display: flex; align-items: center; }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+(function () {
+  'use strict';
+  var KEY = 'transitiontrack-v1';
+  var AREAS = { Skills: ['Drawing', 'Writing', 'Animation', 'Learning', 'Coding'], Life: ['Relationships', 'Dreams', 'Ambitions', 'Milestones', 'Progress'], Network: ['Recruiters', 'Headhunters', 'Friends', 'New business', 'Networking'] };
+  function today() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function addDays(iso, n) { var d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
+  var T = today();
+  function seed() {
+    return {
+      signedIn: false, name: 'Jordan',
+      goals: [
+        { id: 1, title: 'Pass the CISA exam', area: 'Skills · Learning', target: addDays(T, 120), milestones: [['Finish domain 1 notes', true], ['Finish domain 2 notes', false], ['Take a practice exam', false], ['Book the exam', false]], progress: 25 },
+        { id: 2, title: 'Save for car', area: 'Life · Dreams', target: addDays(T, 180), milestones: [], progress: 40 },
+        { id: 3, title: 'Talk to 10 IT audit professionals', area: 'Network · Networking', target: addDays(T, 60), milestones: [['5 conversations', true], ['10 conversations', false]], progress: 50 }
+      ],
+      log: [
+        { id: 1, date: T, name: 'CISA practice questions', minutes: 45, area: 'Skills · Learning', note: '' },
+        { id: 2, date: T, name: 'Coffee chat with an IT auditor', minutes: 30, area: 'Network · Networking', note: 'Ask about first-year work' },
+        { id: 3, date: addDays(T, -1), name: 'Spin class', minutes: 41, area: 'Life · Progress', note: '' },
+        { id: 4, date: addDays(T, -2), name: 'Python for audit: CSV compare', minutes: 60, area: 'Skills · Coding', note: '' }
+      ],
+      gap: { know: ['Retail store operations', 'Scheduling and payroll', 'Excel pivot tables'], unknown: ['ITGC testing', 'SOX walkthroughs', 'SQL joins', 'Writing audit findings'] },
+      tickets: [
+        { id: 1, title: 'IT Audit Associate · Tampa bank (fictional)', status: 'New', date: T, note: 'Posted this week' },
+        { id: 2, title: 'GRC Analyst · healthcare network (fictional)', status: 'Pending', date: addDays(T, -6), note: 'Applied; in review' },
+        { id: 3, title: 'Store manager role', status: 'Old', date: addDays(T, -200), note: 'Archived' }
+      ],
+      requests: [{ id: 1, to: 'Mentor', what: 'Review my resume for audit roles', status: 'Open' }],
+      discussions: [{ id: 1, who: 'Mentor', date: addDays(T, -3), note: 'Lead with process and controls experience from retail; get CISA domain 1 done first.' }],
+      journal: [{ id: 1, date: addDays(T, -1), mood: 'Hopeful', text: 'Practice scores went up. The coffee chat made the job feel real.' }],
+      cards: [{ id: 1, front: 'What does ITGC stand for?', back: 'IT general controls', score: 0 }, { id: 2, front: 'Three ITGC areas', back: 'Access to programs and data, program changes, computer operations', score: 0 }, { id: 3, front: 'What is a control deviation?', back: 'A case where the control did not operate as designed', score: 0 }],
+      teaching: [{ id: 1, concept: 'Segregation of duties', text: 'One person should not be able to both make and approve a change, like ringing up and refunding your own sale.', ready: true }],
+      research: [{ id: 1, title: 'ISACA CISA exam outline', url: 'https://www.isaca.org/credentialing/cisa', note: 'Five domains' }],
+      checkins: [], lastCheckin: ''
+    };
+  }
+  function load() { try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.goals) return s; } catch (e) {} return seed(); }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) {} }
+  var D = load();
+  function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function nid(list) { return list.reduce(function (m, x) { return Math.max(m, x.id || 0); }, 0) + 1; }
+  function fmt(iso) { if (!iso) return ''; var d = new Date(iso + 'T12:00:00'); return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); }
+  function goalPct(g) { return g.milestones && g.milestones.length ? Math.round(g.milestones.filter(function (m) { return m[1]; }).length / g.milestones.length * 100) : (g.progress || 0); }
+
+  // ---------- icons (line style from the Track Me mockups) ----------
+  var I = {
+    goals: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>',
+    time: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12M6 21h12M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9"/></svg>',
+    cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg>',
+    heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/><circle cx="12" cy="11" r="2.5"/></svg>',
+    errand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 8h10l-1 13H8L7 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+    msg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v11H9l-5 4V5z"/><path d="M8 9h8M8 12h5"/></svg>',
+    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>',
+    log: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+    learn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M7 10v5c3 2 7 2 10 0v-5"/></svg>',
+    more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>'
+  };
+  function ring(pct, label) {
+    var r = 34, c = 2 * Math.PI * r;
+    return '<div class="ring"><svg width="96" height="96" viewBox="0 0 96 96" role="img" aria-label="' + esc(label) + ' ' + pct + '%"><circle cx="48" cy="48" r="' + r + '" fill="none" stroke="#FDEBE4" stroke-width="10"/><circle cx="48" cy="48" r="' + r + '" fill="none" stroke="#C24A28" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + c + '" stroke-dashoffset="' + (c * (1 - pct / 100)) + '" transform="rotate(-90 48 48)"/><text x="48" y="54" text-anchor="middle" font-size="17" font-weight="700" fill="#112233">' + pct + '%</text></svg><span>' + esc(label) + '</span></div>';
+  }
+  function areaSelect(name, val) {
+    return '<select name="' + name + '">' + Object.keys(AREAS).map(function (g) { return '<optgroup label="' + g + '">' + AREAS[g].map(function (a) { var v = g + ' · ' + a; return '<option' + (v === val ? ' selected' : '') + '>' + v + '</option>'; }).join('') + '</optgroup>'; }).join('') + '</select>';
+  }
+  function weekStart(iso) { var d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() - d.getDay()); return d.toISOString().slice(0, 10); }
+  function needsCheckin() { return D.lastCheckin < weekStart(T); }
+
+  // ---------- generic list pages ----------
+  var LISTS = {
+    requests: { title: 'Requests', intro: 'Ask a mentor or contact for help, then mark it answered.', key: 'requests',
+      fields: [['to', 'Ask who', 'text'], ['what', 'What do you need?', 'area']],
+      add: function (v) { return { to: v.to, what: v.what, status: 'Open' }; },
+      view: function (x) { return '<div class="top"><b>' + esc(x.what) + '</b><span class="tag ' + (x.status === 'Answered' ? 'g' : 'c') + '">' + esc(x.status) + '</span></div><span class="small muted">To ' + esc(x.to) + '</span><div class="row"><button class="btn small" data-toggle="requests:' + x.id + '">' + (x.status === 'Answered' ? 'Reopen' : 'Mark answered') + '</button><button class="btn small danger" data-del="requests:' + x.id + '">Delete</button></div>'; } },
+    discussions: { title: 'Discussions', intro: 'Notes from conversations with a mentor or manager.', key: 'discussions',
+      fields: [['who', 'With', 'text'], ['date', 'Date', 'date'], ['note', 'What you discussed', 'area']],
+      add: function (v) { return { who: v.who, date: v.date || T, note: v.note }; },
+      view: function (x) { return '<div class="top"><b>' + esc(x.who) + '</b><span class="small muted">' + fmt(x.date) + '</span></div><span>' + esc(x.note) + '</span><div><button class="btn small danger" data-del="discussions:' + x.id + '">Delete</button></div>'; } },
+    journal: { title: 'Journaling', intro: 'Write to process a decision. Tag how you feel.', key: 'journal',
+      fields: [['mood', 'Mood', 'select', ['Hopeful', 'Focused', 'Tired', 'Stuck', 'Proud', 'Anxious']], ['text', 'Entry', 'area']],
+      add: function (v) { return { date: T, mood: v.mood, text: v.text }; },
+      view: function (x) { return '<div class="top"><span class="tag c">' + esc(x.mood) + '</span><span class="small muted">' + fmt(x.date) + '</span></div><span>' + esc(x.text) + '</span><div><button class="btn small danger" data-del="journal:' + x.id + '">Delete</button></div>'; } },
+    teaching: { title: 'Teaching', intro: 'Explain a concept in your own words. If you can teach it, you know it.', key: 'teaching',
+      fields: [['concept', 'Concept', 'text'], ['text', 'Your explanation', 'area']],
+      add: function (v) { return { concept: v.concept, text: v.text, ready: false }; },
+      view: function (x) { return '<div class="top"><b>' + esc(x.concept) + '</b>' + (x.ready ? '<span class="tag g">I can teach this</span>' : '') + '</div><span>' + esc(x.text) + '</span><div class="row"><button class="btn small" data-toggle="teaching:' + x.id + '">' + (x.ready ? 'Not yet' : 'I can teach this') + '</button><button class="btn small danger" data-del="teaching:' + x.id + '">Delete</button></div>'; } },
+    research: { title: 'Researching', intro: 'An archive of links and notes. Search it any time.', key: 'research', search: true,
+      fields: [['title', 'Title', 'text'], ['url', 'Link (optional)', 'url'], ['note', 'Note', 'area']],
+      add: function (v) { return { title: v.title, url: v.url, note: v.note }; },
+      view: function (x) { return '<b>' + esc(x.title) + '</b>' + (x.url && /^https?:\/\//.test(x.url) ? '<a class="small" href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.url) + '</a>' : '') + '<span class="small">' + esc(x.note) + '</span><div><button class="btn small danger" data-del="research:' + x.id + '">Delete</button></div>'; } }
+  };
+  function formFields(fields) {
+    return fields.map(function (f) {
+      if (f[2] === 'area') return '<label class="f">' + f[1] + '<textarea name="' + f[0] + '" required></textarea></label>';
+      if (f[2] === 'select') return '<label class="f">' + f[1] + '<select name="' + f[0] + '">' + f[3].map(function (o) { return '<option>' + o + '</option>'; }).join('') + '</select></label>';
+      return '<label class="f">' + f[1] + '<input type="' + f[2] + '" name="' + f[0] + '"' + (f[2] === 'text' ? ' required' : '') + (f[2] === 'date' ? ' value="' + T + '"' : '') + '></label>';
+    }).join('');
+  }
+  function listPage(name) {
+    var L = LISTS[name], q = (state.q || '').toLowerCase();
+    var items = D[L.key].slice().reverse().filter(function (x) { return !q || JSON.stringify(x).toLowerCase().indexOf(q) >= 0; });
+    return '<h1>' + L.title + '</h1><p class="muted small" style="margin:0">' + L.intro + '</p>' +
+      (L.search ? '<label class="sr" for="q">Search</label><input id="q" type="text" placeholder="Search" value="' + esc(state.q || '') + '">' : '') +
+      '<details class="card"><summary>Add new</summary><form class="stack" data-add="' + name + '" style="margin-top:8px">' + formFields(L.fields) + '<button class="btn primary" type="submit">Save</button></form></details>' +
+      '<div class="stack" id="list">' + (items.length ? items.map(function (x) { return '<div class="item">' + L.view(x) + '</div>'; }).join('') : '<div class="empty">Nothing here yet.</div>') + '</div>';
+  }
+
+  // ---------- pages ----------
+  var state = { q: '', ticketTab: 'New', quiz: { i: 0, flip: false } };
+  var P = {
+    home: function () {
+      var top = D.goals.slice(0, 2);
+      return '<div><p class="muted small" style="margin:0">' + new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }) + '</p><h1>Hi, ' + esc(D.name) + '</h1></div>' +
+        (needsCheckin() ? '<a class="card" href="#/checkin" style="text-decoration:none;color:inherit;border-color:var(--coral-ink)"><b>Weekly check-in</b><br><span class="small muted">Three quick questions: what moved, what is stuck, what is next.</span></a>' : '') +
+        '<div class="tiles">' + [['#/goals', I.goals, 'Goals'], ['#/log', I.time, 'Time'], ['#/calendar', I.cal, 'Calendar'], ['#/journal', I.heart, 'Wellbeing'], ['#/requests', I.errand, 'Errands'], ['#/discussions', I.msg, 'Messages']].map(function (t) { return '<a class="tile" href="' + t[0] + '">' + t[1] + t[2] + '</a>'; }).join('') + '</div>' +
+        '<div class="card"><h2>Top goals</h2><div class="rings">' + top.map(function (g) { return ring(goalPct(g), g.title); }).join('') + '</div></div>';
+    },
+    goals: function () {
+      return '<h1>Goals</h1><details class="card"><summary>New goal</summary><form class="stack" data-add-goal style="margin-top:8px"><label class="f">Goal<input type="text" name="title" required></label><label class="f">Life area' + areaSelect('area') + '</label><label class="f">Target date<input type="date" name="target" value="' + addDays(T, 90) + '"></label><label class="f">Milestones (one per line, optional)<textarea name="milestones"></textarea></label><button class="btn primary" type="submit">Save goal</button></form></details>' +
+        D.goals.map(function (g) { var p = goalPct(g);
+          return '<div class="item"><div class="top"><div><b>' + esc(g.title) + '</b><br><span class="tag">' + esc(g.area) + '</span> <span class="small muted">Target ' + fmt(g.target) + '</span></div>' + ring(p, '').replace('<span></span>', '') + '</div>' +
+            (g.milestones.length ? '<div class="stack" style="gap:4px">' + g.milestones.map(function (m, i) { return '<label class="row small" style="gap:8px"><input type="checkbox" data-ms="' + g.id + ':' + i + '"' + (m[1] ? ' checked' : '') + '> ' + esc(m[0]) + '</label>'; }).join('') + '</div>'
+              : '<label class="f small">Progress ' + p + '%<input type="range" min="0" max="100" step="5" value="' + p + '" data-prog="' + g.id + '" aria-label="Progress for ' + esc(g.title) + '"></label>') +
+            '<div><button class="btn small danger" data-del="goals:' + g.id + '">Delete</button></div></div>'; }).join('');
+    },
+    log: function () {
+      var month = T.slice(0, 7), todays = D.log.filter(function (x) { return x.date === T; });
+      var monthItems = D.log.filter(function (x) { return x.date.slice(0, 7) === month; });
+      var daysCount = Number(T.slice(8)), mins = monthItems.reduce(function (s, x) { return s + (+x.minutes || 0); }, 0);
+      var byArea = {}; monthItems.forEach(function (x) { var a = x.area.split(' · ')[0]; byArea[a] = (byArea[a] || 0) + (+x.minutes || 0); });
+      return '<h1>Activity log</h1><div class="seg" role="group" aria-label="Log steps"><button aria-pressed="true">Day</button><button aria-pressed="true">Activity</button><button aria-pressed="true">Summary</button></div>' +
+        '<form class="card stack" data-add-log><label class="f">Day<input type="date" name="date" value="' + T + '"></label><label class="f">Activity<input type="text" name="name" required placeholder="e.g. CISA practice questions"></label><div class="cols"><label class="f">Minutes<input type="number" name="minutes" min="1" max="1440" value="30"></label><label class="f">Area' + areaSelect('area') + '</label></div><label class="f">Note (optional)<input type="text" name="note"></label><button class="btn primary" type="submit">Log it</button></form>' +
+        '<div class="card"><h2>Today</h2>' + (todays.length ? todays.map(function (x) { return '<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)"><span>' + esc(x.name) + '<br><span class="small muted">' + esc(x.area) + '</span></span><b>' + x.minutes + ' min</b></div>'; }).join('') + '<p style="margin:8px 0 0"><b>Total ' + todays.reduce(function (s, x) { return s + (+x.minutes || 0); }, 0) + ' min</b></p>' : '<div class="empty">Nothing logged today.</div>') + '</div>' +
+        '<div class="card"><h2>This month</h2><p style="margin:0">' + mins + ' minutes · average ' + Math.round(mins / Math.max(1, daysCount)) + ' min a day</p><div class="stack" style="margin-top:8px">' + Object.keys(byArea).map(function (a) { return '<div class="small">' + a + ' · ' + byArea[a] + ' min</div>'; }).join('') + '</div></div>' +
+        '<div class="stack">' + D.log.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; }).slice(0, 12).map(function (x) { return '<div class="item"><div class="top"><b>' + esc(x.name) + '</b><span class="small muted">' + fmt(x.date) + ' · ' + x.minutes + ' min</span></div>' + (x.note ? '<span class="small">' + esc(x.note) + '</span>' : '') + '<div><button class="btn small danger" data-del="log:' + x.id + '">Delete</button></div></div>'; }).join('') + '</div>';
+    },
+    learn: function () {
+      return '<h1>Reflect & Learn</h1><div class="menu">' + [['discussions', 'Discussions', D.discussions.length + ' notes'], ['journal', 'Journaling', D.journal.length + ' entries'], ['notecards', 'Notecards', D.cards.length + ' cards'], ['teaching', 'Teaching', D.teaching.filter(function (x) { return x.ready; }).length + ' ready to teach'], ['research', 'Researching', D.research.length + ' saved']].map(function (m) { return '<a href="#/' + m[0] + '">' + m[1] + '<span>' + m[2] + ' ›</span></a>'; }).join('') + '</div>';
+    },
+    more: function () {
+      return '<h1>Track & Manage</h1><div class="menu">' + [['gap', 'Gap analysis', D.gap.unknown.length + ' to learn'], ['status', 'Status updates', D.tickets.filter(function (t) { return t.status !== 'Old'; }).length + ' active'], ['requests', 'Requests', D.requests.filter(function (r) { return r.status === 'Open'; }).length + ' open'], ['calendar', 'Calendar', 'Next 4 weeks'], ['checkin', 'Weekly check-in', needsCheckin() ? 'Due' : 'Done this week'], ['settings', 'Settings and privacy', 'Export · Delete']].map(function (m) { return '<a href="#/' + m[0] + '">' + m[1] + '<span>' + m[2] + ' ›</span></a>'; }).join('') + '</div>';
+    },
+    gap: function () {
+      function col(k, title, other) { return '<div class="card"><h3>' + title + '</h3><div class="stack" style="gap:6px">' + (D.gap[k].length ? D.gap[k].map(function (x, i) { return '<div class="item" style="padding:8px"><span class="small">' + esc(x) + '</span><div class="row"><button class="btn small" data-move="' + k + ':' + i + '" aria-label="Move ' + esc(x) + ' to ' + other + '">' + (k === 'unknown' ? 'I know this →' : '← Not yet') + '</button></div></div>'; }).join('') : '<div class="empty">Empty</div>') + '</div></div>'; }
+      return '<h1>Gap analysis</h1><p class="muted small" style="margin:0">What you know versus what you still need to learn for the new role.</p><form class="row" data-add-gap><label class="sr" for="gapNew">New item</label><input id="gapNew" type="text" name="item" placeholder="Add something to learn" required style="flex:1"><button class="btn primary" type="submit">Add</button></form><div class="cols">' + col('know', 'I know', "I don't know yet") + col('unknown', "I don't know yet", 'I know') + '</div>';
+    },
+    status: function () {
+      var q = (state.q || '').toLowerCase(), tab = state.ticketTab;
+      var list = D.tickets.filter(function (t) { return t.status === tab && (!q || t.title.toLowerCase().indexOf(q) >= 0); });
+      var names = { New: 'New jobs', Pending: 'Pending', Old: 'Old jobs' };
+      return '<h1>Status updates</h1><div class="seg" role="group" aria-label="Job status">' + ['New', 'Pending', 'Old'].map(function (s) { return '<button type="button" data-tab="' + s + '" aria-pressed="' + (tab === s) + '">' + names[s] + '</button>'; }).join('') + '</div>' +
+        '<label class="sr" for="q">Search a job</label><input id="q" type="text" placeholder="Search a job" value="' + esc(state.q || '') + '">' +
+        '<details class="card"><summary>Create a ticket</summary><form class="stack" data-add-ticket style="margin-top:8px"><label class="f">Job or task<input type="text" name="title" required></label><label class="f">Status<select name="status"><option>New</option><option>Pending</option><option>Old</option></select></label><label class="f">Note<input type="text" name="note"></label><button class="btn primary" type="submit">Create</button></form></details>' +
+        '<div class="stack" id="list">' + (list.length ? list.map(function (t) { return '<div class="item"><div class="top"><b>' + esc(t.title) + '</b><span class="small muted">' + fmt(t.date) + '</span></div><span class="small">' + esc(t.note) + '</span><div class="row">' + ['New', 'Pending', 'Old'].filter(function (s) { return s !== t.status; }).map(function (s) { return '<button class="btn small" data-tstatus="' + t.id + ':' + s + '">Move to ' + names[s] + '</button>'; }).join('') + '<button class="btn small danger" data-del="tickets:' + t.id + '">Delete</button></div></div>'; }).join('') : '<div class="empty">No ' + names[tab].toLowerCase() + '.</div>') + '</div>';
+    },
+    notecards: function () {
+      var cards = D.cards, qz = state.quiz;
+      if (!cards.length) return '<h1>Notecards</h1>' + addCardForm() + '<div class="empty">Add your first card.</div>';
+      var c = cards[qz.i % cards.length];
+      return '<h1>Notecards</h1><p class="muted small" style="margin:0">Card ' + (qz.i % cards.length + 1) + ' of ' + cards.length + ' · tap the card to flip</p>' +
+        '<div class="flash" role="button" tabindex="0" data-flip aria-live="polite">' + esc(qz.flip ? c.back : c.front) + '</div>' +
+        '<div class="cols"><button class="btn" type="button" data-grade="again">Again</button><button class="btn primary" type="button" data-grade="got">Got it</button></div><p class="small muted" style="margin:0">Score for this card: ' + c.score + '</p>' + addCardForm() +
+        '<div class="stack">' + cards.map(function (x) { return '<div class="item"><div class="top"><span class="small"><b>' + esc(x.front) + '</b><br>' + esc(x.back) + '</span><button class="btn small danger" data-del="cards:' + x.id + '">Delete</button></div></div>'; }).join('') + '</div>';
+    },
+    calendar: function () {
+      var start = weekStart(T), ev = [];
+      D.goals.forEach(function (g) { ev.push([g.target, 'Goal: ' + g.title]); });
+      D.tickets.filter(function (t) { return t.status !== 'Old'; }).forEach(function (t) { ev.push([t.date, t.title]); });
+      ev.push([addDays(start, 7), 'Weekly check-in']);
+      var weeks = '';
+      for (var w = 0; w < 4; w++) {
+        weeks += '<div class="week">';
+        for (var d = 0; d < 7; d++) { var day = addDays(start, w * 7 + d), es = ev.filter(function (e) { return e[0] === day; });
+          weeks += '<div class="' + (day === T ? 'today' : '') + '"><span class="d">' + fmt(day) + '</span>' + es.map(function (e) { return '<span class="dot" title="' + esc(e[1]) + '">' + esc(e[1]) + '</span>'; }).join('') + '</div>'; }
+        weeks += '</div>';
+      }
+      var upcoming = ev.filter(function (e) { return e[0] >= T; }).sort(function (a, b) { return a[0] < b[0] ? -1 : 1; }).slice(0, 6);
+      return '<h1>Calendar</h1><div class="stack" style="gap:6px">' + weeks + '</div><div class="card"><h2>Coming up</h2>' + upcoming.map(function (e) { return '<div class="row" style="justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)"><span>' + esc(e[1]) + '</span><b class="small">' + fmt(e[0]) + '</b></div>'; }).join('') + '</div>';
+    },
+    checkin: function () {
+      return '<h1>Weekly check-in</h1><p class="muted small" style="margin:0">Saved to your journal with the tag "Weekly check-in".</p><form class="stack" data-checkin><label class="f">What moved forward this week?<textarea name="moved" required></textarea></label><label class="f">What is stuck?<textarea name="stuck" required></textarea></label><label class="f">What is your next step?<textarea name="next" required></textarea></label><button class="btn primary" type="submit">Save check-in</button></form>' +
+        (D.checkins.length ? '<h2>Past check-ins</h2>' + D.checkins.slice().reverse().map(function (c) { return '<div class="item"><span class="small muted">' + fmt(c.date) + '</span><span class="small"><b>Moved:</b> ' + esc(c.moved) + '<br><b>Stuck:</b> ' + esc(c.stuck) + '<br><b>Next:</b> ' + esc(c.next) + '</span></div>'; }).join('') : '');
+    },
+    settings: function () {
+      return '<h1>Settings and privacy</h1><div class="card stack"><label class="f">Your first name<input type="text" id="nameInput" value="' + esc(D.name) + '"></label><button class="btn" type="button" data-act="name">Save name</button></div>' +
+        '<div class="card stack"><h2>Your data</h2><p class="small" style="margin:0">Everything stays in this browser on this device. Nothing is sent to a server, and there is no tracking or advertising.</p><button class="btn" type="button" data-act="export">Export my data (JSON)</button><button class="btn" type="button" data-act="demo">Restore the demo data</button><button class="btn danger" type="button" data-act="wipe">Delete all my data</button><p class="note" id="setMsg" aria-live="polite"></p></div>' +
+        '<div class="card small"><b>Install on your phone:</b> open this page in your phone browser, then use "Add to Home Screen". <br><br>TransitionTrack is a Logical Coders prototype. <a href="../../logical_coders_showcase.html">Back to the showcase</a> · logicalcoders@outlook.com</div>';
+    }
+  };
+  function addCardForm() { return '<details class="card"><summary>New card</summary><form class="stack" data-add-card style="margin-top:8px"><label class="f">Front<input type="text" name="front" required></label><label class="f">Back<input type="text" name="back" required></label><button class="btn primary" type="submit">Add card</button></form></details>'; }
+
+  function splash() {
+    return '<div class="splash"><svg width="96" height="96" viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><path d="M14 10h4M14 14h4M14 18h4M20 22h4M20 26h4M24 30h4"/><path d="M12 40h40M16 40v-6h32v6M22 34v-4h20v4M30 30v-5h8"/><circle cx="46" cy="25" r="4"/><path d="M14 46h36"/></svg><h1>Track Me</h1><p style="margin:0;max-width:300px">Track a career or life transition the way a project manager tracks a launch.</p>' +
+      '<button class="btn ghost" type="button" data-act="signin">SIGN-UP</button><button class="btn white" type="button" data-act="signin">LOGIN</button><a href="#/" data-act="signin">Reset password</a>' +
+      '<p class="small" style="opacity:.9;max-width:320px">Demo: no account is created and nothing is sent. Your data stays on this device. Sample user: Jordan.</p></div>';
+  }
+
+  var TITLES = { home: 'TransitionTrack', goals: 'Goals', log: 'Activity log', learn: 'Reflect & Learn', more: 'Track & Manage', gap: 'Gap analysis', status: 'Status updates', requests: 'Requests', discussions: 'Discussions', journal: 'Journaling', notecards: 'Notecards', teaching: 'Teaching', research: 'Researching', calendar: 'Calendar', checkin: 'Weekly check-in', settings: 'Settings' };
+  var PARENT = { gap: 'more', status: 'more', requests: 'more', calendar: 'more', checkin: 'more', settings: 'more', discussions: 'learn', journal: 'learn', notecards: 'learn', teaching: 'learn', research: 'learn' };
+  var TAB_OF = { home: 'home', goals: 'goals', log: 'log', learn: 'learn', more: 'more' };
+
+  function render() {
+    var app = document.getElementById('app');
+    if (!D.signedIn) { app.innerHTML = splash(); document.title = 'Track Me — TransitionTrack'; return; }
+    var r = location.hash.replace(/^#\/?/, '') || 'home';
+    if (!TITLES[r]) r = 'home';
+    var body = LISTS[r] ? listPage(r) : P[r]();
+    var tab = TAB_OF[r] || PARENT[r];
+    app.innerHTML = '<div class="demo">Prototype · data stays on this device · sample user Jordan</div><div class="bar">' + (PARENT[r] ? '<button class="back" type="button" data-back="' + PARENT[r] + '" aria-label="Back">‹</button>' : '') + '<b>' + TITLES[r] + '</b></div><main id="main" tabindex="-1">' + body + '</main>' +
+      '<nav class="tabs" aria-label="Main">' + [['home', I.home, 'Home'], ['goals', I.goals, 'Goals'], ['log', I.log, 'Log'], ['learn', I.learn, 'Learn'], ['more', I.more, 'More']].map(function (t) { return '<a href="#/' + t[0] + '"' + (tab === t[0] ? ' aria-current="page"' : '') + '>' + t[1] + t[2] + '</a>'; }).join('') + '</nav>';
+    document.title = TITLES[r] + ' — TransitionTrack';
+  }
+  function rerender(keepFocusId) { var y = window.scrollY; render(); window.scrollTo(0, y); if (keepFocusId) { var el = document.getElementById(keepFocusId); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } } }
+  function findIn(list, id) { return D[list].filter(function (x) { return x.id === id; })[0]; }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-act],[data-del],[data-toggle],[data-move],[data-tab],[data-tstatus],[data-grade],[data-flip],[data-back]'); if (!t) return;
+    var a = t.dataset;
+    if (a.back) { location.hash = '#/' + a.back; return; }
+    if (a.act === 'signin') { e.preventDefault(); D.signedIn = true; save(); location.hash = '#/home'; render(); return; }
+    if (a.act === 'name') { D.name = document.getElementById('nameInput').value.trim() || 'Friend'; save(); document.getElementById('setMsg').textContent = 'Saved.'; return; }
+    if (a.act === 'export') { var blob = new Blob([JSON.stringify(D, null, 2)], { type: 'application/json' }), u = URL.createObjectURL(blob), l = document.createElement('a'); l.href = u; l.download = 'transitiontrack-data.json'; document.body.appendChild(l); l.click(); l.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 1000); return; }
+    if (a.act === 'demo') { if (confirm('Replace your data with the demo data?')) { D = seed(); D.signedIn = true; save(); render(); } return; }
+    if (a.act === 'wipe') { if (confirm('Delete everything TransitionTrack has stored on this device?')) { try { localStorage.removeItem(KEY); } catch (err) {} D = seed(); D.signedIn = false; D.goals = []; D.log = []; D.gap = { know: [], unknown: [] }; D.tickets = []; D.requests = []; D.discussions = []; D.journal = []; D.cards = []; D.teaching = []; D.research = []; location.hash = ''; render(); } return; }
+    if (a.del) { var p = a.del.split(':'); D[p[0]] = D[p[0]].filter(function (x) { return String(x.id) !== p[1]; }); save(); rerender(); return; }
+    if (a.toggle) { var q = a.toggle.split(':'), it = findIn(q[0], +q[1]); if (q[0] === 'requests') it.status = it.status === 'Answered' ? 'Open' : 'Answered'; else it.ready = !it.ready; save(); rerender(); return; }
+    if (a.move) { var m = a.move.split(':'), from = m[0], to = from === 'know' ? 'unknown' : 'know', v = D.gap[from].splice(+m[1], 1)[0]; D.gap[to].push(v); save(); rerender(); return; }
+    if (a.tab) { state.ticketTab = a.tab; state.q = ''; rerender(); return; }
+    if (a.tstatus) { var s = a.tstatus.split(':'); findIn('tickets', +s[0]).status = s[1]; save(); rerender(); return; }
+    if (a.grade) { var c = D.cards[state.quiz.i % D.cards.length]; c.score += a.grade === 'got' ? 1 : -1; state.quiz.i++; state.quiz.flip = false; save(); rerender(); return; }
+    if (t.hasAttribute('data-flip')) { state.quiz.flip = !state.quiz.flip; rerender(); }
+  });
+  document.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.hasAttribute && e.target.hasAttribute('data-flip')) { e.preventDefault(); state.quiz.flip = !state.quiz.flip; rerender(); var f = document.querySelector('[data-flip]'); if (f) f.focus(); } });
+  document.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.dataset.ms) { var p = t.dataset.ms.split(':'), g = findIn('goals', +p[0]); g.milestones[+p[1]][1] = t.checked; save(); rerender(); }
+    if (t.dataset.prog) { findIn('goals', +t.dataset.prog).progress = +t.value; save(); rerender(); }
+  });
+  document.addEventListener('input', function (e) { if (e.target.id === 'q') { state.q = e.target.value; rerender('q'); } });
+  document.addEventListener('submit', function (e) {
+    var f = e.target, d = new FormData(f), v = {}; d.forEach(function (val, k) { v[k] = String(val).trim(); });
+    if (f.dataset.add) { e.preventDefault(); var L = LISTS[f.dataset.add], item = L.add(v); item.id = nid(D[L.key]); D[L.key].push(item); }
+    else if (f.hasAttribute('data-add-goal')) { e.preventDefault(); D.goals.unshift({ id: nid(D.goals), title: v.title, area: v.area, target: v.target, milestones: (v.milestones || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean).map(function (s) { return [s, false]; }), progress: 0 }); }
+    else if (f.hasAttribute('data-add-log')) { e.preventDefault(); D.log.push({ id: nid(D.log), date: v.date || T, name: v.name, minutes: Math.max(1, +v.minutes || 1), area: v.area, note: v.note }); }
+    else if (f.hasAttribute('data-add-gap')) { e.preventDefault(); D.gap.unknown.push(v.item); }
+    else if (f.hasAttribute('data-add-ticket')) { e.preventDefault(); D.tickets.push({ id: nid(D.tickets), title: v.title, status: v.status, date: T, note: v.note }); state.ticketTab = v.status; }
+    else if (f.hasAttribute('data-add-card')) { e.preventDefault(); D.cards.push({ id: nid(D.cards), front: v.front, back: v.back, score: 0 }); }
+    else if (f.hasAttribute('data-checkin')) { e.preventDefault(); D.checkins.push({ date: T, moved: v.moved, stuck: v.stuck, next: v.next }); D.journal.push({ id: nid(D.journal), date: T, mood: 'Weekly check-in', text: 'Moved: ' + v.moved + ' · Stuck: ' + v.stuck + ' · Next: ' + v.next }); D.lastCheckin = T; }
+    else return;
+    save(); rerender();
+  });
+  window.addEventListener('hashchange', function () { render(); window.scrollTo(0, 0); var m = document.getElementById('main'); if (m) m.focus({ preventScroll: true }); });
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(function () {});
+  render();
+})();
+</script>
+</body>
+</html>

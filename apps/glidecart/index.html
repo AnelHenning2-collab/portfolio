@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GlideCart — Concept Prototype</title>
+<meta name="description" content="GlideCart concept prototype by Logical Coders: watch a smart cart plan the shortest route through a store, see how it blocks tampered price files, and try the cart screen. Fictional store and data.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gnavy:#0F2D52; --cyan:#00B7C3; --cyan-ink:#007C85; --ice:#E6F7F9;
+    --navy:#112233; --ink:#1B2A3A; --muted:#5A6B7D; --rule:#D7E0EA; --tint:#EEF2F7; --page:#F7FAFC; --paper:#fff;
+    --good:#2F7D4F; --crit:#8F1D2C; --orange:#E0703A;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: var(--page); font-size: 15px; line-height: 1.55; }
+  a { color: var(--cyan-ink); }
+  button, input, select { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--cyan-ink); outline-offset: 2px; }
+  h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; color: var(--gnavy); line-height: 1.15; margin: 0 0 10px; }
+  .concept { background: var(--gnavy); color: #CDEFF2; font-size: 12.5px; text-align: center; padding: 6px 16px; }
+  header.top { background: var(--paper); border-bottom: 1px solid var(--rule); }
+  header .in { max-width: 1160px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--gnavy); font-weight: 700; font-size: 18px; margin-right: auto; }
+  .logo svg { width: 34px; height: 34px; }
+  header nav a { text-decoration: none; color: var(--ink); font-weight: 500; padding: 6px 4px; border-bottom: 2px solid transparent; }
+  header nav { display: flex; gap: 16px; flex-wrap: wrap; }
+  header nav a[aria-current="page"] { border-color: var(--cyan); color: var(--gnavy); font-weight: 700; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 32px 24px 48px; }
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: center; padding: 24px 0 16px; }
+  .hero h1 { font-size: 44px; }
+  .lead { font-size: 18px; color: var(--muted); max-width: 560px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: 10px; border: 1px solid var(--rule); background: var(--paper); font-weight: 600; text-decoration: none; color: var(--gnavy); cursor: pointer; }
+  .btn:hover { border-color: var(--cyan); }
+  .btn.primary { background: var(--gnavy); color: #fff; border-color: var(--gnavy); }
+  .btn.primary:hover { background: #17406f; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .card { background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; padding: 22px; }
+  .grid3 { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .eb { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--cyan-ink); margin-bottom: 6px; }
+  .note { font-size: 13px; color: var(--muted); }
+  .maps { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .map svg { width: 100%; height: auto; display: block; background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; }
+  .map h3 { font-size: 17px; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .map .m { font-family: Inter, sans-serif; font-size: 14px; color: var(--muted); font-weight: 600; }
+  .items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--rule); background: var(--paper); border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 13.5px; min-height: 36px; }
+  .chip[aria-pressed="true"] { background: var(--ice); border-color: var(--cyan); color: var(--gnavy); font-weight: 600; }
+  .compare { display: grid; gap: 10px; }
+  .cbar { display: grid; grid-template-columns: 180px 1fr 90px; gap: 10px; align-items: center; font-size: 13.5px; }
+  .cbar .t { height: 14px; border-radius: 999px; background: var(--tint); overflow: hidden; }
+  .cbar .t i { display: block; height: 100%; border-radius: 999px; }
+  .steps { margin: 0; padding-left: 20px; columns: 2; font-size: 13.5px; }
+  .sec-demo pre { background: var(--navy); color: #E6F7F9; border-radius: 10px; padding: 14px; font-size: 12.5px; overflow-x: auto; margin: 10px 0; }
+  .verdict { font-weight: 800; letter-spacing: .06em; padding: 10px 14px; border-radius: 10px; border: 2px solid; display: inline-block; }
+  .verdict.ok { color: var(--good); border-color: var(--good); }
+  .verdict.bad { color: var(--crit); border-color: var(--crit); }
+  label.f { display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: 13px; }
+  input[type=text], input[type=email], select, textarea { border: 1px solid var(--rule); border-radius: 8px; padding: 9px 12px; font-weight: 400; background: var(--paper); }
+  input[type=range] { accent-color: var(--cyan-ink); }
+  /* cart tablet */
+  .tablet { max-width: 900px; margin: 0 auto; background: #0b1726; border-radius: 34px; padding: 22px; box-shadow: 0 12px 40px rgba(15,45,82,.25); }
+  .screen { background: var(--paper); border-radius: 16px; aspect-ratio: 16 / 10; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .sbar { display: flex; align-items: center; gap: 14px; padding: 10px 18px; background: var(--gnavy); color: #fff; font-size: 14px; }
+  .sbar .sp { margin-left: auto; }
+  .sens { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #8aa3bd; }
+  .sens i { width: 10px; height: 10px; border-radius: 999px; background: #3b5470; }
+  .sens.on { color: #fff; } .sens.on i { background: #FFB400; box-shadow: 0 0 8px #FFB400; }
+  .stopbtn { background: #C62828; color: #fff; border: 0; border-radius: 10px; font-weight: 800; padding: 8px 16px; min-height: 40px; cursor: pointer; letter-spacing: .06em; }
+  .body { flex: 1; padding: 22px 26px; display: flex; flex-direction: column; gap: 14px; overflow: auto; }
+  .body h2 { font-size: 26px; }
+  .big { min-height: 56px; font-size: 17px; padding: 12px 22px; }
+  .choice { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .choice button { text-align: left; border: 2px solid var(--rule); border-radius: 14px; background: var(--paper); padding: 18px; cursor: pointer; min-height: 120px; }
+  .choice button:hover, .choice button:focus-visible { border-color: var(--cyan); }
+  .choice b { display: block; font-size: 19px; color: var(--gnavy); margin-bottom: 6px; }
+  .routeview { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; flex: 1; min-height: 0; }
+  .routeview svg { width: 100%; height: 100%; max-height: 100%; }
+  .next { font-size: 22px; font-weight: 700; color: var(--gnavy); }
+  .prog { height: 12px; border-radius: 999px; background: var(--tint); overflow: hidden; }
+  .prog i { display: block; height: 100%; background: var(--cyan); }
+  .found { text-align: center; justify-content: center; align-items: center; }
+  .check { width: 96px; height: 96px; border-radius: 999px; background: var(--ice); display: flex; align-items: center; justify-content: center; font-size: 54px; color: var(--good); }
+  .overlay { position: absolute; inset: 0; background: rgba(198,40,40,.94); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 20px; }
+  .overlay h2 { color: #fff; font-size: 32px; }
+  footer { border-top: 1px solid var(--rule); background: var(--paper); }
+  footer .in { max-width: 1160px; margin: 0 auto; padding: 18px 24px; font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .sr { position: absolute; left: -9999px; }
+  @media (max-width: 820px) {
+    header .in, .wrap { padding-left: 16px; padding-right: 16px; }
+    .hero, .maps, .routeview, .choice { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 34px; }
+    .cbar { grid-template-columns: 1fr; gap: 4px; }
+    .steps { columns: 1; }
+    .tablet { padding: 10px; border-radius: 18px; }
+    .screen { aspect-ratio: auto; min-height: 560px; }
+    footer .in { padding: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="concept">Concept prototype by Logical Coders. Not a commercial product. Fictional store, products and prices.</div>
+<header class="top"><div class="in">
+  <a class="logo" href="#/"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 8h5l4 18h18l4-12H11" fill="none" stroke="#0F2D52" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="15" cy="32" r="3" fill="#00B7C3"/><circle cx="29" cy="32" r="3" fill="#00B7C3"/><path d="M20 15h8M22 19h6" stroke="#00B7C3" stroke-width="2.4" stroke-linecap="round"/></svg>GlideCart</a>
+  <nav aria-label="Main"><a href="#/">Home</a><a href="#/how-it-works">How it works</a><a href="#/security">Security</a><a href="#/for-stores">For stores</a><a href="#/cart">Cart screen</a></nav>
+</div></header>
+<main id="main" class="wrap" tabindex="-1"></main>
+<footer><div class="in"><span>Logical Coders · Tampa, FL · logicalcoders@outlook.com · Fictional demo data</span><a href="../../logical_coders_showcase.html">Back to the Logical Coders showcase</a></div></footer>
+
+<script>
+(function () {
+  'use strict';
+  // ---------- store model (grid of 1.5 m cells) ----------
+  var W = 23, H = 14, CELL_M = 1.5, WALK_MPS = 1.2;
+  var blocked = {};
+  function block(x, y) { blocked[x + ',' + y] = true; }
+  for (var x = 0; x < W; x++) { block(x, 0); }
+  for (var y = 0; y < H; y++) { block(0, y); block(W - 1, y); }
+  for (y = 3; y <= 10; y++) { block(1, y); for (x = 4; x <= 18; x += 2) block(x, y); block(21, y); }
+  [13, 15, 17, 19].forEach(function (cx) { block(cx, 12); });
+  var ENTRANCE = [2, 13], CHECKOUT = [16, 13];
+  var ITEMS = [
+    ['Bananas', 'Produce', 2, 4], ['Apples', 'Produce', 2, 6], ['Lettuce', 'Produce', 2, 9],
+    ['Cereal', 'Aisle 1', 3, 5], ['Pasta', 'Aisle 2', 5, 7], ['Canned soup', 'Aisle 3', 7, 4], ['Coffee', 'Aisle 4', 9, 8],
+    ['Chips', 'Aisle 5', 11, 6], ['Flour', 'Aisle 6', 13, 9], ['Dish soap', 'Aisle 7', 15, 5], ['Paper towels', 'Aisle 8', 17, 7],
+    ['Milk', 'Dairy wall', 6, 1], ['Eggs', 'Dairy wall', 10, 1], ['Yogurt', 'Dairy wall', 16, 1],
+    ['Bagels', 'Bakery', 20, 4], ['Sliced turkey', 'Deli', 20, 9]
+  ].map(function (a, i) { return { id: i, name: a[0], dept: a[1], x: a[2], y: a[3], price: [0.69, 2.49, 1.99, 3.79, 1.49, 1.29, 7.99, 3.49, 2.99, 2.79, 5.99, 3.29, 2.99, 1.19, 4.49, 6.99][i] }; });
+  var DEFAULT_LIST = [0, 4, 6, 11, 12, 15];
+
+  function key(p) { return p[0] + ',' + p[1]; }
+  function bfs(a, b) {
+    var q = [a], prev = {}, seen = {}; seen[key(a)] = true;
+    while (q.length) {
+      var c = q.shift();
+      if (c[0] === b[0] && c[1] === b[1]) break;
+      [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (d) {
+        var n = [c[0] + d[0], c[1] + d[1]], k = key(n);
+        if (n[0] < 0 || n[1] < 0 || n[0] >= W || n[1] >= H || seen[k] || blocked[k]) return;
+        seen[k] = true; prev[k] = c; q.push(n);
+      });
+    }
+    var path = [b], cur = b;
+    while (key(cur) !== key(a)) { cur = prev[key(cur)]; if (!cur) return [a, b]; path.unshift(cur); }
+    return path;
+  }
+  var distCache = {};
+  function dist(a, b) { var k = key(a) + '|' + key(b); if (!(k in distCache)) distCache[k] = bfs(a, b).length - 1; return distCache[k]; }
+  function join(points) { var out = [points[0]]; for (var i = 1; i < points.length; i++) out = out.concat(bfs(points[i - 1], points[i]).slice(1)); return out; }
+
+  // Aisle-by-aisle path: walk the produce lane, every aisle in a snake, the bakery/deli lane, then checkout.
+  function normalPath() {
+    var pts = [ENTRANCE, [2, 11], [2, 2], [3, 2], [3, 11]];
+    var down = false;
+    for (var ax = 5; ax <= 17; ax += 2) { pts.push(down ? [ax, 2] : [ax, 11]); pts.push(down ? [ax, 11] : [ax, 2]); down = !down; }
+    pts.push([19, 2], [16, 1], [6, 1], [19, 2], [20, 3], [20, 11], CHECKOUT);
+    return join(pts);
+  }
+  // GlideCart route: nearest-neighbour order over the list, improved by 2-opt, joined with grid shortest paths.
+  function smartOrder(ids) {
+    var left = ids.slice(), order = [], cur = ENTRANCE;
+    while (left.length) {
+      left.sort(function (a, b) { return dist(cur, [ITEMS[a].x, ITEMS[a].y]) - dist(cur, [ITEMS[b].x, ITEMS[b].y]); });
+      var n = left.shift(); order.push(n); cur = [ITEMS[n].x, ITEMS[n].y];
+    }
+    function total(o) { var p = [ENTRANCE].concat(o.map(function (i) { return [ITEMS[i].x, ITEMS[i].y]; }), [CHECKOUT]); var s = 0; for (var i = 1; i < p.length; i++) s += dist(p[i - 1], p[i]); return s; }
+    var improved = true;
+    while (improved) {
+      improved = false;
+      for (var i = 0; i < order.length - 1; i++) for (var j = i + 1; j < order.length; j++) {
+        var c = order.slice(0, i).concat(order.slice(i, j + 1).reverse(), order.slice(j + 1));
+        if (total(c) < total(order)) { order = c; improved = true; }
+      }
+    }
+    return order;
+  }
+  function smartPath(order) { return join([ENTRANCE].concat(order.map(function (i) { return [ITEMS[i].x, ITEMS[i].y]; }), [CHECKOUT])); }
+  function meters(path) { return Math.round((path.length - 1) * CELL_M); }
+  function minutes(m) { return (m / WALK_MPS / 60); }
+
+  // ---------- map drawing ----------
+  var S = 26;
+  function mapSVG(id, path, list, opts) {
+    opts = opts || {};
+    var g = '';
+    for (var yy = 0; yy < H; yy++) for (var xx = 0; xx < W; xx++) if (blocked[xx + ',' + yy] && !(yy === 0 || xx === 0 || xx === W - 1)) g += '<rect x="' + xx * S + '" y="' + yy * S + '" width="' + S + '" height="' + S + '" fill="#D7E0EA"/>';
+    g += '<rect x="' + S + '" y="0" width="' + (W - 2) * S + '" height="' + S + '" fill="#C9E9EE"/>';
+    var labels = '<text x="' + 11.5 * S + '" y="' + 0.68 * S + '" text-anchor="middle" font-size="11" fill="#0F2D52">Dairy wall</text>' +
+      '<text transform="translate(' + 1.65 * S + ',' + 6.5 * S + ') rotate(-90)" text-anchor="middle" font-size="11" fill="#0F2D52">Produce</text>' +
+      '<text transform="translate(' + 21.65 * S + ',' + 4.5 * S + ') rotate(-90)" text-anchor="middle" font-size="11" fill="#0F2D52">Bakery</text>' +
+      '<text transform="translate(' + 21.65 * S + ',' + 8.8 * S + ') rotate(-90)" text-anchor="middle" font-size="11" fill="#0F2D52">Deli</text>' +
+      '<text x="' + 16 * S + '" y="' + 11.7 * S + '" text-anchor="middle" font-size="11" fill="#5A6B7D">Checkout</text>' +
+      '<text x="' + 2.5 * S + '" y="' + 13.8 * S + '" text-anchor="middle" font-size="11" fill="#5A6B7D">Entrance</text>';
+    for (var a = 1; a <= 8; a++) labels += '<text x="' + (1 + 2 * a + 0.5) * S + '" y="' + 2.75 * S + '" text-anchor="middle" font-size="10" fill="#5A6B7D">' + a + '</text>';
+    var pts = path.map(function (p) { return ((p[0] + 0.5) * S) + ',' + ((p[1] + 0.5) * S); }).join(' ');
+    var dots = list.map(function (i) { var it = ITEMS[i]; return '<circle cx="' + (it.x + 0.5) * S + '" cy="' + (it.y + 0.5) * S + '" r="7" fill="#fff" stroke="' + (opts.color || '#00B7C3') + '" stroke-width="3"><title>' + it.name + '</title></circle>'; }).join('');
+    var len = path.length - 1;
+    return '<svg id="' + id + '" viewBox="0 0 ' + W * S + ' ' + H * S + '" role="img" aria-label="' + (opts.label || 'Store map') + '">' + g + labels +
+      '<polyline points="' + pts + '" fill="none" stroke="' + (opts.color || '#00B7C3') + '" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" opacity="0.35"/>' +
+      '<polyline class="trail" points="' + pts + '" fill="none" stroke="' + (opts.color || '#00B7C3') + '" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="' + (len * S) + '" stroke-dashoffset="' + (opts.full ? 0 : len * S) + '"/>' +
+      dots + '<circle class="cartdot" cx="' + (path[opts.full ? len : 0][0] + 0.5) * S + '" cy="' + (path[opts.full ? len : 0][1] + 0.5) * S + '" r="9" fill="#0F2D52" stroke="#fff" stroke-width="3"/></svg>';
+  }
+
+  // ---------- state ----------
+  var state = { list: DEFAULT_LIST.slice(), speed: 3, anim: null, cart: { screen: 'welcome', mode: null, list: DEFAULT_LIST.slice(), found: 0, order: null, mic: false, cam: false, stopped: false, startedAt: 0 } };
+
+  // ---------- pages ----------
+  function home() {
+    return '<section class="hero"><div><div class="eb">Concept prototype</div><h1>Shopping Made Effortless.</h1><p class="lead">A cart that knows the shortest way through the store and keeps your data to itself.</p><div class="row" style="margin-top:22px"><a class="btn primary" href="#/how-it-works">Watch it run in a store</a><a class="btn" href="#/cart">Try the cart screen</a></div></div>' +
+      '<div class="map">' + mapSVG('heroMap', smartPath(smartOrder(DEFAULT_LIST)), DEFAULT_LIST, { full: true, label: 'GlideCart route through a fictional store' }) + '</div></section>' +
+      '<section class="grid3" style="margin-top:28px">' +
+      card('Shortest route', 'The cart orders your list by where items sit, then plans the shortest walk on the store map. Ordinary route planning, not quantum computing.') +
+      card('Private by design', 'A light shows whenever the camera or microphone is on. No images of people are stored. Voice commands stay on the cart.') +
+      card('Trusted prices', 'Supplier price files must carry a valid signature. A tampered file is blocked before it reaches a single cart.') + '</section>';
+  }
+  function card(t, d) { return '<div class="card"><h3>' + t + '</h3><p style="margin:0">' + d + '</p></div>'; }
+
+  function how() {
+    return '<div class="eb">How it works</div><h1>Watch the cart run through Bayside Fresh Market</h1><p class="lead">Pick items, then press Run. Both carts start at the entrance and end at checkout.</p>' +
+      '<div class="card" style="margin:18px 0"><h3>Shopping list <span class="note" id="cnt"></span></h3><div class="items" id="chips">' +
+      ITEMS.map(function (it) { return '<button type="button" class="chip" data-item="' + it.id + '" aria-pressed="' + (state.list.indexOf(it.id) >= 0) + '">' + it.name + ' <span class="note">· ' + it.dept + '</span></button>'; }).join('') +
+      '</div><div class="row" style="margin-top:14px"><button class="btn primary" type="button" data-action="run">Run</button><button class="btn" type="button" data-action="reset">Reset</button><label class="row note" style="gap:8px">Speed <input type="range" min="1" max="6" value="' + state.speed + '" id="speed" aria-label="Animation speed"></label></div><p class="note" id="listmsg" aria-live="polite"></p></div>' +
+      '<div class="maps"><div class="map"><h3>Aisle-by-aisle path <span class="m" id="mA"></span></h3><div id="boxA"></div></div><div class="map"><h3>GlideCart route <span class="m" id="mB"></span></h3><div id="boxB"></div></div></div>' +
+      '<div class="card" style="margin-top:18px"><h3>Distance walked</h3><div class="compare" id="compare"></div><p class="note" id="saved" style="margin-top:10px"></p></div>' +
+      '<div class="card" style="margin-top:18px"><h3>GlideCart stops, in order</h3><ol class="steps" id="stops"></ol><p class="note">Method: nearest-neighbour ordering improved with 2-opt swaps, joined by shortest paths on a 1.5 m grid. Walking speed 1.2 m/s. Estimates for a fictional store layout.</p></div>';
+  }
+  function drawHow(animate) {
+    var list = state.list.slice().sort(function (a, b) { return a - b; });
+    document.getElementById('cnt').textContent = '(' + list.length + ' items)';
+    var msg = document.getElementById('listmsg');
+    if (list.length < 2) { msg.textContent = 'Pick at least two items.'; return; }
+    msg.textContent = '';
+    var nPath = normalPath(), order = smartOrder(list), sPath = smartPath(order);
+    var mA = meters(nPath), mB = meters(sPath);
+    document.getElementById('boxA').innerHTML = mapSVG('mapA', nPath, list, { color: '#E0703A', full: !animate, label: 'Aisle-by-aisle path' });
+    document.getElementById('boxB').innerHTML = mapSVG('mapB', sPath, order, { color: '#00B7C3', full: !animate, label: 'GlideCart shortest route' });
+    document.getElementById('mA').textContent = mA + ' m';
+    document.getElementById('mB').textContent = mB + ' m';
+    var max = Math.max(mA, mB);
+    document.getElementById('compare').innerHTML =
+      '<div class="cbar"><span>Aisle-by-aisle</span><span class="t"><i style="width:' + (mA / max * 100) + '%;background:#E0703A"></i></span><b>' + mA + ' m</b></div>' +
+      '<div class="cbar"><span>GlideCart route</span><span class="t"><i style="width:' + (mB / max * 100) + '%;background:#00B7C3"></i></span><b>' + mB + ' m</b></div>';
+    var savedM = mA - mB;
+    document.getElementById('saved').textContent = savedM > 0 ? 'GlideCart walks ' + savedM + ' m less (' + Math.round(savedM / mA * 100) + '% shorter), about ' + minutes(savedM).toFixed(1) + ' minutes of walking saved.' : 'For this list the two paths are about the same length.';
+    document.getElementById('stops').innerHTML = order.map(function (i) { return '<li>' + ITEMS[i].name + ' <span class="note">· ' + ITEMS[i].dept + '</span></li>'; }).join('') + '<li>Checkout</li>';
+    if (animate) runAnim([['mapA', nPath], ['mapB', sPath]]);
+  }
+  function runAnim(maps) {
+    if (state.anim) cancelAnimationFrame(state.anim);
+    var t0 = null, longest = Math.max.apply(null, maps.map(function (m) { return m[1].length; }));
+    function frame(ts) {
+      if (t0 === null) t0 = ts;
+      var step = (ts - t0) / 1000 * state.speed * 4, done = true;
+      maps.forEach(function (m) {
+        var svg = document.getElementById(m[0]); if (!svg) return;
+        var path = m[1], len = path.length - 1, k = Math.min(step, len);
+        if (k < len) done = false;
+        var i = Math.floor(k), f = k - i, a = path[i], b = path[Math.min(i + 1, len)];
+        var dot = svg.querySelector('.cartdot');
+        dot.setAttribute('cx', ((a[0] + (b[0] - a[0]) * f) + 0.5) * S);
+        dot.setAttribute('cy', ((a[1] + (b[1] - a[1]) * f) + 0.5) * S);
+        svg.querySelector('.trail').setAttribute('stroke-dashoffset', (len - k) * S);
+      });
+      if (!done && longest) state.anim = requestAnimationFrame(frame);
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { drawHow(false); return; }
+    state.anim = requestAnimationFrame(frame);
+  }
+
+  // Signed price file demo: the supplier publishes a SHA-256 digest of the file it sent; the cart system recomputes it.
+  var PRICE_FILE = 'supplier=Gulf Coast Produce Co (fictional)\ndate=2026-10-28\nsku,item,price\n4011,Bananas,0.69\n4131,Apples,2.49\n4640,Lettuce,1.99';
+  async function sha256(text) {
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+  }
+  function security() {
+    return '<div class="eb">Security</div><h1>Built to be trusted before it is built</h1><p class="lead">Three protections from the Logical Coders audit of the GlideCart concept.</p>' +
+      '<div class="grid3" style="margin-top:18px">' +
+      '<div class="card sec-demo"><h3>Signed price files</h3><p>Every supplier price file must match the digest the supplier signed. If one character changes, the file is blocked.</p><label class="row" style="gap:8px;font-weight:600"><input type="checkbox" id="tamper"> Send tampered file</label><pre id="pf"></pre><div id="verdict" aria-live="polite"></div><p class="note" id="digests"></p></div>' +
+      '<div class="card"><h3>Private sensors</h3><ul><li>A light turns on whenever the camera or microphone is in use.</li><li>The camera looks at products, not people; no images of people are stored.</li><li>Voice commands are processed on the cart, not sent to the cloud.</li><li>Trip data can be deleted from the checkout screen.</li></ul></div>' +
+      '<div class="card"><h3>Post-quantum encryption</h3><p>Payment and sync traffic use NIST\'s post-quantum key exchange, ML-KEM. In the Logical Coders tests it added about 262 microseconds per connection.</p><p class="note">The 2025 concept proposed quantum key distribution; the 2026 audit replaced it with this standard because it runs on ordinary hardware.</p></div></div>';
+  }
+  async function drawSecurity() {
+    var tampered = document.getElementById('tamper').checked;
+    var sent = tampered ? PRICE_FILE.replace('4131,Apples,2.49', '4131,Apples,0.49') : PRICE_FILE;
+    document.getElementById('pf').textContent = sent;
+    var v = document.getElementById('verdict'), dg = document.getElementById('digests');
+    if (!(window.crypto && crypto.subtle)) { v.innerHTML = '<span class="note">This browser cannot run the check here.</span>'; return; }
+    var signed = await sha256(PRICE_FILE), got = await sha256(sent);
+    var ok = signed === got;
+    v.innerHTML = ok ? '<span class="verdict ok">VERIFIED · file accepted</span>' : '<span class="verdict bad">BLOCKED · signature does not match</span>';
+    dg.textContent = 'Signed digest ' + signed.slice(0, 16) + '… · received ' + got.slice(0, 16) + '…';
+  }
+
+  function stores() {
+    return '<div class="eb">For stores</div><h1>A one-store pilot in four weeks</h1><p class="lead">What a pilot with a Tampa Bay grocer would look like.</p>' +
+      '<div class="grid3" style="margin-top:18px">' + card('1. Map the store', 'Walk the floor once to build the aisle grid and tag where each department sits.') + card('2. Load the price file', 'Connect the supplier price feed with signature checks switched on from day one.') + card('3. Four-week trial', 'A small number of carts on the floor with shoppers and order pickers who opt in.') + card('4. Measure', 'Walking distance and pick time against the store\'s normal path, plus shopper feedback on trust and privacy.') + '</div>' +
+      '<div class="card" style="margin-top:22px;max-width:640px"><h3>Interested in a pilot?</h3><form id="pilot" class="row" style="align-items:flex-end"><label class="f" style="flex:1 1 220px">Store or company<input type="text" name="store" required></label><label class="f" style="flex:1 1 220px">Work email<input type="email" name="email" required></label><button class="btn primary" type="submit">Send</button></form><p class="note">Demo only: nothing you type here is saved or sent.</p><p id="thanks" aria-live="polite"></p></div>';
+  }
+
+  // ---------- cart screen ----------
+  function cartPage() {
+    return '<div class="eb">Cart screen</div><h1>The screen on the cart handle</h1><p class="lead">Click through it as a shopper. Everything here is simulated.</p><div class="tablet" style="margin-top:18px"><div class="screen" id="screen"></div></div>';
+  }
+  function drawCart() {
+    var c = state.cart, el = document.getElementById('screen'); if (!el) return;
+    var sbar = '<div class="sbar"><b>GlideCart</b><span class="sens' + (c.cam ? ' on' : '') + '"><i></i>Camera ' + (c.cam ? 'on' : 'off') + '</span><span class="sens' + (c.mic ? ' on' : '') + '"><i></i>Mic ' + (c.mic ? 'on' : 'off') + '</span><span class="sp"></span><button class="stopbtn" type="button" data-cart="stop">STOP</button></div>';
+    var body = '';
+    if (c.screen === 'welcome') {
+      body = '<h2>Welcome! How should GlideCart help?</h2><div class="choice"><button type="button" data-cart="mode-follow"><b>Follow mode</b>The cart rolls behind you while you shop.</button><button type="button" data-cart="mode-list"><b>List mode</b>The cart guides you to each item on the shortest route.</button></div><p class="note">Camera and microphone are off until you start.</p>';
+    } else if (c.screen === 'list') {
+      body = '<h2>Your list <span class="note">(' + c.list.length + ' items)</span></h2><div class="items">' + ITEMS.map(function (it) { return '<button type="button" class="chip" data-cart-item="' + it.id + '" aria-pressed="' + (c.list.indexOf(it.id) >= 0) + '">' + it.name + '</button>'; }).join('') + '</div>' +
+        '<div class="row"><button class="btn big" type="button" data-cart="voice">' + (c.mic ? 'Listening…' : 'Add by voice') + '</button><button class="btn primary big" type="button" data-cart="start"' + (c.list.length ? '' : ' disabled') + '>Start shopping</button></div>' + (c.voiceMsg ? '<p class="note" aria-live="polite">' + c.voiceMsg + '</p>' : '');
+    } else if (c.screen === 'route') {
+      var order = c.order, nextI = order[c.found], here = c.found === 0 ? ENTRANCE : [ITEMS[order[c.found - 1]].x, ITEMS[order[c.found - 1]].y];
+      var rest = order.slice(c.found), path = smartPath(order);
+      var it = ITEMS[nextI];
+      body = '<div class="routeview"><div>' + mapSVG('cartMap', join([here].concat(rest.map(function (i) { return [ITEMS[i].x, ITEMS[i].y]; }), [CHECKOUT])), rest, { full: true, label: 'Route to the next item' }) + '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:12px"><div class="note">Next stop</div><div class="next">' + it.dept + ': ' + it.name + '</div><div class="note">List progress</div><b>' + c.found + ' of ' + order.length + ' items found</b><div class="prog"><i style="width:' + (c.found / order.length * 100) + '%"></i></div><div class="note">Route optimized for shortest path · ' + meters(path) + ' m total</div><button class="btn primary big" type="button" data-cart="found">I found it</button></div></div>';
+    } else if (c.screen === 'found') {
+      var f = ITEMS[c.order[c.found - 1]];
+      body = '<div class="body found" style="padding:0"><div class="check" aria-hidden="true">&#10003;</div><h2>' + f.name + '</h2><p>$' + f.price.toFixed(2) + ' · price from the verified supplier file</p><div class="row" style="justify-content:center"><button class="btn big" type="button" data-cart="undo">Undo</button><button class="btn primary big" type="button" data-cart="continue">' + (c.found === c.order.length ? 'Go to checkout' : 'Next item') + '</button></div></div>';
+    } else if (c.screen === 'checkout') {
+      var total = c.order.reduce(function (s, i) { return s + ITEMS[i].price; }, 0), mB = meters(smartPath(c.order)), mA = meters(normalPath());
+      body = '<h2>Checkout summary</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px"><div class="card"><div class="note">Items</div><b style="font-size:24px">' + c.order.length + '</b></div><div class="card"><div class="note">Total</div><b style="font-size:24px">$' + total.toFixed(2) + '</b></div><div class="card"><div class="note">You walked</div><b style="font-size:24px">' + mB + ' m</b><div class="note">vs ' + mA + ' m aisle by aisle</div></div></div>' +
+        '<div class="row"><button class="btn primary big" type="button" data-cart="pay">Pay at the register</button><button class="btn big" type="button" data-cart="delete">Delete my trip data</button></div>' + (c.deleted ? '<p class="note" aria-live="polite">Trip data deleted from this cart.</p>' : '');
+    } else if (c.screen === 'follow') {
+      body = '<h2>Following you</h2><p>The cart keeps about one meter behind you and stops if someone steps in between.</p><div class="row"><button class="btn primary big" type="button" data-cart="mode-list">Switch to list mode</button></div>';
+    }
+    el.innerHTML = sbar + '<div class="body' + (c.screen === 'found' ? ' found' : '') + '">' + body + '</div>' +
+      (c.stopped ? '<div class="overlay" role="alertdialog" aria-labelledby="stopT"><h2 id="stopT">Cart stopped.</h2><p>A team member is on the way.</p><button class="btn big" type="button" data-cart="resume">Resume</button></div>' : '');
+  }
+  function cartAction(a) {
+    var c = state.cart;
+    if (a === 'stop') c.stopped = true;
+    if (a === 'resume') c.stopped = false;
+    if (a === 'mode-follow') { c.mode = 'follow'; c.screen = 'follow'; c.cam = true; }
+    if (a === 'mode-list') { c.mode = 'list'; c.screen = 'list'; c.cam = false; }
+    if (a === 'voice') {
+      c.mic = true; c.voiceMsg = 'Listening on the cart…'; drawCart();
+      setTimeout(function () { if (c.list.indexOf(1) < 0) c.list.push(1); c.mic = false; c.voiceMsg = 'Heard “apples”. Added Apples. Audio was not saved.'; drawCart(); }, 1600);
+      return;
+    }
+    if (a === 'start') { c.order = smartOrder(c.list); c.found = 0; c.screen = 'route'; c.cam = false; }
+    if (a === 'found') { c.found++; c.screen = 'found'; c.cam = true; }
+    if (a === 'undo') { c.found--; c.screen = 'route'; c.cam = false; }
+    if (a === 'continue') { c.cam = false; c.screen = c.found >= c.order.length ? 'checkout' : 'route'; }
+    if (a === 'delete') { c.deleted = true; }
+    if (a === 'pay') { state.cart = { screen: 'welcome', mode: null, list: DEFAULT_LIST.slice(), found: 0, order: null, mic: false, cam: false, stopped: false }; }
+    drawCart();
+  }
+
+  // ---------- router ----------
+  function route() {
+    if (state.anim) cancelAnimationFrame(state.anim);
+    var r = location.hash.replace(/^#\/?/, '') || '';
+    var pages = { '': home, 'how-it-works': how, 'security': security, 'for-stores': stores, 'cart': cartPage };
+    var fn = pages[r] || home;
+    document.getElementById('main').innerHTML = fn();
+    document.querySelectorAll('header nav a').forEach(function (a) { a.toggleAttribute('aria-current', a.getAttribute('href') === '#/' + r); if (a.hasAttribute('aria-current')) a.setAttribute('aria-current', 'page'); });
+    var h1 = document.querySelector('#main h1'); document.title = (h1 && r ? h1.textContent + ' — ' : '') + 'GlideCart concept prototype';
+    if (r === 'how-it-works') drawHow(false);
+    if (r === 'security') drawSecurity();
+    if (r === 'cart') drawCart();
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-item],[data-action],[data-cart],[data-cart-item]'); if (!t) return;
+    if (t.dataset.item) { var id = +t.dataset.item, i = state.list.indexOf(id); if (i >= 0) state.list.splice(i, 1); else state.list.push(id); t.setAttribute('aria-pressed', String(i < 0)); drawHow(false); }
+    if (t.dataset.action === 'run') drawHow(true);
+    if (t.dataset.action === 'reset') { state.list = DEFAULT_LIST.slice(); route(); }
+    if (t.dataset.cart) cartAction(t.dataset.cart);
+    if (t.dataset.cartItem) { var c = state.cart, cid = +t.dataset.cartItem, j = c.list.indexOf(cid); if (j >= 0) c.list.splice(j, 1); else c.list.push(cid); drawCart(); }
+  });
+  document.addEventListener('input', function (e) { if (e.target.id === 'speed') state.speed = +e.target.value; });
+  document.addEventListener('change', function (e) { if (e.target.id === 'tamper') drawSecurity(); });
+  document.addEventListener('submit', function (e) { if (e.target.id === 'pilot') { e.preventDefault(); e.target.reset(); document.getElementById('thanks').textContent = 'Thank you! In a real pilot we would reply within two business days. (Nothing was saved.)'; } });
+  window.addEventListener('hashchange', function () { route(); window.scrollTo(0, 0); });
+  route();
+})();
+</script>
+</body>
+</html>

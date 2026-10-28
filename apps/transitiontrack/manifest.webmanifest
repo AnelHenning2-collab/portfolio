@@ -1,0 +1,13 @@
+{
+  "name": "TransitionTrack",
+  "short_name": "Track Me",
+  "description": "Track a career or life transition the way a project manager tracks a launch.",
+  "start_url": "./index.html#/home",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#C24A28",
+  "theme_color": "#C24A28",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

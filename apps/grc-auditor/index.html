@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logical Coders GRC — IT Audit Workspace</title>
+<meta name="description" content="Working prototype of the Logical Coders GRC app: a client portal and an auditor workspace with 12 HIPAA audit templates, a risk register and an automated account review. Fictional Sunshine Dental Group data.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#112233; --ink:#1B2A3A; --teal:#177A73; --teal2:#1C8A82; --lteal:#4FC1B7; --muted:#5A6B7D;
+    --rule:#D7E0EA; --tint:#EEF2F7; --page:#F6F8FB; --paper:#FFFFFF;
+    --good:#2F7D4F; --warn:#E0B028; --high:#B4470F; --crit:#8F1D2C; --low:#B8C4D0;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--page); color: var(--ink); font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 14px; line-height: 1.5; }
+  a { color: var(--teal); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; color: var(--navy); line-height: 1.2; margin: 0 0 8px; }
+  h1 { font-size: 26px; } h2 { font-size: 20px; } h3 { font-size: 16px; }
+  .top { background: var(--navy); color: #fff; padding: 12px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .brand { display: flex; flex-direction: column; margin-right: auto; }
+  .brand b { font-size: 15px; } .brand span { font-size: 12px; color: #CFE6EA; }
+  .role { display: inline-flex; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; overflow: hidden; }
+  .role button { background: transparent; border: 0; color: #CFE6EA; padding: 6px 14px; cursor: pointer; font-size: 13px; font-weight: 600; }
+  .role button[aria-pressed="true"] { background: var(--lteal); color: var(--navy); }
+  .banner { background: var(--tint); border-bottom: 1px solid var(--rule); padding: 8px 24px; font-size: 12.5px; color: var(--muted); }
+  .wrap { display: flex; gap: 24px; max-width: 1320px; margin: 0 auto; padding: 24px; align-items: flex-start; }
+  nav.side { flex: 0 0 220px; background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 8px; position: sticky; top: 16px; }
+  nav.side .grp { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 10px 10px 4px; }
+  nav.side a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--ink); text-decoration: none; }
+  nav.side a:hover { background: var(--page); }
+  nav.side a[aria-current="page"] { background: #D8EEEC; font-weight: 700; }
+  main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .card { background: var(--paper); border: 1px solid var(--rule); border-radius: 12px; padding: 20px; }
+  .eb { font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 4px; }
+  .sub { color: var(--muted); margin: 0 0 4px; }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .stat { background: var(--tint); border-radius: 10px; padding: 12px 14px; }
+  .stat .n { font-family: "Playfair Display", Georgia, serif; font-size: 28px; font-weight: 700; color: var(--navy); line-height: 1.1; }
+  .stat .l { font-size: 12px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--navy); color: #fff; text-align: left; font-weight: 600; padding: 8px 10px; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .tbl { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; }
+  .mono { font-family: Consolas, Menlo, monospace; font-size: 12.5px; }
+  .badge { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; border: 1px solid transparent; }
+  .b-crit { background: var(--crit); color: #fff; } .b-high { background: var(--high); color: #fff; }
+  .b-med { background: var(--warn); color: var(--navy); } .b-low { background: var(--low); color: var(--navy); }
+  .b-ok { background: #DCEFE3; color: var(--good); } .b-open { background: var(--tint); color: var(--ink); border-color: var(--rule); }
+  .b-ip { background: #D8EEEC; color: var(--ink); } .b-ex { background: #F6DADA; color: var(--crit); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--rule); background: var(--paper); border-radius: 8px; padding: 7px 14px; cursor: pointer; font-weight: 600; font-size: 13px; text-decoration: none; color: var(--ink); }
+  .btn:hover { border-color: var(--teal); color: var(--teal); }
+  .btn.primary { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .btn.primary:hover { background: #1d3550; color: #fff; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  label.f { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 600; color: var(--ink); }
+  input[type=text], input[type=number], input[type=date], select, textarea { border: 1px solid var(--rule); border-radius: 8px; padding: 7px 10px; background: var(--paper); font-weight: 400; font-size: 13.5px; }
+  textarea { min-height: 72px; resize: vertical; }
+  .form { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .form .wide { grid-column: 1 / -1; }
+  .checks { display: flex; flex-direction: column; gap: 6px; font-weight: 400; }
+  .doc-ctl { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; background: var(--tint); border-radius: 10px; padding: 12px 14px; font-size: 12.5px; }
+  .doc-ctl b { display: block; font-size: 11px; letter-spacing: .1em; color: var(--muted); }
+  .heat { display: grid; grid-template-columns: 28px repeat(5, minmax(0, 1fr)); gap: 4px; max-width: 520px; }
+  .heat div { min-height: 54px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+  .heat .ax { background: none; color: var(--muted); min-height: 0; }
+  .heat .h-low { background: var(--low); color: var(--navy); } .heat .h-med { background: var(--warn); color: var(--navy); }
+  .heat .h-high { background: var(--high); color: #fff; } .heat .h-crit { background: var(--crit); color: #fff; }
+  .heat .score { font-weight: 400; opacity: .7; font-size: 11px; }
+  .bar { height: 8px; background: var(--rule); border-radius: 999px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--teal); }
+  .phase { display: grid; gap: 6px; }
+  .timeline { position: relative; height: 54px; border-bottom: 2px solid var(--rule); margin: 8px 0 26px; }
+  .timeline .m { position: absolute; bottom: -7px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; font-size: 11.5px; font-weight: 700; }
+  .timeline .m i { width: 12px; height: 12px; border-radius: 999px; background: var(--navy); border: 2px solid #fff; order: 2; }
+  .timeline .m span { order: 1; margin-bottom: 4px; }
+  .timeline .tick { position: absolute; top: 60px; transform: translateX(-50%); font-size: 11px; color: var(--muted); }
+  .msg { border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; }
+  .msg .who { font-size: 12px; font-weight: 700; color: var(--teal); }
+  .steps { display: flex; flex-direction: column; gap: 10px; counter-reset: s; }
+  .steps li { list-style: none; display: flex; gap: 12px; }
+  .steps li::before { counter-increment: s; content: counter(s); flex: 0 0 28px; height: 28px; border-radius: 999px; border: 2px solid var(--teal); color: var(--teal); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .steps { padding: 0; margin: 0; }
+  .note { font-size: 12px; color: var(--muted); }
+  .result-pass { color: var(--good); font-weight: 700; } .result-ex { color: var(--crit); font-weight: 700; }
+  footer { max-width: 1320px; margin: 0 auto; padding: 8px 24px 32px; font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .sr { position: absolute; left: -9999px; }
+  @media (max-width: 860px) {
+    .top { padding: 10px 16px; } .banner { padding: 8px 16px; }
+    .wrap { flex-direction: column; align-items: stretch; padding: 16px; gap: 12px; }
+    main { width: 100%; }
+    nav.side { position: static; flex-basis: auto; width: 100%; display: flex; overflow-x: auto; gap: 4px; padding: 6px; }
+    nav.side .grp { display: none; }
+    nav.side a { white-space: nowrap; border: 1px solid var(--rule); }
+    footer { padding: 8px 16px 24px; }
+  }
+  @media print {
+    .top, .banner, nav.side, .noprint, footer { display: none !important; }
+    .wrap { padding: 0; } .card { border: 0; padding: 0; }
+    th { background: none; color: var(--ink); border-bottom: 2px solid var(--navy); }
+    .heat .h-low, .heat .h-med, .heat .h-high, .heat .h-crit { background: none; border: 1.5px solid var(--navy); color: var(--ink); }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><b>Logical Coders GRC</b><span>Sunshine Dental Group · HIPAA audit engagement</span></div>
+  <div class="role" role="group" aria-label="Choose a view">
+    <button type="button" data-role="auditor">Auditor</button>
+    <button type="button" data-role="client">Client</button>
+  </div>
+</header>
+<div class="banner">Working prototype. All examples use fictional Sunshine Dental Group data; nothing leaves this browser. Every check is rule-based and repeatable, with no AI model making decisions.</div>
+<div class="wrap">
+  <nav class="side" id="nav" aria-label="Sections"></nav>
+  <main id="main" tabindex="-1"></main>
+</div>
+<footer>
+  <span>Logical Coders · Tampa, FL · logicalcoders@outlook.com · Fictional demo data</span>
+  <span><a href="../../logical_coders_showcase.html">Back to the Logical Coders showcase</a> · <button class="btn" type="button" data-action="reset" style="padding:2px 10px">Reset demo data</button></span>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'lc-grc-demo-v1';
+
+  // ---------- reference data ----------
+  var TEMPLATES = [
+    { id: '01', name: 'Audit Program', hipaa: '§ 164.308(a)(8)', csf: 'GV.OV', phase: 'Plan',
+      fields: [['scope', 'Scope', 'area', 'HIPAA Security Rule safeguards for systems that create, receive, keep or send ePHI: EHR, email, patient portal, mobile devices.'],
+        ['objectives', 'Objectives', 'area', 'Show that administrative, physical and technical safeguards are designed and operating; give leadership a prioritized remediation plan.'],
+        ['frameworks', 'Frameworks', 'text', 'NIST CSF 2.0 · NIST SP 800-53 Rev. 5 · HIPAA Security Rule'],
+        ['frequency', 'Review frequency', 'text', 'Annually and after a major change or incident'],
+        ['owner', 'Program owner', 'text', 'Dentist-Owner (approving executive)']] },
+    { id: '02', name: 'Audit Plan', hipaa: '§ 164.308(a)(8)', csf: 'GV.OV', phase: 'Plan',
+      fields: [['period', 'Audit period', 'text', 'January 1 to April 30, 2026'],
+        ['systems', 'Systems in scope', 'area', 'Cloud EHR, Microsoft 365 email, patient portal, front-desk workstations, staff mobile devices'],
+        ['team', 'Team and roles', 'area', 'Auditor: Anél Henning. Client contacts: Dentist-Owner, Office Manager. IT vendor for technical evidence.'],
+        ['fieldwork', 'Fieldwork dates', 'text', 'Weeks 2 to 4 of the engagement'],
+        ['requests', 'Evidence requests', 'area', 'See the Evidence requests page; each request is linked to a template and a control.']] },
+    { id: '03', name: 'Fieldwork Support Packet', hipaa: '§ 164.316(b)', csf: 'GV.PO', phase: 'Evidence',
+      fields: [['interviews', 'Interviews', 'area', 'Dentist-Owner (governance), Office Manager (access and training), IT vendor (MFA, logging, backups)'],
+        ['walkthroughs', 'Walkthroughs', 'area', 'New-hire access request; termination checklist; weekly log review (not yet in place)'],
+        ['acceptance', 'Evidence acceptance checklist', 'checks', ['Identifies the relevant system or process', 'Falls within the audit period', 'Names the performer, reviewer or approver', 'Complete, readable and traceable', 'Sensitive information minimized or redacted', 'Source and collection date recorded', 'Stored in the approved repository']],
+        ['rule', 'Evidence-handling rule', 'area', 'Do not place ePHI, passwords, private keys, full Social Security numbers, or screenshots in audit workpapers.'],
+        ['signoff', 'Reviewer sign-off', 'text', 'Pending']] },
+    { id: '04', name: 'Control Narrative', hipaa: '§ 164.312(a)–(e)', csf: 'PR', phase: 'Control', narratives: true },
+    { id: '05', name: 'Risk Register Assessment', hipaa: '§ 164.308(a)(1)(ii)(A)–(B)', csf: 'ID.RA', phase: 'Risk', link: 'risks' },
+    { id: '06', name: 'Gap Analysis Report', hipaa: '§ 164.308(a)(8)', csf: 'ID.IM', phase: 'Decision',
+      fields: [['summary', 'Summary', 'area', 'Five gaps found. One is Critical (MFA), four are High. All are due inside the first 30 days of the 90-day plan.'],
+        ['method', 'Method', 'area', 'Compared current practice to HIPAA Security Rule requirements and NIST SP 800-53 controls through interviews, walkthroughs and evidence review.'],
+        ['gaps', 'Gaps (G-01 to G-05)', 'area', 'See the Audit tracker for each gap with owner, due date and next action.']] },
+    { id: '07', name: 'Audit Tracker', hipaa: '§ 164.308(a)(1)(ii)(B)', csf: 'ID.IM', phase: 'Decision', link: 'tracker' },
+    { id: '08', name: 'Operational Effectiveness Report', hipaa: '§ 164.308(a)(8)', csf: 'GV.OV', phase: 'Evidence',
+      fields: [['control', 'Control tested', 'text', 'AC-2 Account Management'],
+        ['sample', 'Sample', 'text', '8 accounts, 5 roster entries (full population)'],
+        ['results', 'Results', 'area', '7 exceptions across 4 tests: one late disable (19 days), one shared login, four accounts without MFA, one overdue access review.'],
+        ['conclusion', 'Conclusion', 'select', ['Effective', 'Effective with exceptions', 'Ineffective'], 'Ineffective']] },
+    { id: '09', name: 'Account Lifecycle Review', hipaa: '§ 164.308(a)(3)(ii)(C); § 164.308(a)(4); § 164.312(a)(1)', csf: 'PR.AA', phase: 'Evidence', link: 'accounts' },
+    { id: '10', name: 'Audit Log Summary', hipaa: '§ 164.312(b); § 164.308(a)(1)(ii)(D)', csf: 'DE.CM', phase: 'Evidence',
+      fields: [['events', 'Key event types expected', 'area', 'Login, ePHI access, exports, account changes, failed logins, privilege use, configuration changes, audit-log changes'],
+        ['findings', 'Findings', 'area', 'Log creation: audit logging not enabled (Red). Log review: no reviewer assigned (Red). Log retention: no period defined (Red). Escalation: no procedure (Red).'],
+        ['conclusion', 'Conclusion', 'select', ['Effective', 'Effective with exceptions', 'Ineffective'], 'Ineffective'],
+        ['tracked', 'Tracked as', 'text', 'G-03']] },
+    { id: '11', name: 'HIPAA Governance Report', hipaa: '§ 164.308(a)(2)', csf: 'GV.RR · GV.OV', phase: 'Decision', link: 'report' },
+    { id: '12', name: 'Compliance Document Package', hipaa: '§ 164.316(b)(2)', csf: 'GV.PO', phase: 'Decision',
+      fields: [['contents', 'Package contents', 'area', 'Templates 01 to 11 completed, control narratives, access-control test output, governance report, client one-page guide'],
+        ['storage', 'Storage location', 'text', '[REPOSITORY], access-controlled'],
+        ['retention', 'Retention', 'text', 'Six years from creation or last effective date'],
+        ['version', 'Version', 'text', '1.0 · Final']] }
+  ];
+  var NARRATIVES = [
+    { id: 'AC-2', name: 'Account Management', csf: 'PR.AA', objective: 'Only approved staff have EHR and email accounts; access is removed at termination or role change.', trigger: 'New hire, role change or termination; full review quarterly', who: 'Office Manager / Dentist-Owner', evidence: 'Signed access request, disable ticket with timestamp, quarterly script output', hipaa: '§ 164.308(a)(3)(ii)(C), § 164.312(a)(1)' },
+    { id: 'RA-3', name: 'Risk Assessment', csf: 'ID.RA', objective: 'Risks to ePHI are identified, scored, owned and treated annually and after major change.', trigger: 'Annual schedule, new system or incident', who: 'IT vendor with Office Manager / Dentist-Owner approves', evidence: 'Risk register with approval date and residual scores', hipaa: '§ 164.308(a)(1)(ii)(A)–(B)' },
+    { id: 'AU-6', name: 'Audit Record Review', csf: 'DE.CM', objective: 'EHR activity logs are reviewed weekly so improper access is found and escalated.', trigger: 'Weekly', who: 'Office Manager / IT vendor', evidence: 'Weekly log-review record with reviewer and date; escalation tickets', hipaa: '§ 164.312(b), § 164.308(a)(1)(ii)(D)' }
+  ];
+  var ROSTER_CSV = 'employee_id,role,status,termination_date\nE-1008,Billing,Active,\nE-1015,Hygienist,Terminated,2026-04-03\nE-1017,Front desk,Terminated,2026-04-08\nE-1021,Assistant,Active,\nE-1022,Assistant,Active,';
+  var ACCOUNTS_CSV = 'account_id,employee_id,type,status,mfa,disabled_date,last_review\ne1008,E-1008,User,Active,No,,2026-01-15\ne1015,E-1015,User,Disabled,Yes,2026-04-03,2026-01-15\ne1017,E-1017,User,Disabled,Yes,2026-04-27,2026-01-15\ne1021,E-1021,User,Active,Yes,,2026-03-02\ne1022,E-1022,User,Active,No,,2026-03-02\nADMIN-01,,Admin,Active,Yes,,2026-01-15\nFRONTDESK,,Shared,Active,No,,2025-03-01\nVENDOR-IT,,Vendor,Active,No,,2026-01-15';
+
+  function seed() {
+    var t = {};
+    TEMPLATES.forEach(function (tp) {
+      if (!tp.fields) return;
+      var v = {};
+      tp.fields.forEach(function (f) { v[f[0]] = f[2] === 'checks' ? f[3].map(function () { return true; }) : (f[2] === 'select' ? f[4] : f[3]); });
+      t[tp.id] = v;
+    });
+    return {
+      role: 'auditor',
+      templates: t,
+      risks: [
+        { id: 'R-01', asset: 'EHR system', threat: 'Ransomware', vuln: 'Patching and backup testing incomplete', existing: 'Cloud EHR vendor backups', l: 4, i: 5, rl: 2, ri: 5, treatment: 'Mitigate: patch all systems, test encrypted backup restore', owner: 'IT Vendor', due: 'Day 30', plain: 'If ransomware locks the patient records system, the practice cannot see patients. Patching and a tested backup restore make that much less likely.' },
+        { id: 'R-03', asset: 'Mobile devices', threat: 'Lost or stolen device', vuln: 'Personal devices access ePHI without MDM or encryption', existing: 'None', l: 5, i: 4, rl: 2, ri: 4, treatment: 'Mitigate: enroll in MDM, require encryption', owner: 'Office Manager', due: 'Day 30', plain: 'Staff phones can open patient data without protection. If one is lost, that data is exposed. Device management and encryption fix this.' },
+        { id: 'R-04', asset: 'Email system', threat: 'Phishing', vuln: 'No awareness training in 3+ years; MFA not complete', existing: 'Spam filter', l: 5, i: 3, rl: 2, ri: 3, treatment: 'Mitigate: enable MFA, train all 22 staff', owner: 'Office Manager', due: 'Day 45', plain: 'A fake email can trick someone into giving away a password. Training and a second sign-in step (MFA) stop most of these attacks.' }
+      ],
+      gaps: [
+        { id: 'G-01', desc: 'No Business Associate Agreements on file', sev: 'High', owner: 'Dentist-Owner', due: 7, status: 'Not started', next: 'Collect and sign BAAs with IT vendors and cloud providers' },
+        { id: 'G-02', desc: 'MFA not enabled on EHR, email and portal', sev: 'Critical', owner: 'IT Vendor', due: 14, status: 'In progress', next: 'Enable MFA; retest with sample logins' },
+        { id: 'G-03', desc: 'Audit logging not enabled on EHR', sev: 'High', owner: 'IT Vendor', due: 30, status: 'Not started', next: 'Enable logging; assign weekly reviewer' },
+        { id: 'G-04', desc: 'Terminated user disabled 19 days late', sev: 'High', owner: 'Office Manager', due: 21, status: 'Not started', next: 'Add same-day disable step to termination checklist' },
+        { id: 'G-05', desc: 'Shared front-desk login', sev: 'High', owner: 'Office Manager', due: 21, status: 'Not started', next: 'Create individual accounts; disable shared login' }
+      ],
+      requests: [
+        { id: 'ER-01', title: 'Staff roster export (active and terminated, with dates)', tpl: '09', control: 'AC-2', due: 'Day 5', status: 'Requested', file: '' },
+        { id: 'ER-02', title: 'EHR and email account list with MFA status', tpl: '09', control: 'AC-2', due: 'Day 5', status: 'Requested', file: '' },
+        { id: 'ER-03', title: 'Signed Business Associate Agreements', tpl: '06', control: 'SA-9', due: 'Day 7', status: 'Requested', file: '' },
+        { id: 'ER-04', title: 'Backup restore test record', tpl: '08', control: 'CP-9', due: 'Day 10', status: 'Requested', file: '' },
+        { id: 'ER-05', title: 'Security awareness training records', tpl: '03', control: 'AT-2', due: 'Day 14', status: 'Requested', file: '' }
+      ],
+      messages: [
+        { who: 'Auditor', text: 'Welcome! Your checklist shows the five items we need first. Please do not upload anything with patient information.', at: '2026-04-01' }
+      ],
+      roster: ROSTER_CSV, accounts: ACCOUNTS_CSV, asOf: '2026-04-30',
+      sampling: { pop: 120, conf: 95, tol: 5, seed: 2026 }
+    };
+  }
+  function load() { try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.templates) return s; } catch (e) {} return seed(); }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  var S = load();
+
+  // ---------- helpers ----------
+  function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function band(s) { return s >= 15 ? ['Critical', 'crit'] : s >= 10 ? ['High', 'high'] : s >= 5 ? ['Medium', 'med'] : ['Low', 'low']; }
+  function sevClass(s) { return { Critical: 'b-crit', High: 'b-high', Medium: 'b-med', Low: 'b-low' }[s] || 'b-open'; }
+  function statusClass(s) { return { 'Done': 'b-ok', 'In progress': 'b-ip', 'Provided': 'b-ok' }[s] || 'b-open'; }
+  function days(a, b) { return Math.round((Date.parse(b) - Date.parse(a)) / 864e5); }
+  function parseCSV(text) {
+    var lines = String(text || '').trim().split(/\r?\n/).filter(function (l) { return l.trim(); });
+    if (!lines.length) return [];
+    var head = lines[0].split(',').map(function (h) { return h.trim().toLowerCase(); });
+    return lines.slice(1).map(function (l) { var c = l.split(','); var o = {}; head.forEach(function (h, i) { o[h] = (c[i] || '').trim(); }); return o; });
+  }
+
+  // ---------- account lifecycle review (rule-based) ----------
+  function runAccountReview() {
+    var roster = parseCSV(S.roster), accts = parseCSV(S.accounts), asOf = S.asOf || '2026-04-30';
+    var out = [];
+    function add(test, acct, ok, detail) { out.push({ test: test, acct: acct, ok: ok, detail: detail }); }
+    roster.filter(function (r) { return /term/i.test(r.status); }).forEach(function (r) {
+      var a = accts.filter(function (x) { return x.employee_id === r.employee_id; })[0];
+      if (!a) { add('1. Leavers disabled within 1 day', r.employee_id, true, 'No account found'); return; }
+      if (!a.disabled_date) { add('1. Leavers disabled within 1 day', r.employee_id, false, 'Terminated ' + r.termination_date + ', account still active'); return; }
+      var d = days(r.termination_date, a.disabled_date);
+      add('1. Leavers disabled within 1 day', r.employee_id, d <= 1, d <= 1 ? 'Disabled ' + (d === 0 ? 'same day' : 'next day') : 'Disabled ' + d + ' days after termination');
+    });
+    accts.forEach(function (a) {
+      if (/shared/i.test(a.type) || (!a.employee_id && !/admin|vendor/i.test(a.type))) add('2. Shared or unassigned accounts', a.account_id, false, 'Shared login, no individual accountability');
+    });
+    accts.filter(function (a) { return /active/i.test(a.status); }).forEach(function (a) {
+      if (!/^y/i.test(a.mfa)) add('3. Active accounts without MFA', a.account_id + ' (' + a.type + ')', false, 'MFA not enabled');
+    });
+    accts.filter(function (a) { return /active/i.test(a.status); }).forEach(function (a) {
+      if (a.last_review && days(a.last_review, asOf) > 365) add('4. Access not reviewed in 12 months', a.account_id, false, 'Last review ' + a.last_review + ', overdue');
+    });
+    return { rows: out, accounts: accts.length, roster: roster.length, exceptions: out.filter(function (r) { return !r.ok; }).length };
+  }
+
+  // ---------- sampling ----------
+  function sampleSize(pop, conf, tol) {
+    var n = Math.ceil(Math.log(1 - conf / 100) / Math.log(1 - tol / 100));
+    if (pop > 0) n = Math.min(pop, Math.ceil(n / (1 + (n - 1) / pop)));
+    return n;
+  }
+  function rng(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function drawSample(pop, n, seed) {
+    var r = rng(seed), items = []; for (var i = 1; i <= pop; i++) items.push(i);
+    for (var j = items.length - 1; j > 0; j--) { var k = Math.floor(r() * (j + 1)); var t = items[j]; items[j] = items[k]; items[k] = t; }
+    return items.slice(0, n).sort(function (a, b) { return a - b; });
+  }
+
+  // ---------- shared views ----------
+  function heatMap(mode) {
+    var cells = '';
+    for (var l = 5; l >= 1; l--) {
+      cells += '<div class="ax">' + l + '</div>';
+      for (var i = 1; i <= 5; i++) {
+        var ids = S.risks.filter(function (r) { return (mode === 'residual' ? r.rl : r.l) === l && (mode === 'residual' ? r.ri : r.i) === i; }).map(function (r) { return r.id; }).join(' ');
+        cells += '<div class="h-' + band(l * i)[1] + '" title="Likelihood ' + l + ' × Impact ' + i + ' = ' + (l * i) + '"><span>' + esc(ids) + '</span><span class="score">' + (l * i) + '</span></div>';
+      }
+    }
+    cells += '<div class="ax"></div>' + [1, 2, 3, 4, 5].map(function (i) { return '<div class="ax">' + i + '</div>'; }).join('');
+    return '<div class="heat" role="img" aria-label="Five by five risk heat map, ' + mode + ' scores">' + cells + '</div><p class="note">Likelihood ↑ · Impact → · Bands: 15–25 Critical, 10–14 High, 5–9 Medium, 1–4 Low</p>';
+  }
+  function reportHTML() {
+    var top = S.risks.slice().sort(function (a, b) { return b.l * b.i - a.l * a.i; });
+    var open = S.gaps.filter(function (g) { return g.status !== 'Done'; });
+    var crit = open.filter(function (g) { return g.sev === 'Critical'; }).length;
+    var posture = crit ? 'Red' : open.length ? 'Yellow' : 'Green';
+    return '<div class="card"><div class="eb">Template 11 · GV.RR · GV.OV · § 164.308(a)(2)</div><h1>HIPAA Governance Report</h1><p class="sub">Prepared for the Dentist-Owner, approving executive</p>' +
+      '<div class="grid" style="margin:14px 0"><div class="stat"><div class="n">' + posture + '</div><div class="l">Overall HIPAA posture</div></div><div class="stat"><div class="n">' + open.length + '</div><div class="l">Open findings (' + crit + ' Critical)</div></div><div class="stat"><div class="n">' + S.gaps.filter(function (g) { return g.status === 'Done'; }).length + ' of ' + S.gaps.length + '</div><div class="l">Findings closed</div></div></div>' +
+      '<h3>Top risks</h3><div class="tbl"><table><thead><tr><th>Risk</th><th>Threat</th><th>System</th><th>Inherent</th><th>Residual after treatment</th></tr></thead><tbody>' +
+      top.map(function (r) { var b = band(r.l * r.i), rb = band(r.rl * r.ri); return '<tr><td class="mono">' + esc(r.id) + '</td><td>' + esc(r.threat) + '</td><td>' + esc(r.asset) + '</td><td><span class="badge b-' + b[1] + '">' + (r.l * r.i) + ' ' + b[0] + '</span></td><td><span class="badge b-' + rb[1] + '">' + (r.rl * r.ri) + ' ' + rb[0] + '</span></td></tr>'; }).join('') +
+      '</tbody></table></div><h3 style="margin-top:16px">Key findings</h3><ul>' + open.map(function (g) { return '<li><b>' + esc(g.id) + '</b> ' + esc(g.desc) + ' <span class="badge ' + sevClass(g.sev) + '">' + esc(g.sev) + '</span></li>'; }).join('') + (open.length ? '' : '<li>All findings closed.</li>') + '</ul>' +
+      '<h3>Decisions requested</h3><ul><li>Name a security official</li><li>Approve the risk treatments</li><li>Fund MDM and MFA</li><li>Sign vendor BAAs</li></ul>' +
+      '<div class="doc-ctl"><div><b>PREPARED BY</b>Anél Henning</div><div><b>APPROVED BY</b>Pending · Dentist-Owner</div><div><b>CLASS</b>Confidential</div><div><b>RETENTION</b>Six years</div></div>' +
+      '<p class="noprint row" style="margin-top:14px"><button class="btn primary" type="button" data-action="print">Print or save as PDF</button></p></div>';
+  }
+
+  // ---------- auditor pages ----------
+  var A = {
+    home: function () {
+      var provided = S.requests.filter(function (r) { return r.status === 'Provided'; }).length;
+      var done = S.gaps.filter(function (g) { return g.status === 'Done'; }).length;
+      var rev = runAccountReview();
+      var phases = [['Risk', S.risks.length ? 100 : 0, S.risks.length + ' risks scored'], ['Control', 100, NARRATIVES.length + ' control narratives'], ['Evidence', Math.round(provided / S.requests.length * 100), provided + ' of ' + S.requests.length + ' requests provided'], ['Decision', Math.round(done / S.gaps.length * 100), done + ' of ' + S.gaps.length + ' findings closed']];
+      return '<div class="card"><div class="eb">Engagement</div><h1>Sunshine Dental Group</h1><p class="sub">22 staff · 4 offices · NIST CSF 2.0 · NIST SP 800-53 Rev. 5 · HIPAA Security Rule</p>' +
+        '<div class="grid" style="margin-top:14px"><div class="stat"><div class="n">' + S.risks.length + '</div><div class="l">Risks in the register</div></div><div class="stat"><div class="n">' + rev.exceptions + '</div><div class="l">Account review exceptions</div></div><div class="stat"><div class="n">' + (S.gaps.length - done) + '</div><div class="l">Open findings</div></div><div class="stat"><div class="n">12</div><div class="l">Templates in the package</div></div></div></div>' +
+        '<div class="card"><h2>Progress: risk, then control, then evidence, then decision</h2><div class="grid">' +
+        phases.map(function (p) { return '<div class="phase"><b>' + p[0] + '</b><div class="bar"><i style="width:' + p[1] + '%"></i></div><span class="note">' + esc(p[2]) + '</span></div>'; }).join('') + '</div></div>' +
+        '<div class="card"><h2>Start here</h2><div class="row"><a class="btn" href="#/auditor/accounts">Run the account review</a><a class="btn" href="#/auditor/risks">Score risks</a><a class="btn" href="#/auditor/templates">Open the 12 templates</a><a class="btn" href="#/auditor/report">Governance report</a></div></div>';
+    },
+    templates: function () {
+      return '<div class="card"><div class="eb">Package</div><h1>The 12 audit templates</h1><p class="sub">Each template opens as a form with a completed sample you can edit, save and print.</p></div><div class="grid">' +
+        TEMPLATES.map(function (t) { return '<a class="card" style="text-decoration:none;color:inherit" href="#/auditor/' + (t.link ? t.link : 'template/' + t.id) + '"><div class="eb">' + t.id + ' · ' + esc(t.phase) + '</div><h3>' + esc(t.name) + '</h3><p class="note">' + esc(t.hipaa) + ' · CSF ' + esc(t.csf) + '</p></a>'; }).join('') + '</div>';
+    },
+    template: function (id) {
+      var t = TEMPLATES.filter(function (x) { return x.id === id; })[0];
+      if (!t) return A.templates();
+      var head = '<div class="card"><div class="eb">Template ' + t.id + ' · CSF ' + esc(t.csf) + ' · ' + esc(t.hipaa) + '</div><h1>' + esc(t.name) + '</h1>' +
+        '<div class="doc-ctl" style="margin:10px 0 16px"><div><b>CLIENT</b>Sunshine Dental Group</div><div><b>PREPARED BY</b>Anél Henning</div><div><b>APPROVER</b>Dentist-Owner</div><div><b>CLASS</b>Confidential</div><div><b>RETENTION</b>Six years</div></div>';
+      if (t.narratives) {
+        return head + NARRATIVES.map(function (n) { return '<div class="card" style="margin-bottom:12px"><div class="eb">' + esc(n.csf) + '</div><h3>' + esc(n.id) + ' ' + esc(n.name) + '</h3><div class="form"><div><b class="note">OBJECTIVE</b><div>' + esc(n.objective) + '</div></div><div><b class="note">TRIGGER / FREQUENCY</b><div>' + esc(n.trigger) + '</div></div><div><b class="note">PERFORMER / REVIEWER</b><div>' + esc(n.who) + '</div></div><div><b class="note">EVIDENCE CREATED</b><div>' + esc(n.evidence) + '</div></div><div><b class="note">HIPAA</b><div>' + esc(n.hipaa) + '</div></div></div></div>'; }).join('') +
+          '<p class="noprint"><button class="btn primary" type="button" data-action="print">Print or save as PDF</button></p></div>';
+      }
+      var v = S.templates[t.id] || {};
+      return head + '<form class="form" data-form="' + t.id + '">' + t.fields.map(function (f) {
+        var k = f[0], label = f[1], type = f[2], val = v[k];
+        if (type === 'area') return '<label class="f wide">' + esc(label) + '<textarea name="' + k + '">' + esc(val) + '</textarea></label>';
+        if (type === 'select') return '<label class="f">' + esc(label) + '<select name="' + k + '">' + f[3].map(function (o) { return '<option' + (o === val ? ' selected' : '') + '>' + esc(o) + '</option>'; }).join('') + '</select></label>';
+        if (type === 'checks') return '<fieldset class="f wide" style="border:0;padding:0;margin:0"><legend style="font-weight:600;font-size:12.5px;margin-bottom:6px">' + esc(label) + '</legend><div class="checks">' + f[3].map(function (o, i) { return '<label><input type="checkbox" name="' + k + '" value="' + i + '"' + (val && val[i] ? ' checked' : '') + '> ' + esc(o) + '</label>'; }).join('') + '</div></fieldset>';
+        return '<label class="f">' + esc(label) + '<input type="text" name="' + k + '" value="' + esc(val) + '"></label>';
+      }).join('') + '<div class="wide row noprint"><button class="btn primary" type="submit">Save</button><button class="btn" type="button" data-action="print">Print or save as PDF</button><span class="note" id="saved" aria-live="polite"></span></div></form></div>';
+    },
+    crosswalk: function () {
+      return '<div class="card"><div class="eb">Inventory</div><h1>Template inventory and framework crosswalk</h1><p class="sub">Each template maps to the HIPAA Security Rule section it satisfies and the NIST CSF 2.0 category it supports.</p>' +
+        '<label class="f noprint" style="max-width:320px;margin:10px 0"><span>Filter</span><input type="text" id="xwFilter" placeholder="Try 164.308 or GV.OV"></label>' +
+        '<div class="tbl"><table id="xw"><thead><tr><th>No.</th><th>Template</th><th>HIPAA Security Rule</th><th>NIST CSF 2.0</th><th>Phase</th></tr></thead><tbody>' +
+        TEMPLATES.map(function (t) { return '<tr><td class="mono">' + t.id + '</td><td><a href="#/auditor/' + (t.link || 'template/' + t.id) + '">' + esc(t.name) + '</a></td><td>' + esc(t.hipaa) + '</td><td class="mono">' + esc(t.csf) + '</td><td>' + esc(t.phase) + '</td></tr>'; }).join('') + '</tbody></table></div></div>';
+    },
+    risks: function () {
+      var mode = S.heatMode || 'inherent';
+      return '<div class="card"><div class="eb">Template 05 · ID.RA · § 164.308(a)(1)(ii)(A)–(B)</div><h1>Risk register assessment</h1><p class="sub">Threats to ePHI scored on a five-by-five grid, with the projected residual score once each treatment is in place.</p>' +
+        '<div class="row noprint" style="margin:10px 0"><button class="btn' + (mode === 'inherent' ? ' primary' : '') + '" type="button" data-heat="inherent">Inherent</button><button class="btn' + (mode === 'residual' ? ' primary' : '') + '" type="button" data-heat="residual">Residual</button></div>' + heatMap(mode) + '</div>' +
+        '<div class="card"><div class="tbl"><table><thead><tr><th>Risk</th><th>Threat and vulnerability</th><th>Existing</th><th>Likelihood</th><th>Impact</th><th>Inherent</th><th>Treatment · owner · target</th><th>Residual L × I</th></tr></thead><tbody>' +
+        S.risks.map(function (r, n) { var b = band(r.l * r.i), rb = band(r.rl * r.ri);
+          function sel(k, v) { return '<select aria-label="' + k + ' for ' + esc(r.id) + '" data-risk="' + n + '" data-k="' + k + '">' + [1, 2, 3, 4, 5].map(function (x) { return '<option' + (x === v ? ' selected' : '') + '>' + x + '</option>'; }).join('') + '</select>'; }
+          return '<tr><td class="mono">' + esc(r.id) + '<br><span class="note">' + esc(r.asset) + '</span></td><td><b>' + esc(r.threat) + '.</b> ' + esc(r.vuln) + '</td><td>' + esc(r.existing) + '</td><td>' + sel('l', r.l) + '</td><td>' + sel('i', r.i) + '</td><td><span class="badge b-' + b[1] + '">' + (r.l * r.i) + ' ' + b[0] + '</span></td><td>' + esc(r.treatment) + '. ' + esc(r.owner) + ' · ' + esc(r.due) + '</td><td>' + sel('rl', r.rl) + ' × ' + sel('ri', r.ri) + ' <span class="badge b-' + rb[1] + '">' + (r.rl * r.ri) + '</span></td></tr>'; }).join('') +
+        '</tbody></table></div><h3 style="margin-top:18px" class="noprint">Add a risk</h3><form class="form noprint" data-form="risk"><label class="f">System<input type="text" name="asset" required></label><label class="f">Threat<input type="text" name="threat" required></label><label class="f wide">Vulnerability<input type="text" name="vuln"></label><label class="f">Treatment<input type="text" name="treatment"></label><label class="f">Owner<input type="text" name="owner"></label><div class="wide"><button class="btn primary" type="submit">Add risk</button></div></form></div>';
+    },
+    accounts: function () {
+      var r = runAccountReview(), groups = {};
+      r.rows.forEach(function (x) { (groups[x.test] = groups[x.test] || []).push(x); });
+      return '<div class="card"><div class="eb">Template 09 · PR.AA · AC-2 re-performance</div><h1>Account lifecycle review</h1><p class="sub">Compares the staff roster to system accounts and flags every exception. Same input, same result, every time.</p>' +
+        '<div class="form noprint" style="margin-top:12px"><label class="f">Staff roster CSV<textarea id="roster" rows="7" class="mono">' + esc(S.roster) + '</textarea><input type="file" accept=".csv,text/csv" data-load="roster" aria-label="Load roster CSV file"></label>' +
+        '<label class="f">System accounts CSV<textarea id="accounts" rows="7" class="mono">' + esc(S.accounts) + '</textarea><input type="file" accept=".csv,text/csv" data-load="accounts" aria-label="Load accounts CSV file"></label>' +
+        '<label class="f">Review as of<input type="date" id="asOf" value="' + esc(S.asOf) + '"></label><div class="row" style="align-items:flex-end"><button class="btn primary" type="button" data-action="run-review">Run tests</button><button class="btn" type="button" data-action="sample-csv">Reload sample data</button></div></div></div>' +
+        '<div class="card" aria-live="polite"><div class="grid"><div class="stat"><div class="n">4</div><div class="l">Tests run</div></div><div class="stat"><div class="n">' + r.accounts + '</div><div class="l">Accounts tested</div></div><div class="stat"><div class="n">' + r.roster + '</div><div class="l">Roster entries</div></div><div class="stat"><div class="n" style="color:var(--crit)">' + r.exceptions + '</div><div class="l">Exceptions flagged</div></div></div>' +
+        Object.keys(groups).sort().map(function (g) { return '<h3 style="margin-top:16px">' + esc(g) + '</h3><div class="tbl"><table><tbody>' + groups[g].map(function (x) { return '<tr><td class="mono" style="width:34%">' + esc(x.acct) + '</td><td class="' + (x.ok ? 'result-pass' : 'result-ex') + '">' + (x.ok ? 'Pass' : 'EXCEPTION') + '</td><td>' + esc(x.detail) + '</td></tr>'; }).join('') + '</tbody></table></div>'; }).join('') +
+        '<p class="mono" style="margin-top:14px">Records tested: ' + r.accounts + ' accounts, ' + r.roster + ' roster entries | Exceptions: ' + r.exceptions + '</p><p class="note">Rules: leavers disabled within 1 day of termination; no shared or unassigned accounts; every active account has MFA; every active account reviewed within 12 months.</p></div>';
+    },
+    sampling: function () {
+      var p = S.sampling, n = sampleSize(+p.pop, +p.conf, +p.tol), list = drawSample(+p.pop, n, +p.seed);
+      return '<div class="card"><div class="eb">Test of controls</div><h1>Sampling calculator</h1><p class="sub">Attribute sample size for zero expected deviations: n = ln(1 − confidence) ÷ ln(1 − tolerable rate), adjusted for small populations. The seed makes the random pick repeatable.</p>' +
+        '<form class="form noprint" data-form="sampling" style="margin-top:10px"><label class="f">Population size<input type="number" min="1" max="100000" name="pop" value="' + esc(p.pop) + '"></label><label class="f">Confidence<select name="conf">' + [90, 95, 99].map(function (c) { return '<option value="' + c + '"' + (+p.conf === c ? ' selected' : '') + '>' + c + '%</option>'; }).join('') + '</select></label><label class="f">Tolerable deviation rate (%)<input type="number" min="1" max="20" name="tol" value="' + esc(p.tol) + '"></label><label class="f">Seed<input type="number" name="seed" value="' + esc(p.seed) + '"></label><div class="wide"><button class="btn primary" type="submit">Calculate</button></div></form></div>' +
+        '<div class="card" aria-live="polite"><div class="grid"><div class="stat"><div class="n">' + n + '</div><div class="l">Items to test</div></div><div class="stat"><div class="n">' + esc(p.pop) + '</div><div class="l">Population</div></div></div><h3 style="margin-top:14px">Selected items</h3><p class="mono">' + list.join(', ') + '</p></div>';
+    },
+    evidence: function () { return evidenceView(true); },
+    tracker: function () {
+      var ticks = [0, 30, 60, 90];
+      return '<div class="card"><div class="eb">Template 07 · ID.IM · § 164.308(a)(1)(ii)(B)</div><h1>Audit tracker</h1><p class="sub">Remediation items from the gap analysis, each with an owner, a due date and a next action.</p>' +
+        '<div class="timeline" aria-label="Due dates across the 90-day plan">' + S.gaps.map(function (g, i) { return '<div class="m" style="left:' + (g.due / 90 * 100) + '%;' + (i % 2 ? 'bottom:18px' : '') + '"><span>' + esc(g.id) + '</span><i' + (g.status === 'Done' ? ' style="background:var(--good)"' : '') + '></i></div>'; }).join('') + ticks.map(function (d) { return '<span class="tick" style="left:' + (d / 90 * 100) + '%">Day ' + d + '</span>'; }).join('') + '</div>' +
+        '<div class="tbl"><table><thead><tr><th>ID</th><th>Description</th><th>Risk</th><th>Owner</th><th>Due</th><th>Status</th><th>Next action</th></tr></thead><tbody>' +
+        S.gaps.map(function (g, n) { return '<tr><td class="mono">' + esc(g.id) + '</td><td>' + esc(g.desc) + '</td><td><span class="badge ' + sevClass(g.sev) + '">' + esc(g.sev) + '</span></td><td>' + esc(g.owner) + '</td><td>Day ' + g.due + '</td><td><select aria-label="Status for ' + esc(g.id) + '" data-gap="' + n + '">' + ['Not started', 'In progress', 'Done'].map(function (s) { return '<option' + (s === g.status ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select></td><td>' + esc(g.next) + '</td></tr>'; }).join('') + '</tbody></table></div></div>';
+    },
+    report: function () { return reportHTML(); },
+    messages: function () { return messagesView('Auditor'); }
+  };
+  function evidenceView(isAuditor) {
+    var list = '<div class="tbl"><table><thead><tr><th>ID</th><th>What we need</th><th>Due</th><th>Linked to</th><th>Status</th><th>' + (isAuditor ? 'File' : 'Action') + '</th></tr></thead><tbody>' +
+      S.requests.map(function (r, n) { var t = TEMPLATES.filter(function (x) { return x.id === r.tpl; })[0];
+        return '<tr><td class="mono">' + esc(r.id) + '</td><td>' + esc(r.title) + '</td><td>' + esc(r.due) + '</td><td>' + (t ? 'Template ' + t.id + ' · ' : '') + esc(r.control) + '</td><td><span class="badge ' + statusClass(r.status) + '">' + esc(r.status) + '</span></td><td>' +
+          (isAuditor ? esc(r.file || '—') : '<label class="btn" style="padding:4px 10px">Upload<input type="file" class="sr" data-upload="' + n + '"></label> <button class="btn" type="button" style="padding:4px 10px" data-provided="' + n + '">Mark as provided</button>' + (r.file ? '<div class="note">' + esc(r.file) + '</div>' : '')) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    if (!isAuditor) return '<div class="card"><div class="eb">Your checklist</div><h1>What we need from you</h1><p class="sub">Please send each item by its due date. Do not upload anything with patient information, passwords or full Social Security numbers. In this demo only the file name is kept.</p>' + list + '</div>';
+    return '<div class="card"><div class="eb">Fieldwork</div><h1>Evidence requests</h1><p class="sub">Each request links to a template and a control, so every piece of evidence has a home.</p>' + list +
+      '<h3 style="margin-top:16px">New request</h3><form class="form" data-form="request"><label class="f wide">What we need<input type="text" name="title" required></label><label class="f">Template<select name="tpl">' + TEMPLATES.map(function (t) { return '<option value="' + t.id + '">' + t.id + ' ' + esc(t.name) + '</option>'; }).join('') + '</select></label><label class="f">Control<input type="text" name="control" placeholder="AC-2"></label><label class="f">Due<input type="text" name="due" placeholder="Day 10"></label><div class="wide"><button class="btn primary" type="submit">Add request</button></div></form></div>';
+  }
+  function messagesView(who) {
+    return '<div class="card"><div class="eb">Messages</div><h1>' + (who === 'Auditor' ? 'Messages with the practice' : 'Message your auditor') + '</h1><div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">' +
+      S.messages.map(function (m) { return '<div class="msg"><div class="who">' + esc(m.who) + ' · ' + esc(m.at) + '</div>' + esc(m.text) + '</div>'; }).join('') +
+      '</div><form class="row" data-form="message"><label class="sr" for="msgText">Message</label><input id="msgText" type="text" name="text" required style="flex:1 1 260px" placeholder="Write a message (no patient information)"><button class="btn primary" type="submit">Send</button></form></div>';
+  }
+
+  // ---------- client pages ----------
+  var C = {
+    checklist: function () { return evidenceView(false); },
+    risks: function () {
+      return '<div class="card"><div class="eb">Your risks</div><h1>What could go wrong, in plain language</h1><p class="sub">Each square is a risk to patient information. Darker means more urgent.</p>' + heatMap('inherent') + '</div>' +
+        S.risks.map(function (r) { var b = band(r.l * r.i); return '<div class="card"><div class="row"><span class="badge b-' + b[1] + '">' + b[0] + '</span><h3 style="margin:0">' + esc(r.threat) + ' · ' + esc(r.asset) + '</h3></div><p>' + esc(r.plain) + '</p><p class="note">Who fixes it: ' + esc(r.owner) + ' · Target: ' + esc(r.due) + '</p></div>'; }).join('');
+    },
+    todo: function () {
+      var mine = S.gaps.map(function (g, n) { return [g, n]; }).filter(function (x) { return x[0].owner !== 'IT Vendor'; });
+      return '<div class="card"><div class="eb">Your to-do list</div><h1>Items your practice owns</h1><p class="sub">Your IT vendor handles the technical items; these are yours.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">' +
+        mine.map(function (x) { var g = x[0]; return '<label class="msg row" style="justify-content:space-between"><span><input type="checkbox" data-done="' + x[1] + '"' + (g.status === 'Done' ? ' checked' : '') + '> <b>' + esc(g.next) + '</b><br><span class="note">' + esc(g.id) + ' · ' + esc(g.desc) + ' · due Day ' + g.due + '</span></span><span class="badge ' + sevClass(g.sev) + '">' + esc(g.sev) + '</span></label>'; }).join('') + '</div></div>';
+    },
+    reports: function () {
+      return reportHTML() + '<div class="card"><div class="eb">Client guide</div><h2>How to use this package</h2><p class="sub">Seven steps that take a small practice from naming an owner to a program that improves every cycle.</p><ol class="steps">' +
+        [['Start with governance', 'Name a security official and an owner for each risk.'], ['Run the risk register', 'List systems that hold ePHI, score each risk, choose a treatment, and assign an owner and due date.'], ['Document controls', 'Use the control narratives to record how each control works and what evidence proves it.'], ['Collect evidence the safe way', 'Minimum necessary information, redact when possible, restrict access, and store in an approved repository.'], ['Test and monitor', 'Run the access-control check each month and review logs weekly; record any exception in the tracker.'], ['Report to leadership', 'Use the governance report to show posture, findings and the decisions needed.'], ['Repeat', 'Review the program on a schedule so it improves each cycle.']].map(function (s) { return '<li><div><b>' + s[0] + '</b><br>' + s[1] + '</div></li>'; }).join('') + '</ol></div>';
+    },
+    messages: function () { return messagesView('Client'); }
+  };
+
+  var NAV = {
+    auditor: [['Engagement', [['home', 'Overview'], ['templates', '12 templates'], ['crosswalk', 'Crosswalk']]], ['Risk & control', [['risks', 'Risk register']]], ['Evidence', [['accounts', 'Account review'], ['sampling', 'Sampling'], ['evidence', 'Evidence requests']]], ['Decision', [['tracker', 'Audit tracker'], ['report', 'Governance report'], ['messages', 'Messages']]]],
+    client: [['Your practice', [['checklist', 'Checklist'], ['risks', 'My risks'], ['todo', 'To-do'], ['reports', 'Reports'], ['messages', 'Messages']]]]
+  };
+
+  function route() {
+    var parts = location.hash.replace(/^#\/?/, '').split('/');
+    var role = parts[0] === 'client' ? 'client' : 'auditor';
+    var page = parts[1] || (role === 'client' ? 'checklist' : 'home');
+    S.role = role; save();
+    document.querySelectorAll('[data-role]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.role === role)); });
+    var nav = '';
+    NAV[role].forEach(function (g) { nav += '<div class="grp">' + g[0] + '</div>' + g[1].map(function (p) { return '<a href="#/' + role + '/' + p[0] + '"' + ((page === p[0] || (page === 'template' && p[0] === 'templates')) ? ' aria-current="page"' : '') + '>' + p[1] + '</a>'; }).join(''); });
+    document.getElementById('nav').innerHTML = nav;
+    var views = role === 'client' ? C : A;
+    var html = page === 'template' ? A.template(parts[2]) : (views[page] || views[role === 'client' ? 'checklist' : 'home'])();
+    var main = document.getElementById('main');
+    main.innerHTML = html;
+    document.title = (main.querySelector('h1') ? main.querySelector('h1').textContent + ' — ' : '') + 'Logical Coders GRC';
+  }
+  function rerender() { var y = window.scrollY; route(); window.scrollTo(0, y); }
+
+  // ---------- events ----------
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-role],[data-action],[data-heat],[data-provided]');
+    if (!t) return;
+    if (t.dataset.role) { location.hash = '#/' + t.dataset.role; return; }
+    if (t.dataset.heat) { S.heatMode = t.dataset.heat; save(); rerender(); return; }
+    if (t.dataset.provided) { S.requests[+t.dataset.provided].status = 'Provided'; save(); rerender(); return; }
+    var a = t.dataset.action;
+    if (a === 'print') window.print();
+    if (a === 'reset' && confirm('Reset all demo data to the original sample?')) { S = seed(); save(); route(); }
+    if (a === 'run-review') { S.roster = document.getElementById('roster').value; S.accounts = document.getElementById('accounts').value; S.asOf = document.getElementById('asOf').value || '2026-04-30'; save(); rerender(); }
+    if (a === 'sample-csv') { S.roster = ROSTER_CSV; S.accounts = ACCOUNTS_CSV; S.asOf = '2026-04-30'; save(); rerender(); }
+  });
+  document.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.dataset.risk) { S.risks[+t.dataset.risk][t.dataset.k] = +t.value; save(); rerender(); }
+    if (t.dataset.gap) { S.gaps[+t.dataset.gap].status = t.value; save(); rerender(); }
+    if (t.dataset.done) { S.gaps[+t.dataset.done].status = t.checked ? 'Done' : 'In progress'; save(); rerender(); }
+    if (t.dataset.upload && t.files && t.files[0]) { var r = S.requests[+t.dataset.upload]; r.file = t.files[0].name; r.status = 'Provided'; save(); rerender(); }
+    if (t.dataset.load && t.files && t.files[0]) {
+      var which = t.dataset.load, reader = new FileReader();
+      reader.onload = function () { S[which] = String(reader.result); save(); rerender(); };
+      reader.readAsText(t.files[0]);
+    }
+  });
+  document.addEventListener('input', function (e) {
+    if (e.target.id !== 'xwFilter') return;
+    var q = e.target.value.toLowerCase();
+    document.querySelectorAll('#xw tbody tr').forEach(function (tr) { tr.hidden = q && tr.textContent.toLowerCase().indexOf(q) < 0; });
+  });
+  document.addEventListener('submit', function (e) {
+    var f = e.target, kind = f.dataset.form; if (!kind) return;
+    e.preventDefault();
+    var d = new FormData(f);
+    if (kind === 'risk') {
+      var n = S.risks.length + 1, id = 'R-' + String(n + 1).padStart(2, '0');
+      while (S.risks.some(function (r) { return r.id === id; })) { n++; id = 'R-' + String(n + 1).padStart(2, '0'); }
+      S.risks.push({ id: id, asset: d.get('asset'), threat: d.get('threat'), vuln: d.get('vuln') || '', existing: 'None', l: 3, i: 3, rl: 2, ri: 3, treatment: d.get('treatment') || 'To decide', owner: d.get('owner') || 'Unassigned', due: 'TBD', plain: 'New risk; plain-language summary to be written.' });
+    } else if (kind === 'request') {
+      S.requests.push({ id: 'ER-' + String(S.requests.length + 1).padStart(2, '0'), title: d.get('title'), tpl: d.get('tpl'), control: d.get('control') || '', due: d.get('due') || 'TBD', status: 'Requested', file: '' });
+    } else if (kind === 'message') {
+      S.messages.push({ who: S.role === 'client' ? 'Client' : 'Auditor', text: d.get('text'), at: new Date().toISOString().slice(0, 10) });
+    } else if (kind === 'sampling') {
+      S.sampling = { pop: Math.max(1, +d.get('pop') || 1), conf: +d.get('conf'), tol: Math.max(1, +d.get('tol') || 5), seed: +d.get('seed') || 1 };
+    } else {
+      var tp = TEMPLATES.filter(function (x) { return x.id === kind; })[0], v = {};
+      tp.fields.forEach(function (fl) { v[fl[0]] = fl[2] === 'checks' ? fl[3].map(function (_, i) { return d.getAll(fl[0]).indexOf(String(i)) >= 0; }) : d.get(fl[0]); });
+      S.templates[kind] = v; save();
+      var s = document.getElementById('saved'); if (s) s.textContent = 'Saved in this browser.';
+      return;
+    }
+    save(); rerender();
+  });
+  window.addEventListener('hashchange', function () { route(); document.getElementById('main').focus({ preventScroll: true }); window.scrollTo(0, 0); });
+  route();
+})();
+</script>
+</body>
+</html>
