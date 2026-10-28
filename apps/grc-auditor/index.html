@@ -88,6 +88,28 @@
   .result-pass { color: var(--good); font-weight: 700; } .result-ex { color: var(--crit); font-weight: 700; }
   footer { max-width: 1320px; margin: 0 auto; padding: 8px 24px 32px; font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .sr { position: absolute; left: -9999px; }
+  .who { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #CFE6EA; }
+  .who b { color: #fff; }
+  .who button { background: transparent; border: 1px solid rgba(255,255,255,.4); color: #fff; border-radius: 999px; padding: 5px 12px; cursor: pointer; font-weight: 600; }
+  .signin { max-width: 980px; margin: 24px auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .signin .card { display: flex; flex-direction: column; gap: 12px; }
+  .signin .ic { width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--teal); display: flex; align-items: center; justify-content: center; color: var(--teal); font-weight: 800; }
+  .stepper { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .stepper a { text-decoration: none; color: inherit; border: 1px solid var(--rule); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+  .stepper a.done { border-color: var(--good); }
+  .stepper a.now { border-color: var(--teal); box-shadow: 0 0 0 2px #D8EEEC; }
+  .stepper .n { width: 26px; height: 26px; border-radius: 999px; border: 2px solid var(--teal); color: var(--teal); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+  .stepper a.done .n { border-color: var(--good); color: var(--good); }
+  .tl { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin: 14px 0 6px; }
+  .tl div { position: relative; text-align: center; font-size: 12.5px; padding-top: 28px; color: var(--muted); }
+  .tl div::before { content: ''; position: absolute; top: 9px; left: 0; right: 0; height: 3px; background: var(--rule); }
+  .tl div::after { content: ''; position: absolute; top: 2px; left: calc(50% - 9px); width: 18px; height: 18px; border-radius: 999px; background: #fff; border: 3px solid var(--rule); }
+  .tl div.done { color: var(--ink); font-weight: 600; } .tl div.done::before { background: var(--good); } .tl div.done::after { border-color: var(--good); background: var(--good); }
+  .tl div.now { color: var(--teal); font-weight: 700; } .tl div.now::after { border-color: var(--teal); }
+  .hist { display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+  .hist div { display: flex; gap: 10px; } .hist span { color: var(--muted); min-width: 92px; }
+  .warn { border-left: 3px solid var(--warn); background: #FFF8E1; padding: 10px 12px; border-radius: 6px; font-size: 13px; }
+  @media (max-width: 860px) { .signin, .stepper { grid-template-columns: 1fr; } .tl { grid-template-columns: 1fr; text-align: left; } .tl div { text-align: left; padding: 4px 0 4px 30px; } .tl div::before { display: none; } .tl div::after { top: 6px; left: 0; } }
   @media (max-width: 860px) {
     .top { padding: 10px 16px; } .banner { padding: 8px 16px; }
     .wrap { flex-direction: column; align-items: stretch; padding: 16px; gap: 12px; }
@@ -108,10 +130,7 @@
 <body>
 <header class="top">
   <div class="brand"><b>Logical Coders GRC</b><span>Sunshine Dental Group · HIPAA audit engagement</span></div>
-  <div class="role" role="group" aria-label="Choose a view">
-    <button type="button" data-role="auditor">Auditor</button>
-    <button type="button" data-role="client">Client</button>
-  </div>
+  <div id="who" class="who"></div>
 </header>
 <div class="banner">Working prototype. All examples use fictional Sunshine Dental Group data; nothing leaves this browser. Every check is rule-based and repeatable, with no AI model making decisions.</div>
 <div class="wrap">
@@ -126,7 +145,8 @@
 <script>
 (function () {
   'use strict';
-  var KEY = 'lc-grc-demo-v1';
+  var KEY = 'lc-grc-demo-v2';
+  var FLOW = ['Submitted', 'Received', 'Under review', 'Findings ready', 'Complete'];
 
   // ---------- reference data ----------
   var TEMPLATES = [
@@ -214,6 +234,9 @@
       messages: [
         { who: 'Auditor', text: 'Welcome! Your checklist shows the five items we need first. Please do not upload anything with patient information.', at: '2026-04-01' }
       ],
+      session: null, pending: null,
+      profile: { done: false, practice: 'Sunshine Dental Group', staff: '22', offices: '4', systems: ['Cloud EHR', 'Email', 'Patient portal', 'Staff phones'], itvendor: 'Outside IT vendor', contact: 'Office Manager' },
+      submission: { status: 'Not started', attested: false, history: [] },
       roster: ROSTER_CSV, accounts: ACCOUNTS_CSV, asOf: '2026-04-30',
       sampling: { pop: 120, conf: 95, tol: 5, seed: 2026 }
     };
@@ -376,15 +399,25 @@
         '<div class="tbl"><table><thead><tr><th>ID</th><th>Description</th><th>Risk</th><th>Owner</th><th>Due</th><th>Status</th><th>Next action</th></tr></thead><tbody>' +
         S.gaps.map(function (g, n) { return '<tr><td class="mono">' + esc(g.id) + '</td><td>' + esc(g.desc) + '</td><td><span class="badge ' + sevClass(g.sev) + '">' + esc(g.sev) + '</span></td><td>' + esc(g.owner) + '</td><td>Day ' + g.due + '</td><td><select aria-label="Status for ' + esc(g.id) + '" data-gap="' + n + '">' + ['Not started', 'In progress', 'Done'].map(function (s) { return '<option' + (s === g.status ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select></td><td>' + esc(g.next) + '</td></tr>'; }).join('') + '</tbody></table></div></div>';
     },
-    report: function () { return reportHTML(); },
+    report: function () {
+      var st = S.submission.status;
+      var act = st === 'Under review' ? '<button class="btn primary" type="button" data-action="publish">Publish findings to the practice</button>' : st === 'Findings ready' ? '<button class="btn primary" type="button" data-action="close">Deliver final package and close engagement</button>' : st === 'Complete' ? '<span class="badge b-ok">Engagement complete</span>' : '<span class="note">Available once testing has started.</span>';
+      return '<div class="card noprint"><div class="eb">Delivery</div><h2>Report and delivery</h2>' + timeline() + '<div class="row">' + act + '</div></div>' + reportHTML();
+    },
     messages: function () { return messagesView('Auditor'); }
   };
+  function locked() { return FLOW.indexOf(S.submission.status) >= 0; }
   function evidenceView(isAuditor) {
     var list = '<div class="tbl"><table><thead><tr><th>ID</th><th>What we need</th><th>Due</th><th>Linked to</th><th>Status</th><th>' + (isAuditor ? 'File' : 'Action') + '</th></tr></thead><tbody>' +
       S.requests.map(function (r, n) { var t = TEMPLATES.filter(function (x) { return x.id === r.tpl; })[0];
-        return '<tr><td class="mono">' + esc(r.id) + '</td><td>' + esc(r.title) + '</td><td>' + esc(r.due) + '</td><td>' + (t ? 'Template ' + t.id + ' · ' : '') + esc(r.control) + '</td><td><span class="badge ' + statusClass(r.status) + '">' + esc(r.status) + '</span></td><td>' +
-          (isAuditor ? esc(r.file || '—') : '<label class="btn" style="padding:4px 10px">Upload<input type="file" class="sr" data-upload="' + n + '"></label> <button class="btn" type="button" style="padding:4px 10px" data-provided="' + n + '">Mark as provided</button>' + (r.file ? '<div class="note">' + esc(r.file) + '</div>' : '')) + '</td></tr>'; }).join('') + '</tbody></table></div>';
-    if (!isAuditor) return '<div class="card"><div class="eb">Your checklist</div><h1>What we need from you</h1><p class="sub">Please send each item by its due date. Do not upload anything with patient information, passwords or full Social Security numbers. In this demo only the file name is kept.</p>' + list + '</div>';
+        var canEdit = !locked() || r.review === 'Returned';
+        var review = r.review ? '<div class="note"><b class="' + (r.review === 'Accepted' ? 'result-pass' : 'result-ex') + '">' + esc(r.review) + '</b>' + (r.reviewNote ? ': ' + esc(r.reviewNote) : '') + '</div>' : '';
+        return '<tr><td class="mono">' + esc(r.id) + '</td><td>' + esc(r.title) + (r.na ? '<div class="note">Not applicable: ' + esc(r.na) + '</div>' : '') + '</td><td>' + esc(r.due) + '</td><td>' + (t ? 'Template ' + t.id + ' · ' : '') + esc(r.control) + '</td><td><span class="badge ' + statusClass(r.status) + '">' + esc(r.status) + '</span>' + review + '</td><td>' +
+          (isAuditor ? esc(r.file || '—') : (canEdit ? '<label class="btn" style="padding:4px 10px">Upload file<input type="file" class="sr" data-upload="' + n + '"></label> <button class="btn" type="button" style="padding:4px 10px" data-na="' + n + '">Not applicable</button>' : '<span class="note">Locked after submission</span>') + (r.file ? '<div class="note">📎 ' + esc(r.file) + '</div>' : '')) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    if (!isAuditor) {
+      var done = S.requests.filter(function (r) { return r.status === 'Provided' || r.status === 'Not applicable'; }).length;
+      return '<div class="card"><div class="eb">Step 2 of 4 · Evidence checklist</div><h1>What we need from you</h1><p class="sub">Upload each item, or mark it "Not applicable" with a short reason. ' + done + ' of ' + S.requests.length + ' ready.</p><div class="warn">Never upload patient records, passwords or full Social Security numbers. Counts and system exports are enough. In this demo only the file name is kept; nothing leaves your browser.</div><div style="margin-top:12px">' + list + '</div><div class="row" style="margin-top:12px"><a class="btn primary" href="#/client/submit">Continue to review and submit</a></div></div>';
+    }
     return '<div class="card"><div class="eb">Fieldwork</div><h1>Evidence requests</h1><p class="sub">Each request links to a template and a control, so every piece of evidence has a home.</p>' + list +
       '<h3 style="margin-top:16px">New request</h3><form class="form" data-form="request"><label class="f wide">What we need<input type="text" name="title" required></label><label class="f">Template<select name="tpl">' + TEMPLATES.map(function (t) { return '<option value="' + t.id + '">' + t.id + ' ' + esc(t.name) + '</option>'; }).join('') + '</select></label><label class="f">Control<input type="text" name="control" placeholder="AC-2"></label><label class="f">Due<input type="text" name="due" placeholder="Day 10"></label><div class="wide"><button class="btn primary" type="submit">Add request</button></div></form></div>';
   }
@@ -394,9 +427,65 @@
       '</div><form class="row" data-form="message"><label class="sr" for="msgText">Message</label><input id="msgText" type="text" name="text" required style="flex:1 1 260px" placeholder="Write a message (no patient information)"><button class="btn primary" type="submit">Send</button></form></div>';
   }
 
+  // ---------- shared progress views ----------
+  function timeline() {
+    var at = FLOW.indexOf(S.submission.status);
+    return '<div class="tl" aria-label="Engagement progress">' + FLOW.map(function (s, i) { var lab = { 'Received': 'Received by Logical Coders' }[s] || s; return '<div class="' + (i < at || (at === FLOW.length - 1) ? 'done' : i === at ? 'now' : '') + '">' + lab + '</div>'; }).join('') + '</div>';
+  }
+  function history() {
+    var h = S.submission.history;
+    return h.length ? '<div class="hist">' + h.slice().reverse().map(function (x) { return '<div><span>' + esc(x.at) + '</span>' + esc(x.text) + '</div>'; }).join('') + '</div>' : '<p class="note">Nothing yet.</p>';
+  }
+  function log(text) { S.submission.history.push({ at: new Date().toISOString().slice(0, 10), text: text }); }
+
+  // ---------- sign in ----------
+  function signinView() {
+    if (S.pending) {
+      return '<div class="signin" style="grid-template-columns:1fr;max-width:460px"><div class="card"><div class="eb">Two-step sign-in</div><h1>Enter your 6-digit code</h1><p class="sub">Open your authenticator app and enter the code for <b>' + esc(S.pending.email) + '</b>.</p><form class="form" data-form="mfa" style="grid-template-columns:1fr"><label class="f">Code<input type="text" name="code" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" title="Enter the 6-digit code" placeholder="123456" required autocomplete="one-time-code"></label><button class="btn primary" type="submit">Verify and continue</button></form><p class="note">Demo: type any 6 digits. Real accounts would require this step every time.</p><button class="btn" type="button" data-action="cancel-mfa">Back</button></div></div>';
+    }
+    function card(role, ic, title, who, email, desc) {
+      return '<div class="card"><div class="ic">' + ic + '</div><div class="eb">' + who + '</div><h1>' + title + '</h1><p class="sub">' + desc + '</p><form class="form" data-form="signin" data-r="' + role + '" style="grid-template-columns:1fr"><label class="f">Work email<input type="email" name="email" value="' + email + '" required autocomplete="username"></label><label class="f">Password<input type="password" name="password" placeholder="Demo: leave blank" autocomplete="off"></label><button class="btn primary" type="submit">Sign in</button></form></div>';
+    }
+    return '<div style="text-align:center;margin-top:10px"><h1>Sign in to Logical Coders GRC</h1><p class="sub">Choose the portal for your role. Demo accounts are filled in; do not enter a real password.</p></div><div class="signin">' +
+      card('client', '+', 'Practice portal', 'For medical and dental office staff', 'office.manager@sunshinedental.example', 'Answer a short practice profile, upload the evidence we ask for, submit it to Logical Coders, and track your audit until the report is delivered.') +
+      card('auditor', 'LC', 'Logical Coders staff', 'For auditors', 'anel@logicalcoders.example', 'Review client submissions, run the 12 templates and automated checks, publish findings, and close the engagement.') + '</div>' +
+      '<p class="note" style="text-align:center">New here? <a href="walkthrough.html">See the screen-by-screen walkthrough</a>.</p>';
+  }
+
   // ---------- client pages ----------
   var C = {
+    home: function () {
+      var p = S.profile.done, up = S.requests.filter(function (r) { return r.status === 'Provided' || r.status === 'Not applicable'; }).length, sub = locked();
+      var steps = [['profile', 'Practice profile', p ? 'Done' : 'About 5 minutes', p], ['checklist', 'Upload evidence', up + ' of ' + S.requests.length + ' ready', up === S.requests.length], ['submit', 'Review and submit', sub ? 'Submitted' : 'Not yet', sub], ['status', 'Track progress', S.submission.status, S.submission.status === 'Complete']];
+      var nowI = steps.findIndex(function (s) { return !s[3]; });
+      return '<div class="card"><div class="eb">Welcome, Office Manager</div><h1>Your HIPAA security review</h1><p class="sub">Four steps. Logical Coders does the testing; you gather what we ask for. Most offices finish their part in under a week.</p><div class="stepper" style="margin-top:12px">' +
+        steps.map(function (s, i) { return '<a href="#/client/' + s[0] + '" class="' + (s[3] ? 'done' : i === nowI ? 'now' : '') + '"><span class="n">' + (s[3] ? '✓' : i + 1) + '</span><b>' + s[1] + '</b><span class="note">' + esc(s[2]) + '</span></a>'; }).join('') + '</div></div>' +
+        '<div class="card"><h2>Where your review stands</h2>' + (sub ? timeline() : '<p class="note">Your timeline starts when you submit your evidence.</p>') + '</div>';
+    },
+    profile: function () {
+      var p = S.profile, sys = ['Cloud EHR', 'Email', 'Patient portal', 'Staff phones', 'Imaging system', 'Online payments'];
+      return '<div class="card"><div class="eb">Step 1 of 4 · Practice profile</div><h1>Tell us about your practice</h1><p class="sub">This tells us which safeguards to test. No patient information is needed.</p><form class="form" data-form="profile" style="margin-top:10px">' +
+        '<label class="f">Practice name<input type="text" name="practice" value="' + esc(p.practice) + '" required></label><label class="f">Number of staff<input type="number" name="staff" value="' + esc(p.staff) + '" min="1"></label><label class="f">Number of offices<input type="number" name="offices" value="' + esc(p.offices) + '" min="1"></label><label class="f">Who manages your computers?<input type="text" name="itvendor" value="' + esc(p.itvendor) + '"></label><label class="f">Main contact for this review<input type="text" name="contact" value="' + esc(p.contact) + '"></label>' +
+        '<fieldset class="f wide" style="border:0;padding:0;margin:0"><legend style="font-weight:600;font-size:12.5px;margin-bottom:6px">Systems that hold patient information</legend><div class="row">' + sys.map(function (s) { return '<label><input type="checkbox" name="systems" value="' + s + '"' + (p.systems.indexOf(s) >= 0 ? ' checked' : '') + '> ' + s + '</label>'; }).join('') + '</div></fieldset>' +
+        '<div class="wide row"><button class="btn primary" type="submit">Save and continue</button></div></form></div>';
+    },
     checklist: function () { return evidenceView(false); },
+    submit: function () {
+      var missing = S.requests.filter(function (r) { return r.status !== 'Provided' && r.status !== 'Not applicable'; });
+      if (locked()) return '<div class="card"><div class="eb">Step 3 of 4</div><h1>Submitted</h1><p class="sub">Your evidence package went to Logical Coders. Follow its progress on the tracking page.</p><a class="btn primary" href="#/client/status">Track progress</a></div>';
+      return '<div class="card"><div class="eb">Step 3 of 4 · Review and submit</div><h1>Check your package before you send it</h1>' +
+        '<div class="grid" style="margin:12px 0"><div class="stat"><div class="n">' + (S.profile.done ? '✓' : '—') + '</div><div class="l">Practice profile</div></div><div class="stat"><div class="n">' + (S.requests.length - missing.length) + ' / ' + S.requests.length + '</div><div class="l">Evidence items ready</div></div></div>' +
+        (missing.length || !S.profile.done ? '<div class="warn">Before you can submit: ' + (!S.profile.done ? 'finish the practice profile. ' : '') + (missing.length ? 'upload or mark not applicable: ' + missing.map(function (r) { return r.id; }).join(', ') + '.' : '') + '</div>' : '') +
+        '<div class="tbl" style="margin-top:12px"><table><thead><tr><th>Item</th><th>Status</th><th>File</th></tr></thead><tbody>' + S.requests.map(function (r) { return '<tr><td>' + esc(r.id) + ' · ' + esc(r.title) + '</td><td><span class="badge ' + statusClass(r.status) + '">' + esc(r.status) + '</span></td><td class="note">' + esc(r.file || r.na || '—') + '</td></tr>'; }).join('') + '</tbody></table></div>' +
+        '<form data-form="submit" style="margin-top:14px;display:flex;flex-direction:column;gap:10px"><label><input type="checkbox" name="attest" required> I confirm these files are accurate and contain no patient records, passwords or full Social Security numbers.</label><div><button class="btn primary" type="submit"' + (missing.length || !S.profile.done ? ' disabled' : '') + '>Submit to Logical Coders</button></div></form></div>';
+    },
+    status: function () {
+      var st = S.submission.status;
+      var next = { 'Not started': 'Finish your profile and checklist, then submit.', 'In progress': 'Finish your checklist, then submit.', 'Submitted': 'Logical Coders will confirm receipt within one business day.', 'Received': 'Your auditor is checking each file. You may be asked to replace one.', 'Under review': 'Testing is under way. Watch for returned items on your checklist.', 'Findings ready': 'Read your report and start your to-do list.', 'Complete': 'Your review is complete. Keep the report for six years.' }[st];
+      return '<div class="card"><div class="eb">Step 4 of 4 · Track progress</div><h1>Status: ' + esc(st) + '</h1><p class="sub">' + esc(next) + '</p>' + (locked() ? timeline() : '') +
+        (st === 'Findings ready' || st === 'Complete' ? '<div class="row" style="margin-top:12px"><a class="btn primary" href="#/client/reports">Open your report</a><a class="btn" href="#/client/todo">Your to-do list</a></div>' : '') + '</div>' +
+        '<div class="card"><h2>Activity</h2>' + history() + '</div>';
+    },
     risks: function () {
       return '<div class="card"><div class="eb">Your risks</div><h1>What could go wrong, in plain language</h1><p class="sub">Each square is a risk to patient information. Darker means more urgent.</p>' + heatMap('inherent') + '</div>' +
         S.risks.map(function (r) { var b = band(r.l * r.i); return '<div class="card"><div class="row"><span class="badge b-' + b[1] + '">' + b[0] + '</span><h3 style="margin:0">' + esc(r.threat) + ' · ' + esc(r.asset) + '</h3></div><p>' + esc(r.plain) + '</p><p class="note">Who fixes it: ' + esc(r.owner) + ' · Target: ' + esc(r.due) + '</p></div>'; }).join('');
@@ -413,22 +502,51 @@
     messages: function () { return messagesView('Client'); }
   };
 
+  // ---------- auditor engagement pages ----------
+  A.engagements = function () {
+    var st = S.submission.status;
+    return '<div class="card"><div class="eb">Logical Coders · Auditor</div><h1>Engagements</h1><p class="sub">Every client review in one place. New submissions show first.</p><div class="tbl" style="margin-top:10px"><table><thead><tr><th>Client</th><th>Service</th><th>Status</th><th>Evidence</th><th></th></tr></thead><tbody>' +
+      '<tr><td><b>Sunshine Dental Group</b><div class="note">22 staff · 4 offices</div></td><td>HIPAA security review</td><td><span class="badge ' + (st === 'Submitted' ? 'b-high' : st === 'Complete' ? 'b-ok' : 'b-ip') + '">' + esc(st === 'Submitted' ? 'New submission' : st) + '</span></td><td>' + S.requests.filter(function (r) { return r.status === 'Provided' || r.status === 'Not applicable'; }).length + ' of ' + S.requests.length + '</td><td><a class="btn" href="#/auditor/review">Open</a></td></tr>' +
+      '<tr><td>Bayside Family Counseling<div class="note">fictional</div></td><td>HIPAA security review</td><td><span class="badge b-open">Waiting on client</span></td><td>1 of 5</td><td></td></tr>' +
+      '<tr><td>Pelican Pediatric Clinic<div class="note">fictional</div></td><td>Monthly support</td><td><span class="badge b-ok">Complete</span></td><td>5 of 5</td><td></td></tr></tbody></table></div></div>';
+  };
+  A.review = function () {
+    var st = S.submission.status, accepted = S.requests.filter(function (r) { return r.review === 'Accepted'; }).length;
+    var actions = st === 'Submitted' ? '<button class="btn primary" type="button" data-action="ack">Confirm receipt to client</button>' : st === 'Received' ? '<button class="btn primary" type="button" data-action="start-review">Start testing</button>' : '';
+    return '<div class="card"><div class="eb">Sunshine Dental Group · submission</div><h1>Review the evidence package</h1><p class="sub">Run the seven acceptance checks on each file, then accept it or return it with a note.</p>' + timeline() + '<div class="row" style="margin:6px 0 12px">' + actions + '<span class="note">' + accepted + ' of ' + S.requests.length + ' accepted</span></div>' +
+      (st === 'Not started' || st === 'In progress' ? '<div class="warn">The client has not submitted yet.</div>' :
+      '<div class="tbl"><table><thead><tr><th>Item</th><th>File</th><th>Review</th><th>Decision</th></tr></thead><tbody>' + S.requests.map(function (r, n) {
+        return '<tr><td>' + esc(r.id) + ' · ' + esc(r.title) + '</td><td class="note">' + esc(r.file || (r.na ? 'N/A: ' + r.na : '—')) + '</td><td>' + (r.review ? '<b class="' + (r.review === 'Accepted' ? 'result-pass' : 'result-ex') + '">' + esc(r.review) + '</b>' + (r.reviewNote ? '<div class="note">' + esc(r.reviewNote) + '</div>' : '') : '<span class="note">Not reviewed</span>') + '</td><td><div class="row"><button class="btn" type="button" style="padding:4px 10px" data-accept="' + n + '">Accept</button><button class="btn" type="button" style="padding:4px 10px" data-return="' + n + '">Return</button></div></td></tr>'; }).join('') + '</tbody></table></div>') +
+      '<p class="note" style="margin-top:10px">Acceptance checks: right system · in audit period · performer named · complete and traceable · sensitive data minimized · source and date recorded · in approved repository.</p></div>' +
+      '<div class="card"><h2>Next steps</h2><div class="row"><a class="btn" href="#/auditor/accounts">Run account review</a><a class="btn" href="#/auditor/risks">Score risks</a><a class="btn" href="#/auditor/tracker">Update tracker</a><a class="btn" href="#/auditor/report">Governance report and delivery</a></div></div>';
+  };
+
   var NAV = {
-    auditor: [['Engagement', [['home', 'Overview'], ['templates', '12 templates'], ['crosswalk', 'Crosswalk']]], ['Risk & control', [['risks', 'Risk register']]], ['Evidence', [['accounts', 'Account review'], ['sampling', 'Sampling'], ['evidence', 'Evidence requests']]], ['Decision', [['tracker', 'Audit tracker'], ['report', 'Governance report'], ['messages', 'Messages']]]],
-    client: [['Your practice', [['checklist', 'Checklist'], ['risks', 'My risks'], ['todo', 'To-do'], ['reports', 'Reports'], ['messages', 'Messages']]]]
+    auditor: [['Engagements', [['engagements', 'All engagements'], ['review', 'Submission review']]], ['This engagement', [['home', 'Overview'], ['templates', '12 templates'], ['crosswalk', 'Crosswalk']]], ['Risk & control', [['risks', 'Risk register']]], ['Evidence', [['accounts', 'Account review'], ['sampling', 'Sampling'], ['evidence', 'Evidence requests']]], ['Decision', [['tracker', 'Audit tracker'], ['report', 'Report and delivery'], ['messages', 'Messages']]]],
+    client: [['Your review', [['home', 'Home'], ['profile', '1. Practice profile'], ['checklist', '2. Evidence checklist'], ['submit', '3. Review and submit'], ['status', '4. Track progress']]], ['Results', [['risks', 'My risks'], ['todo', 'To-do'], ['reports', 'Reports'], ['messages', 'Messages']]]]
   };
 
   function route() {
+    var who = document.getElementById('who');
+    if (!S.session) {
+      who.innerHTML = '';
+      document.getElementById('nav').style.display = 'none';
+      document.getElementById('main').innerHTML = signinView();
+      document.title = 'Sign in — Logical Coders GRC';
+      return;
+    }
+    document.getElementById('nav').style.display = '';
     var parts = location.hash.replace(/^#\/?/, '').split('/');
-    var role = parts[0] === 'client' ? 'client' : 'auditor';
-    var page = parts[1] || (role === 'client' ? 'checklist' : 'home');
+    var role = S.session.role;
+    if (parts[0] !== role) { parts = [role]; }
+    var page = parts[1] || (role === 'client' ? 'home' : 'engagements');
     S.role = role; save();
-    document.querySelectorAll('[data-role]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.role === role)); });
+    who.innerHTML = '<span>Signed in as <b>' + esc(S.session.name) + '</b></span><button type="button" data-action="signout">Sign out</button>';
     var nav = '';
     NAV[role].forEach(function (g) { nav += '<div class="grp">' + g[0] + '</div>' + g[1].map(function (p) { return '<a href="#/' + role + '/' + p[0] + '"' + ((page === p[0] || (page === 'template' && p[0] === 'templates')) ? ' aria-current="page"' : '') + '>' + p[1] + '</a>'; }).join(''); });
     document.getElementById('nav').innerHTML = nav;
     var views = role === 'client' ? C : A;
-    var html = page === 'template' ? A.template(parts[2]) : (views[page] || views[role === 'client' ? 'checklist' : 'home'])();
+    var html = page === 'template' ? A.template(parts[2]) : (views[page] || views[role === 'client' ? 'home' : 'engagements'])();
     var main = document.getElementById('main');
     main.innerHTML = html;
     document.title = (main.querySelector('h1') ? main.querySelector('h1').textContent + ' — ' : '') + 'Logical Coders GRC';
@@ -437,12 +555,27 @@
 
   // ---------- events ----------
   document.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-role],[data-action],[data-heat],[data-provided]');
+    var t = e.target.closest('[data-action],[data-heat],[data-na],[data-accept],[data-return]');
     if (!t) return;
-    if (t.dataset.role) { location.hash = '#/' + t.dataset.role; return; }
     if (t.dataset.heat) { S.heatMode = t.dataset.heat; save(); rerender(); return; }
-    if (t.dataset.provided) { S.requests[+t.dataset.provided].status = 'Provided'; save(); rerender(); return; }
+    if (t.dataset.na) {
+      var rq = S.requests[+t.dataset.na], cell = t.parentNode;
+      if (!cell.querySelector('.na-form')) cell.insertAdjacentHTML('beforeend', '<form class="na-form row" data-form="na" data-n="' + t.dataset.na + '" style="margin-top:6px"><label class="sr" for="na' + t.dataset.na + '">Reason</label><input id="na' + t.dataset.na + '" type="text" name="why" required placeholder="Why it does not apply" style="flex:1 1 140px"><button class="btn" type="submit" style="padding:4px 10px">Save</button></form>');
+      cell.querySelector('.na-form input').focus(); return;
+    }
+    if (t.dataset.accept) { var ra = S.requests[+t.dataset.accept]; ra.review = 'Accepted'; ra.reviewNote = 'All seven checks passed'; save(); rerender(); return; }
+    if (t.dataset.return) {
+      var cellR = t.parentNode;
+      if (!cellR.querySelector('.ret-form')) cellR.insertAdjacentHTML('beforeend', '<form class="ret-form row" data-form="ret" data-n="' + t.dataset.return + '" style="margin-top:6px"><label class="sr" for="ret' + t.dataset.return + '">Note to client</label><input id="ret' + t.dataset.return + '" type="text" name="why" required placeholder="What to fix" style="flex:1 1 140px"><button class="btn" type="submit" style="padding:4px 10px">Return</button></form>');
+      cellR.querySelector('.ret-form input').focus(); return;
+    }
     var a = t.dataset.action;
+    if (a === 'signout') { S.session = null; save(); location.hash = ''; route(); return; }
+    if (a === 'cancel-mfa') { S.pending = null; save(); route(); return; }
+    if (a === 'ack') { S.submission.status = 'Received'; log('Logical Coders confirmed receipt of your evidence package.'); S.messages.push({ who: 'Auditor', text: 'We received your package and are checking each file now.', at: new Date().toISOString().slice(0, 10) }); save(); rerender(); return; }
+    if (a === 'start-review') { S.submission.status = 'Under review'; log('Testing started: account review, risk scoring and log review.'); save(); rerender(); return; }
+    if (a === 'publish') { S.submission.status = 'Findings ready'; log('Findings published: governance report and to-do list are ready.'); save(); rerender(); return; }
+    if (a === 'close') { S.submission.status = 'Complete'; log('Final package delivered. Engagement complete.'); save(); rerender(); return; }
     if (a === 'print') window.print();
     if (a === 'reset' && confirm('Reset all demo data to the original sample?')) { S = seed(); save(); route(); }
     if (a === 'run-review') { S.roster = document.getElementById('roster').value; S.accounts = document.getElementById('accounts').value; S.asOf = document.getElementById('asOf').value || '2026-04-30'; save(); rerender(); }
@@ -453,7 +586,7 @@
     if (t.dataset.risk) { S.risks[+t.dataset.risk][t.dataset.k] = +t.value; save(); rerender(); }
     if (t.dataset.gap) { S.gaps[+t.dataset.gap].status = t.value; save(); rerender(); }
     if (t.dataset.done) { S.gaps[+t.dataset.done].status = t.checked ? 'Done' : 'In progress'; save(); rerender(); }
-    if (t.dataset.upload && t.files && t.files[0]) { var r = S.requests[+t.dataset.upload]; r.file = t.files[0].name; r.status = 'Provided'; save(); rerender(); }
+    if (t.dataset.upload && t.files && t.files[0]) { var r = S.requests[+t.dataset.upload]; r.file = t.files[0].name; r.status = 'Provided'; r.na = ''; if (r.review === 'Returned') { r.review = ''; r.reviewNote = ''; log('Replacement uploaded for ' + r.id + '.'); } if (S.submission.status === 'Not started') S.submission.status = 'In progress'; save(); rerender(); }
     if (t.dataset.load && t.files && t.files[0]) {
       var which = t.dataset.load, reader = new FileReader();
       reader.onload = function () { S[which] = String(reader.result); save(); rerender(); };
@@ -469,6 +602,23 @@
     var f = e.target, kind = f.dataset.form; if (!kind) return;
     e.preventDefault();
     var d = new FormData(f);
+    if (kind === 'signin') {
+      var r0 = f.dataset.r;
+      S.pending = { role: r0, email: d.get('email'), name: r0 === 'client' ? 'Office Manager · Sunshine Dental' : 'Anèl Henning · Logical Coders' };
+      save(); route(); return;
+    }
+    if (kind === 'mfa') {
+      S.session = { role: S.pending.role, name: S.pending.name, email: S.pending.email }; S.pending = null; save();
+      location.hash = '#/' + S.session.role; route(); return;
+    }
+    if (kind === 'profile') {
+      S.profile = { done: true, practice: d.get('practice'), staff: d.get('staff'), offices: d.get('offices'), itvendor: d.get('itvendor'), contact: d.get('contact'), systems: d.getAll('systems') };
+      if (S.submission.status === 'Not started') S.submission.status = 'In progress';
+      save(); location.hash = '#/client/checklist'; return;
+    }
+    if (kind === 'na') { var rn = S.requests[+f.dataset.n]; rn.status = 'Not applicable'; rn.na = d.get('why'); rn.file = ''; if (rn.review === 'Returned') { rn.review = ''; rn.reviewNote = ''; } if (S.submission.status === 'Not started') S.submission.status = 'In progress'; save(); rerender(); return; }
+    if (kind === 'ret') { var rr = S.requests[+f.dataset.n]; rr.review = 'Returned'; rr.reviewNote = d.get('why'); log(rr.id + ' returned to the practice: ' + d.get('why')); S.messages.push({ who: 'Auditor', text: rr.id + ' needs a new file: ' + d.get('why'), at: new Date().toISOString().slice(0, 10) }); save(); rerender(); return; }
+    if (kind === 'submit') { S.submission.status = 'Submitted'; S.submission.attested = true; log('Evidence package submitted to Logical Coders (' + S.requests.length + ' items).'); save(); location.hash = '#/client/status'; return; }
     if (kind === 'risk') {
       var n = S.risks.length + 1, id = 'R-' + String(n + 1).padStart(2, '0');
       while (S.risks.some(function (r) { return r.id === id; })) { n++; id = 'R-' + String(n + 1).padStart(2, '0'); }
@@ -489,6 +639,35 @@
     save(); rerender();
   });
   window.addEventListener('hashchange', function () { route(); document.getElementById('main').focus({ preventScroll: true }); window.scrollTo(0, 0); });
+
+  // ?stage=… loads a ready-made point in the story (used for the walkthrough screenshots).
+  function applyStage(name) {
+    var s = seed(), files = ['staff-roster-2026-04.csv', 'ehr-accounts-mfa-2026-04.csv', 'baa-it-vendor-signed.pdf', 'backup-restore-test-2026-03.pdf', 'training-roster-2026.xlsx'];
+    var client = { role: 'client', name: 'Office Manager · Sunshine Dental', email: 'office.manager@sunshinedental.example' };
+    var auditor = { role: 'auditor', name: 'Anèl Henning · Logical Coders', email: 'anel@logicalcoders.example' };
+    function upload(k) { for (var i = 0; i < k; i++) { s.requests[i].status = 'Provided'; s.requests[i].file = files[i]; } }
+    function h(at, text) { s.submission.history.push({ at: at, text: text }); }
+    if (name === 'mfa') s.pending = { role: 'client', email: client.email, name: client.name };
+    if (/^client|^auditor/.test(name)) s.session = /^client/.test(name) ? client : auditor;
+    if (name !== 'client-start' && name !== 'mfa' && name !== 'signin') s.profile.done = true;
+    if (name === 'client-uploading') { upload(3); s.submission.status = 'In progress'; }
+    if (name === 'client-ready') { upload(5); s.requests[2].status = 'Not applicable'; s.requests[2].file = ''; s.requests[2].na = 'IT vendor agreement being signed this week'; s.submission.status = 'In progress'; }
+    if (/submitted|inbox|review|testing|findings|complete/.test(name)) {
+      upload(5); s.requests[2].status = 'Not applicable'; s.requests[2].file = ''; s.requests[2].na = 'IT vendor agreement being signed this week';
+      s.submission.status = 'Submitted'; s.submission.attested = true; h('2026-04-06', 'Evidence package submitted to Logical Coders (5 items).');
+    }
+    if (/review|testing|findings|complete/.test(name)) {
+      s.submission.status = 'Received'; h('2026-04-07', 'Logical Coders confirmed receipt of your evidence package.');
+      [0, 1, 4].forEach(function (i) { s.requests[i].review = 'Accepted'; s.requests[i].reviewNote = 'All seven checks passed'; });
+      s.requests[3].review = 'Returned'; s.requests[3].reviewNote = 'File is from 2025; please send the March 2026 test'; h('2026-04-07', 'ER-04 returned to the practice: file is from 2025.');
+    }
+    if (/testing|findings|complete/.test(name)) { s.submission.status = 'Under review'; s.requests[3].review = 'Accepted'; s.requests[3].reviewNote = 'Replacement accepted'; h('2026-04-08', 'Replacement uploaded for ER-04.'); h('2026-04-09', 'Testing started: account review, risk scoring and log review.'); }
+    if (/findings|complete/.test(name)) { s.submission.status = 'Findings ready'; h('2026-04-20', 'Findings published: governance report and to-do list are ready.'); }
+    if (/complete/.test(name)) { s.submission.status = 'Complete'; s.gaps[0].status = 'Done'; s.gaps[1].status = 'Done'; s.gaps[3].status = 'Done'; s.gaps[4].status = 'In progress'; h('2026-04-30', 'Final package delivered. Engagement complete.'); }
+    return s;
+  }
+  var stage = (location.search.match(/[?&]stage=([\w-]+)/) || [])[1];
+  if (stage) { S = applyStage(stage); save(); }
   route();
 })();
 </script>
