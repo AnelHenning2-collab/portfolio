@@ -159,7 +159,7 @@
     { id: '02', name: 'Audit Plan', hipaa: '§ 164.308(a)(8)', csf: 'GV.OV', phase: 'Plan',
       fields: [['period', 'Audit period', 'text', 'January 1 to April 30, 2026'],
         ['systems', 'Systems in scope', 'area', 'Cloud EHR, Microsoft 365 email, patient portal, front-desk workstations, staff mobile devices'],
-        ['team', 'Team and roles', 'area', 'Auditor: Anél Henning. Client contacts: Dentist-Owner, Office Manager. IT vendor for technical evidence.'],
+        ['team', 'Team and roles', 'area', 'Auditor: Anèl Henning. Client contacts: Dentist-Owner, Office Manager. IT vendor for technical evidence.'],
         ['fieldwork', 'Fieldwork dates', 'text', 'Weeks 2 to 4 of the engagement'],
         ['requests', 'Evidence requests', 'area', 'See the Evidence requests page; each request is linked to a template and a control.']] },
     { id: '03', name: 'Fieldwork Support Packet', hipaa: '§ 164.316(b)', csf: 'GV.PO', phase: 'Evidence',
@@ -319,7 +319,7 @@
       top.map(function (r) { var b = band(r.l * r.i), rb = band(r.rl * r.ri); return '<tr><td class="mono">' + esc(r.id) + '</td><td>' + esc(r.threat) + '</td><td>' + esc(r.asset) + '</td><td><span class="badge b-' + b[1] + '">' + (r.l * r.i) + ' ' + b[0] + '</span></td><td><span class="badge b-' + rb[1] + '">' + (r.rl * r.ri) + ' ' + rb[0] + '</span></td></tr>'; }).join('') +
       '</tbody></table></div><h3 style="margin-top:16px">Key findings</h3><ul>' + open.map(function (g) { return '<li><b>' + esc(g.id) + '</b> ' + esc(g.desc) + ' <span class="badge ' + sevClass(g.sev) + '">' + esc(g.sev) + '</span></li>'; }).join('') + (open.length ? '' : '<li>All findings closed.</li>') + '</ul>' +
       '<h3>Decisions requested</h3><ul><li>Name a security official</li><li>Approve the risk treatments</li><li>Fund MDM and MFA</li><li>Sign vendor BAAs</li></ul>' +
-      '<div class="doc-ctl"><div><b>PREPARED BY</b>Anél Henning</div><div><b>APPROVED BY</b>Pending · Dentist-Owner</div><div><b>CLASS</b>Confidential</div><div><b>RETENTION</b>Six years</div></div>' +
+      '<div class="doc-ctl"><div><b>PREPARED BY</b>Anèl Henning</div><div><b>APPROVED BY</b>Pending · Dentist-Owner</div><div><b>CLASS</b>Confidential</div><div><b>RETENTION</b>Six years</div></div>' +
       '<p class="noprint row" style="margin-top:14px"><button class="btn primary" type="button" data-action="print">Print or save as PDF</button></p></div>';
   }
 
@@ -344,7 +344,7 @@
       var t = TEMPLATES.filter(function (x) { return x.id === id; })[0];
       if (!t) return A.templates();
       var head = '<div class="card"><div class="eb">Template ' + t.id + ' · CSF ' + esc(t.csf) + ' · ' + esc(t.hipaa) + '</div><h1>' + esc(t.name) + '</h1>' +
-        '<div class="doc-ctl" style="margin:10px 0 16px"><div><b>CLIENT</b>Sunshine Dental Group</div><div><b>PREPARED BY</b>Anél Henning</div><div><b>APPROVER</b>Dentist-Owner</div><div><b>CLASS</b>Confidential</div><div><b>RETENTION</b>Six years</div></div>';
+        '<div class="doc-ctl" style="margin:10px 0 16px"><div><b>CLIENT</b>Sunshine Dental Group</div><div><b>PREPARED BY</b>Anèl Henning</div><div><b>APPROVER</b>Dentist-Owner</div><div><b>CLASS</b>Confidential</div><div><b>RETENTION</b>Six years</div></div>';
       if (t.narratives) {
         return head + NARRATIVES.map(function (n) { return '<div class="card" style="margin-bottom:12px"><div class="eb">' + esc(n.csf) + '</div><h3>' + esc(n.id) + ' ' + esc(n.name) + '</h3><div class="form"><div><b class="note">OBJECTIVE</b><div>' + esc(n.objective) + '</div></div><div><b class="note">TRIGGER / FREQUENCY</b><div>' + esc(n.trigger) + '</div></div><div><b class="note">PERFORMER / REVIEWER</b><div>' + esc(n.who) + '</div></div><div><b class="note">EVIDENCE CREATED</b><div>' + esc(n.evidence) + '</div></div><div><b class="note">HIPAA</b><div>' + esc(n.hipaa) + '</div></div></div></div>'; }).join('') +
           '<p class="noprint"><button class="btn primary" type="button" data-action="print">Print or save as PDF</button></p></div>';
